@@ -19,8 +19,6 @@
 #
 # This file provides the framework and can be activated once
 # real labels are acquired.
-#
-# Copy each "Cell N" block into a Jupyter notebook sequentially.
 # ================================================================
 
 
