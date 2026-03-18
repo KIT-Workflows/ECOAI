@@ -1,0 +1,22 @@
+{
+  "pipeline": "Phase 5 \u2014 Calibration & Uncertainty",
+  "random_seed": 42,
+  "calibration_method": "isotonic_fold_aware",
+  "conformal_alpha": 0.1,
+  "conformal_coverage": 0.9,
+  "ood_method": "kNN (K=5, euclidean)",
+  "metrics": {
+    "model": "XGBoost",
+    "roc_auc": 0.9186786351721716,
+    "pr_auc": 0.930164942441126,
+    "mcc": 0.6773614969224999,
+    "brier_raw": 0.10973524952797019,
+    "brier_calib": 0.11058698229079848,
+    "ece_raw": 0.05011072459630989,
+    "ece_calib": 0.023730884937648654,
+    "coverage": 0.9002732240437158,
+    "target_coverage": 0.9,
+    "mean_interval_width": 0.7537115533287724
+  },
+  "output_file": "G:\\research\\ECOAI\\Datasets\\data\\model_predictions.parquet"
+}

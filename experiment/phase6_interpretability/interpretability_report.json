@@ -1,0 +1,178 @@
+{
+  "pipeline": "Phase 6 \u2014 Interpretability",
+  "model_analyzed": "XGBoost (fold 0)",
+  "selected_model": "XGBoost",
+  "shap_method": "TreeExplainer (exact)",
+  "top_20_features_by_shap": [
+    {
+      "feature": "HeavyAtomCount",
+      "mean_abs_shap": 0.6862239241600037
+    },
+    {
+      "feature": "Chi1",
+      "mean_abs_shap": 0.5591959953308105
+    },
+    {
+      "feature": "HallKierAlpha",
+      "mean_abs_shap": 0.4233144223690033
+    },
+    {
+      "feature": "Chi1v",
+      "mean_abs_shap": 0.4112265408039093
+    },
+    {
+      "feature": "MolMR",
+      "mean_abs_shap": 0.3698485195636749
+    },
+    {
+      "feature": "mfp_695",
+      "mean_abs_shap": 0.3352908492088318
+    },
+    {
+      "feature": "Chi1n",
+      "mean_abs_shap": 0.3252919316291809
+    },
+    {
+      "feature": "MaxPartialCharge",
+      "mean_abs_shap": 0.2895192503929138
+    },
+    {
+      "feature": "SMR_VSA5",
+      "mean_abs_shap": 0.2839832901954651
+    },
+    {
+      "feature": "VSA_EState1",
+      "mean_abs_shap": 0.2621004581451416
+    },
+    {
+      "feature": "FractionCSP3",
+      "mean_abs_shap": 0.25339874625205994
+    },
+    {
+      "feature": "Chi0",
+      "mean_abs_shap": 0.24028699100017548
+    },
+    {
+      "feature": "Kappa2",
+      "mean_abs_shap": 0.21171855926513672
+    },
+    {
+      "feature": "TPSA",
+      "mean_abs_shap": 0.2075132131576538
+    },
+    {
+      "feature": "MolLogP",
+      "mean_abs_shap": 0.20374147593975067
+    },
+    {
+      "feature": "BertzCT",
+      "mean_abs_shap": 0.1969868242740631
+    },
+    {
+      "feature": "NumHeteroatoms",
+      "mean_abs_shap": 0.19530914723873138
+    },
+    {
+      "feature": "NumRotatableBonds",
+      "mean_abs_shap": 0.19431205093860626
+    },
+    {
+      "feature": "PEOE_VSA7",
+      "mean_abs_shap": 0.17644862830638885
+    },
+    {
+      "feature": "BalabanJ",
+      "mean_abs_shap": 0.16349893808364868
+    }
+  ],
+  "top_20_2d_descriptors": [
+    {
+      "feature": "HeavyAtomCount",
+      "mean_abs_shap": 0.6862239241600037
+    },
+    {
+      "feature": "Chi1",
+      "mean_abs_shap": 0.5591959953308105
+    },
+    {
+      "feature": "HallKierAlpha",
+      "mean_abs_shap": 0.4233144223690033
+    },
+    {
+      "feature": "Chi1v",
+      "mean_abs_shap": 0.4112265408039093
+    },
+    {
+      "feature": "MolMR",
+      "mean_abs_shap": 0.3698485195636749
+    },
+    {
+      "feature": "Chi1n",
+      "mean_abs_shap": 0.3252919316291809
+    },
+    {
+      "feature": "MaxPartialCharge",
+      "mean_abs_shap": 0.2895192503929138
+    },
+    {
+      "feature": "SMR_VSA5",
+      "mean_abs_shap": 0.2839832901954651
+    },
+    {
+      "feature": "VSA_EState1",
+      "mean_abs_shap": 0.2621004581451416
+    },
+    {
+      "feature": "FractionCSP3",
+      "mean_abs_shap": 0.25339874625205994
+    },
+    {
+      "feature": "Chi0",
+      "mean_abs_shap": 0.24028699100017548
+    },
+    {
+      "feature": "Kappa2",
+      "mean_abs_shap": 0.21171855926513672
+    },
+    {
+      "feature": "TPSA",
+      "mean_abs_shap": 0.2075132131576538
+    },
+    {
+      "feature": "MolLogP",
+      "mean_abs_shap": 0.20374147593975067
+    },
+    {
+      "feature": "BertzCT",
+      "mean_abs_shap": 0.1969868242740631
+    },
+    {
+      "feature": "NumHeteroatoms",
+      "mean_abs_shap": 0.19530914723873138
+    },
+    {
+      "feature": "NumRotatableBonds",
+      "mean_abs_shap": 0.19431205093860626
+    },
+    {
+      "feature": "PEOE_VSA7",
+      "mean_abs_shap": 0.17644862830638885
+    },
+    {
+      "feature": "BalabanJ",
+      "mean_abs_shap": 0.16349893808364868
+    },
+    {
+      "feature": "EState_VSA2",
+      "mean_abs_shap": 0.16111236810684204
+    }
+  ],
+  "morgan_fp_in_top_30": 3,
+  "rdkit_2d_in_top_30": 27,
+  "plots_generated": [
+    "native_feature_importance.png",
+    "shap_summary_beeswarm.png",
+    "shap_mean_abs_bar.png",
+    "shap_dependence_plots.png"
+  ]
+}

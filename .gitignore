@@ -1,0 +1,21 @@
+# Ignore conda environments
+.conda/
+env/
+venv/
+.env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VS Code settings
+.vscode/
+
+# Data files (optional - if large)
+*.csv
+*.zip
+*.h5
+
+# OS files
+.DS_Store
+Thumbs.db

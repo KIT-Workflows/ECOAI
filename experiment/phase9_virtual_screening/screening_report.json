@@ -1,0 +1,25 @@
+{
+  "pipeline": "Phase 9 \u2014 Virtual Screening",
+  "library_screened": "LifeChemicals insecticide library",
+  "n_molecules_screened": 2880,
+  "model_used": "XGBoost ensemble (5-fold)",
+  "calibration": "isotonic regression",
+  "prediction_summary": {
+    "p_repellent_mean": 0.9838021275004543,
+    "p_repellent_median": 0.99999999,
+    "p_repellent_std": 0.10006166309571009,
+    "predicted_actives_above_0.5": 2838,
+    "predicted_actives_above_0.7": 2805,
+    "predicted_actives_above_0.9": 2793
+  },
+  "uncertainty": {
+    "mean_ensemble_std": 0.004074253141880035,
+    "mean_interval_width": 0.5753026888247896,
+    "high_ood_count": 288,
+    "high_uncertainty_count": 288
+  },
+  "output_files": {
+    "full_results": "G:\\research\\ECOAI\\Datasets\\data\\screening_results.parquet",
+    "top_100_csv": "G:\\research\\ECOAI\\experiment\\phase9_virtual_screening\\top_100_candidates.csv"
+  }
+}

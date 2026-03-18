@@ -1,0 +1,24 @@
+{
+  "pipeline": "Phase 7 \u2014 Quantum Descriptors",
+  "random_seed": 42,
+  "xtb_available": true,
+  "selection": {
+    "labeled_repellent": 150,
+    "labeled_nonrepellent": 150,
+    "unlabeled_high_p": 100,
+    "unlabeled_high_u": 100,
+    "total": 500
+  },
+  "conformer_generation": {
+    "n_conformers_per_mol": 50,
+    "mmff_max_iters": 500,
+    "success": 498,
+    "failed": 2
+  },
+  "convergence_summary": {
+    "converged": 498,
+    "conformer_failed": 2
+  },
+  "dft_subset_size": 100,
+  "output_file": "G:\\research\\ECOAI\\Datasets\\data\\quantum_descriptors.parquet"
+}

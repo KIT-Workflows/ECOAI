@@ -1,0 +1,45 @@
+{
+  "pipeline": "Phase 1 \u2014 Data Curation",
+  "timestamp_utc": "2026-03-17T03:01:27.231864+00:00",
+  "random_seed": 42,
+  "input_files": {
+    "repellent": {
+      "path": "G:\\research\\ECOAI\\Datasets\\repellent_library_hits_new_376_compounds.sdf",
+      "size_bytes": 472190
+    },
+    "non_repellent": {
+      "path": "G:\\research\\ECOAI\\Datasets\\non_repellent_library_decoys_376_compounds.sdf",
+      "size_bytes": 320366
+    },
+    "insecticide": {
+      "path": "G:\\research\\ECOAI\\Datasets\\insecticide_library_LifeChemicals.sdf",
+      "size_bytes": 8192474
+    }
+  },
+  "output_file": {
+    "path": "G:\\research\\ECOAI\\Datasets\\data\\curated_molecules.parquet",
+    "size_bytes": 452023,
+    "sha256": "786a0726022a0e4e28af94b3f7bbffe92f947a35cdb66c07fe71a839c65406bd"
+  },
+  "counts": {
+    "total_raw": 3643,
+    "total_curated": 3615,
+    "by_source": {
+      "insecticide": 2880,
+      "repellent": 373,
+      "non_repellent": 362
+    },
+    "by_qc_status": {
+      "pass": 3612,
+      "too_small": 2,
+      "no_inchikey": 1
+    },
+    "labeled_pass": {
+      "repellent": 373,
+      "non_repellent": 359,
+      "unlabeled": 2880
+    },
+    "unique_scaffolds": 815,
+    "duplicates_removed": 28
+  }
+}

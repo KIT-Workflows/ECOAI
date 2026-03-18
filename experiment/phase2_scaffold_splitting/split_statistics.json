@@ -1,0 +1,63 @@
+{
+  "n_folds": 5,
+  "random_seed": 42,
+  "leakage_verified": true,
+  "fold_stats": {
+    "fold_0": {
+      "train_total": 470,
+      "train_positive": 236,
+      "train_negative": 234,
+      "train_scaffolds": 55,
+      "val_total": 262,
+      "val_positive": 137,
+      "val_negative": 125,
+      "val_scaffolds": 1
+    },
+    "fold_1": {
+      "train_total": 614,
+      "train_positive": 321,
+      "train_negative": 293,
+      "train_scaffolds": 42,
+      "val_total": 118,
+      "val_positive": 52,
+      "val_negative": 66,
+      "val_scaffolds": 14
+    },
+    "fold_2": {
+      "train_total": 614,
+      "train_positive": 314,
+      "train_negative": 300,
+      "train_scaffolds": 42,
+      "val_total": 118,
+      "val_positive": 59,
+      "val_negative": 59,
+      "val_scaffolds": 14
+    },
+    "fold_3": {
+      "train_total": 615,
+      "train_positive": 314,
+      "train_negative": 301,
+      "train_scaffolds": 43,
+      "val_total": 117,
+      "val_positive": 59,
+      "val_negative": 58,
+      "val_scaffolds": 13
+    },
+    "fold_4": {
+      "train_total": 615,
+      "train_positive": 307,
+      "train_negative": 308,
+      "train_scaffolds": 42,
+      "val_total": 117,
+      "val_positive": 66,
+      "val_negative": 51,
+      "val_scaffolds": 14
+    }
+  },
+  "label_distribution": {
+    "total_labeled": 732,
+    "positive": 373,
+    "negative": 359
+  },
+  "scaffold_count": 56
+}
