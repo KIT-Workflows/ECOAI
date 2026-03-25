@@ -1,0 +1,27 @@
+{
+    "num_folds": 5,
+    "seed": 42,
+    "total_compounds": 891,
+    "fold_distribution": {
+        "fold_0": {
+            "total": 179,
+            "active": 131
+        },
+        "fold_1": {
+            "total": 178,
+            "active": 121
+        },
+        "fold_2": {
+            "total": 178,
+            "active": 139
+        },
+        "fold_3": {
+            "total": 178,
+            "active": 122
+        },
+        "fold_4": {
+            "total": 178,
+            "active": 101
+        }
+    }
+}

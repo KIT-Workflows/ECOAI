@@ -11,11 +11,4 @@ __pycache__/
 # VS Code settings
 .vscode/
 
-# Data files (optional - if large)
-*.csv
-*.zip
-*.h5
-
-# OS files
-.DS_Store
-Thumbs.db
+ecoenv/

@@ -1,0 +1,49 @@
+{
+  "pipeline": "Phase 10 Prep \u2014 Insecticide Label Acquisition",
+  "timestamp_utc": "2026-03-20T14:21:42.061626+00:00",
+  "random_seed": 42,
+  "data_source": "ChEMBL",
+  "query_method": "chembl_webresource_client",
+  "target_organisms": [
+    "Aedes aegypti",
+    "Aedes albopictus",
+    "Anopheles gambiae",
+    "Anopheles stephensi",
+    "Culex pipiens",
+    "Culex quinquefasciatus",
+    "Musca domestica",
+    "Drosophila melanogaster",
+    "Spodoptera frugiperda",
+    "Spodoptera littoralis",
+    "Plutella xylostella",
+    "Blattella germanica",
+    "Tribolium castaneum",
+    "Lucilia cuprina",
+    "Haematobia irritans",
+    "Stomoxys calcitrans"
+  ],
+  "broad_search_terms": [
+    "mosquito",
+    "insecticid"
+  ],
+  "thresholds": {
+    "pchembl_active": 5.0,
+    "ic50_active_nM": 10000,
+    "mortality_active_pct": 50.0
+  },
+  "counts": {
+    "raw_records": 2285,
+    "clean_records": 1816,
+    "labeled_records": 1210,
+    "unique_compounds": 891,
+    "insecticidal_active": 614,
+    "insecticidal_inactive": 277,
+    "lifechem_matched": 6,
+    "external_compounds": 885
+  },
+  "output_files": {
+    "labels_parquet": "G:\\research\\ECOAI\\Datasets\\data\\insecticide_labels.parquet",
+    "raw_cache": "G:\\research\\ECOAI\\experiment\\phase10prep_insecticide_labels\\chembl_raw_cache.parquet"
+  },
+  "next_step": "Activate Phase 10 (phase10_v3_multitask.py) with these labels."
+}

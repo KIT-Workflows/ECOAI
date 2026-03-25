@@ -1,0 +1,26 @@
+{
+    "winner_name": "RandomForest",
+    "winner_metrics": {
+        "model": "RandomForest",
+        "roc_auc": 0.8027022895377416,
+        "pr_auc": 0.9028473339231033,
+        "mcc": 0.39793808372831385,
+        "brier": 0.1747571383647202
+    },
+    "best_classical_name": "RandomForest",
+    "best_classical_metrics": {
+        "model": "RandomForest",
+        "roc_auc": 0.8027022895377416,
+        "pr_auc": 0.9028473339231033,
+        "mcc": 0.39793808372831385,
+        "brier": 0.1747571383647202
+    },
+    "ft_transformer_metrics": {
+        "model": "FT-Transformer",
+        "roc_auc": 0.6292877385670104,
+        "pr_auc": 0.7826596516920721,
+        "mcc": 0.10897635712852334,
+        "brier": 0.20452007779462725
+    },
+    "random_baseline": 0.6891133557800224
+}
