@@ -291,7 +291,7 @@ The winning ensemble was subjected to mathematical bounds before deployment:
 *   **Conformal Bounds Tracker:** Precisely localized a 90% confidence target with exactly `90.0%` empirical coverage generated.
 *   **TreeExplainer Plausibility Verification:** Chemical viability was certified. Active topological drivers were traced specifically to `mfp_102` matching structural bio-warfare signatures, alongside high dependence on atomic mass profiles and partial charge differentials (`VSA_EState2`, `SMR_VSA7`, `MolLogP`).
 
-![SHAP Summary Insecticide](./experiment/phase10_v3/method1_chembl_bioactivity/implementation/artifacts/shap/shap_summary_beeswarm.png)
+![SHAP Summary Insecticide](./Datasets/data/phase10_artifacts/shap/shap_summary_beeswarm.png)
 
 **Artifacts Generated:** 
 * [`Datasets/data/insecticide_labels.parquet`](./Datasets/data/insecticide_labels.parquet) *(Master V3 Data)*
