@@ -125,7 +125,13 @@ n_rdkit_in_top  = top_n - n_morgan_in_top
 print(f"\n  Top {top_n} breakdown: {n_morgan_in_top} Morgan FP bits, {n_rdkit_in_top} RDKit 2D descriptors")
 
 # Save importance plot
-fig, ax = plt.subplots(figsize=(10, 8))
+plt.rcParams.update({
+    "font.family": "sans-serif",
+    "font.sans-serif": ["Arial", "DejaVu Sans", "Liberation Sans", "sans-serif"],
+    "font.size": 10
+})
+
+fig, ax = plt.subplots(figsize=(6, 8))
 ax.barh(
     range(top_n),
     top_features["importance"].values[::-1],
@@ -133,13 +139,31 @@ ax.barh(
     alpha=0.8,
 )
 ax.set_yticks(range(top_n))
-ax.set_yticklabels(top_features["feature"].values[::-1], fontsize=8)
-ax.set_xlabel("Feature Importance (gain)")
-ax.set_title(f"Top {top_n} Features — {best_classical} (Fold 0)")
-fig.tight_layout()
-fig.savefig(PHASE6_DIR / "native_feature_importance.png", dpi=150, bbox_inches="tight")
+ax.set_yticklabels(top_features["feature"].values[::-1], fontsize=10, fontweight="bold", color="black")
+ax.set_xlabel("Feature Importance (gain)", fontsize=10, fontweight="bold", color="black")
+# ax.set_title(f"Top {top_n} Features — {best_classical} (Fold 0)", fontsize=14, fontweight="bold")
+
+for tick in ax.get_xticklabels():
+    tick.set_fontweight("bold")
+    tick.set_fontsize(10)
+    tick.set_color("black")
+
+# Spines and Ticks
+ax.tick_params(axis='both', which='major', labelsize=10, length=4, width=1, color='black', direction='out', left=True, bottom=True)
+ax.spines["top"].set_visible(False)
+ax.spines["right"].set_visible(False)
+ax.spines["left"].set_visible(True)
+ax.spines["bottom"].set_visible(True)
+ax.spines["left"].set_color("black")
+ax.spines["bottom"].set_color("black")
+
+ax.grid(axis="x", linestyle="--", alpha=0.3)
+ax.spines["top"].set_visible(False)
+ax.spines["right"].set_visible(False)
+fig.tight_layout(pad=1.2)
+fig.savefig(PHASE6_DIR / "xgb_native_feature_importance_top30.png", dpi=300, bbox_inches="tight")
 plt.close()
-print(f"\n  📊 Saved: native_feature_importance.png")
+print(f"\n  📊 Saved: xgb_native_feature_importance_top30.png")
 
 
 # ================================================================
@@ -214,18 +238,37 @@ shap.summary_plot(
     show=False,
     plot_size=None,
 )
-plt.title("SHAP Summary — Top 25 Features", fontsize=14, fontweight="bold")
-plt.tight_layout()
-plt.savefig(PHASE6_DIR / "shap_summary_beeswarm.png", dpi=150, bbox_inches="tight")
+
+ax = plt.gca()
+for tick in ax.get_yticklabels():
+    tick.set_fontweight("bold")
+    tick.set_fontsize(10)
+    tick.set_color("black")
+for tick in ax.get_xticklabels():
+    tick.set_fontweight("bold")
+    tick.set_fontsize(10)
+    tick.set_color("black")
+ax.set_xlabel("SHAP value (impact on model output)", fontsize=10, fontweight="bold", color="black")
+
+# plt.title("SHAP Summary — Top 25 Features", fontsize=14, fontweight="bold", color="black")
+plt.tight_layout(pad=0.8)
+plt.savefig(PHASE6_DIR / "xgb_shap_summary_beeswarm.png", dpi=300, bbox_inches="tight")
 plt.close()
-print(f"  📊 Saved: shap_summary_beeswarm.png")
+print(f"  📊 Saved: xgb_shap_summary_beeswarm.png")
 
 
 # ================================================================
 # Cell 6 — SHAP Bar Plot (Mean Absolute SHAP)
 # ================================================================
 
-fig, ax = plt.subplots(figsize=(10, 8))
+plt.rcParams.update({
+    "font.family": "sans-serif",
+    "font.sans-serif": ["Arial", "DejaVu Sans", "Liberation Sans", "sans-serif"],
+    "font.size": 10
+})
+
+fig, ax = plt.subplots(figsize=(6, 8))  # keep same size
+
 shap.summary_plot(
     shap_vals,
     X_df,
@@ -233,12 +276,56 @@ shap.summary_plot(
     max_display=25,
     show=False,
     plot_size=None,
+    color="#4A90D9"  # cleaner, consistent blue
 )
-plt.title("Mean |SHAP| — Top 25 Features", fontsize=14, fontweight="bold")
-plt.tight_layout()
-plt.savefig(PHASE6_DIR / "shap_mean_abs_bar.png", dpi=150, bbox_inches="tight")
+
+ax = plt.gca()
+
+# Axis limits and ticks
+ax.set_xlim(0, 0.75)
+ax.set_xticks([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7])
+
+# Y-axis labels (feature names) — bold and black
+for tick in ax.get_yticklabels():
+    tick.set_fontweight("bold")
+    tick.set_fontsize(10)
+    tick.set_color("black")
+
+# X-axis ticks
+for tick in ax.get_xticklabels():
+    tick.set_fontweight("bold")
+    tick.set_fontsize(10)
+    tick.set_color("black")
+
+# Label
+ax.set_xlabel("mean(|SHAP value|)", fontsize=10, fontweight="bold", color="black")
+
+# Match Native Plot Styling (Spines, Ticks, Alpha)
+for b in ax.patches:
+    b.set_alpha(0.8)
+
+ax.grid(axis="x", linestyle="--", alpha=0.3)
+ax.tick_params(axis='both', which='major', length=4, width=1, color='black', direction='out', left=True, bottom=True)
+ax.spines["top"].set_visible(False)
+ax.spines["right"].set_visible(False)
+ax.spines["left"].set_visible(True)
+ax.spines["bottom"].set_visible(True)
+ax.spines["left"].set_color("black")
+ax.spines["bottom"].set_color("black")
+
+# Slight padding so top doesn't feel tight
+plt.tight_layout(pad=0.8)
+
+# Save
+plt.savefig(
+    PHASE6_DIR / "xgb_shap_feature_importance_bar_top25.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
 plt.close()
-print(f"  📊 Saved: shap_mean_abs_bar.png")
+
+print(f"  📊 Saved: xgb_shap_feature_importance_bar_top25.png")
 
 
 # ================================================================
@@ -328,18 +415,28 @@ if len(top_dep_features) > 0:
             ax=axes[i],
             show=False,
         )
-        axes[i].set_title(feat, fontsize=10)
+        # axes[i].set_title(feat, fontsize=12, fontweight="bold", color="black")
+        for tick in axes[i].get_yticklabels():
+            tick.set_fontweight("bold")
+            tick.set_fontsize(10)
+            tick.set_color("black")
+        for tick in axes[i].get_xticklabels():
+            tick.set_fontweight("bold")
+            tick.set_fontsize(10)
+            tick.set_color("black")
+        axes[i].set_xlabel(axes[i].get_xlabel(), fontsize=10, fontweight="bold", color="black")
+        axes[i].set_ylabel(axes[i].get_ylabel(), fontsize=10, fontweight="bold", color="black")
 
     # Hide unused axes
     for i in range(n_plots, 6):
         axes[i].set_visible(False)
 
-    fig.suptitle("SHAP Dependence Plots — Top 2D Descriptors",
-                 fontsize=14, fontweight="bold")
-    fig.tight_layout()
-    fig.savefig(PHASE6_DIR / "shap_dependence_plots.png", dpi=150, bbox_inches="tight")
+    # fig.suptitle("SHAP Dependence Plots — Top 2D Descriptors",
+    #              fontsize=16, fontweight="bold", color="black")
+    fig.tight_layout(pad=1.2)
+    fig.savefig(PHASE6_DIR / "xgb_shap_dependence_plots.png", dpi=300, bbox_inches="tight")
     plt.close()
-    print(f"  📊 Saved: shap_dependence_plots.png")
+    print(f"  📊 Saved: xgb_shap_dependence_plots.png")
 
 
 # ================================================================

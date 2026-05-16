@@ -188,33 +188,47 @@ print(f"  ECE:         {ece:.6f} → {ece_after:.6f}  "
       f"({'✅ improved' if ece_after < ece else '⚠️ worse'})")
 
 # Save post-calibration reliability plot
+plt.rcParams.update({
+    "font.family": "sans-serif",
+    "font.sans-serif": ["Arial", "DejaVu Sans", "Liberation Sans", "sans-serif"],
+    "font.size": 10
+})
+
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
 # Before
 axes[0].plot([0, 1], [0, 1], "k--", alpha=0.5)
 axes[0].plot(prob_pred, prob_true, "o-", color="#E74C3C", label="Raw")
-axes[0].set_title("Before Calibration")
-axes[0].set_xlabel("Predicted")
-axes[0].set_ylabel("Actual")
-axes[0].legend()
-axes[0].grid(True, alpha=0.3)
+axes[0].set_title("Before Calibration", fontsize=12, fontweight="bold", color="black")
+axes[0].set_xlabel("Predicted", fontsize=10, fontweight="bold", color="black")
+axes[0].set_ylabel("Actual", fontsize=10, fontweight="bold", color="black")
+axes[0].legend(prop={'weight':'bold'})
+axes[0].grid(True, linestyle="--", alpha=0.3)
 axes[0].set_xlim(0, 1); axes[0].set_ylim(0, 1)
 
 # After
 axes[1].plot([0, 1], [0, 1], "k--", alpha=0.5)
 axes[1].plot(prob_pred_cal, prob_true_cal, "o-", color="#27AE60", label="Calibrated")
-axes[1].set_title("After Calibration")
-axes[1].set_xlabel("Predicted")
-axes[1].set_ylabel("Actual")
-axes[1].legend()
-axes[1].grid(True, alpha=0.3)
+axes[1].set_title("After Calibration", fontsize=12, fontweight="bold", color="black")
+axes[1].set_xlabel("Predicted", fontsize=10, fontweight="bold", color="black")
+axes[1].set_ylabel("Actual", fontsize=10, fontweight="bold", color="black")
+axes[1].legend(prop={'weight':'bold'})
+axes[1].grid(True, linestyle="--", alpha=0.3)
 axes[1].set_xlim(0, 1); axes[1].set_ylim(0, 1)
 
-fig.suptitle("Reliability Diagrams", fontsize=14, fontweight="bold")
+for ax in axes:
+    for tick in ax.get_yticklabels():
+        tick.set_fontweight("bold")
+        tick.set_color("black")
+    for tick in ax.get_xticklabels():
+        tick.set_fontweight("bold")
+        tick.set_color("black")
+
+# fig.suptitle("Reliability Diagrams", fontsize=14, fontweight="bold", color="black")
 fig.tight_layout()
-fig.savefig(PHASE5_DIR / "reliability_plot_comparison.png", dpi=150, bbox_inches="tight")
+fig.savefig(PHASE5_DIR / "xgb_reliability_plot_comparison.png", dpi=300, bbox_inches="tight")
 plt.close()
-print(f"  📊 Saved: reliability_plot_comparison.png")
+print(f"  📊 Saved: xgb_reliability_plot_comparison.png")
 
 
 # ================================================================
@@ -440,39 +454,48 @@ print(f"✅ Calibration log saved: {CALIBRATION_LOG}")
 # ================================================================
 # Save plots of calibrated probability distributions by class.
 
-fig, axes = plt.subplots(1, 3, figsize=(16, 4))
+fig, axes = plt.subplots(1, 3, figsize=(20, 5))
 
 # (1) Calibrated probability distribution
 axes[0].hist(calibrated_probs[y_true == 1], bins=30, alpha=0.6,
              color="#27AE60", label="Repellent (y=1)", density=True)
 axes[0].hist(calibrated_probs[y_true == 0], bins=30, alpha=0.6,
              color="#E74C3C", label="Non-repellent (y=0)", density=True)
-axes[0].set_xlabel("Calibrated p(repellent)")
-axes[0].set_ylabel("Density")
-axes[0].set_title("Calibrated Probability Distribution")
-axes[0].legend()
+axes[0].set_xlabel("Calibrated p(repellent)", fontsize=10, fontweight="bold", color="black")
+axes[0].set_ylabel("Density", fontsize=10, fontweight="bold", color="black")
+axes[0].set_title("Calibrated Probability Distribution", fontsize=12, fontweight="bold", color="black")
+axes[0].legend(prop={'weight':'bold'})
 
 # (2) OOD score distribution
 axes[1].hist(ood_scores_norm[y_true == 1], bins=30, alpha=0.6,
              color="#27AE60", label="Repellent", density=True)
 axes[1].hist(ood_scores_norm[y_true == 0], bins=30, alpha=0.6,
              color="#E74C3C", label="Non-repellent", density=True)
-axes[1].set_xlabel("OOD Score (normalized)")
-axes[1].set_ylabel("Density")
-axes[1].set_title("OOD Score Distribution")
-axes[1].legend()
+axes[1].set_xlabel("OOD Score (normalized)", fontsize=10, fontweight="bold", color="black")
+axes[1].set_ylabel("Density", fontsize=10, fontweight="bold", color="black")
+axes[1].set_title("OOD Score Distribution", fontsize=12, fontweight="bold", color="black")
+axes[1].legend(prop={'weight':'bold'})
 
 # (3) Interval width distribution
 axes[2].hist(interval_widths, bins=30, alpha=0.7, color="#4A90D9")
-axes[2].set_xlabel("Prediction Interval Width")
-axes[2].set_ylabel("Count")
-axes[2].set_title(f"Conformal Interval Widths (α={ALPHA})")
+axes[2].set_xlabel("Prediction Interval Width", fontsize=10, fontweight="bold", color="black")
+axes[2].set_ylabel("Count", fontsize=10, fontweight="bold", color="black")
+axes[2].set_title(f"Conformal Interval Widths (α={ALPHA})", fontsize=12, fontweight="bold", color="black")
 
-fig.suptitle("Phase 5 — Calibration & Uncertainty Diagnostics", fontsize=14, fontweight="bold")
+for ax in axes:
+    for tick in ax.get_yticklabels():
+        tick.set_fontweight("bold")
+        tick.set_color("black")
+    for tick in ax.get_xticklabels():
+        tick.set_fontweight("bold")
+        tick.set_color("black")
+    ax.grid(True, linestyle="--", alpha=0.3)
+
+# fig.suptitle("Phase 5 — Calibration & Uncertainty Diagnostics", fontsize=14, fontweight="bold", color="black")
 fig.tight_layout()
-fig.savefig(PHASE5_DIR / "calibration_diagnostics.png", dpi=150, bbox_inches="tight")
+fig.savefig(PHASE5_DIR / "xgb_calibration_diagnostics.png", dpi=300, bbox_inches="tight")
 plt.close()
-print(f"📊 Saved: calibration_diagnostics.png")
+print(f"📊 Saved: xgb_calibration_diagnostics.png")
 
 
 # ================================================================
@@ -490,8 +513,8 @@ print(f"    • Mean interval width: {interval_widths.mean():.4f}")
 print(f"\n  Artifacts:")
 print(f"    1. {OUTPUT_PREDICTIONS} (FINAL PROJECT ARTIFACT)")
 print(f"    2. {CALIBRATION_LOG}")
-print(f"    3. reliability_plot_comparison.png")
-print(f"    4. calibration_diagnostics.png")
+print(f"    3. xgb_reliability_plot_comparison.png")
+print(f"    4. xgb_calibration_diagnostics.png")
 print(f"\n  Ready for Phase 6 (Interpretability) →")
 print("=" * 60)
 

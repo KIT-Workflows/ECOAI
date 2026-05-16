@@ -290,37 +290,50 @@ print(uncertain[["rank", "compound_id", "p_repellent", "ensemble_std",
 # Cell 9 — Screening Distribution Visualization
 # ================================================================
 
-fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+plt.rcParams.update({
+    "font.family": "sans-serif",
+    "font.sans-serif": ["Arial", "DejaVu Sans", "Liberation Sans", "sans-serif"],
+    "font.size": 10
+})
+
+fig, axes = plt.subplots(1, 3, figsize=(20, 5))
 
 # (1) p_repellent distribution
 axes[0].hist(calibrated_screen, bins=50, color="#4A90D9", alpha=0.8, edgecolor="white")
-axes[0].set_xlabel("p(repellent)")
-axes[0].set_ylabel("Count")
-axes[0].set_title("Predicted Repellent Probability")
+axes[0].set_xlabel("p(repellent)", fontsize=10, fontweight="bold", color="black")
+axes[0].set_ylabel("Count", fontsize=10, fontweight="bold", color="black")
+axes[0].set_title("Predicted Repellent Probability", fontsize=12, fontweight="bold", color="black")
 axes[0].axvline(x=0.5, color="red", linestyle="--", alpha=0.5, label="threshold=0.5")
-axes[0].legend()
+axes[0].legend(prop={'weight': 'bold'})
 
 # (2) OOD score distribution
 axes[1].hist(ood_scores_norm, bins=50, color="#E67E22", alpha=0.8, edgecolor="white")
-axes[1].set_xlabel("OOD Score")
-axes[1].set_ylabel("Count")
-axes[1].set_title("Out-of-Distribution Score")
-axes[1].axvline(x=ood_threshold, color="red", linestyle="--", alpha=0.5,
-                label=f"90th pctl={ood_threshold:.2f}")
-axes[1].legend()
+axes[1].set_xlabel("OOD Score", fontsize=10, fontweight="bold", color="black")
+axes[1].set_ylabel("Count", fontsize=10, fontweight="bold", color="black")
+axes[1].set_title("Out-of-Distribution Score", fontsize=12, fontweight="bold", color="black")
+axes[1].axvline(x=ood_threshold, color="red", linestyle="--", alpha=0.5, label=f"90th pctl={ood_threshold:.2f}")
+axes[1].legend(prop={'weight': 'bold'})
 
 # (3) p_repellent vs. uncertainty
 axes[2].scatter(calibrated_screen, ensemble_std, alpha=0.3, s=5, c="#27AE60")
-axes[2].set_xlabel("p(repellent)")
-axes[2].set_ylabel("Ensemble Std (uncertainty)")
-axes[2].set_title("Prediction vs. Uncertainty")
+axes[2].set_xlabel("p(repellent)", fontsize=10, fontweight="bold", color="black")
+axes[2].set_ylabel("Ensemble Std (uncertainty)", fontsize=10, fontweight="bold", color="black")
+axes[2].set_title("Prediction vs. Uncertainty", fontsize=12, fontweight="bold", color="black")
 
-fig.suptitle("Virtual Screening — LifeChemicals Library",
-             fontsize=14, fontweight="bold")
+for ax in axes:
+    for tick in ax.get_yticklabels():
+        tick.set_fontweight("bold")
+        tick.set_color("black")
+    for tick in ax.get_xticklabels():
+        tick.set_fontweight("bold")
+        tick.set_color("black")
+    ax.grid(True, linestyle="--", alpha=0.3)
+
+# fig.suptitle("Virtual Screening — LifeChemicals Library", fontsize=14, fontweight="bold", color="black")
 fig.tight_layout()
-fig.savefig(PHASE9_DIR / "screening_distributions.png", dpi=150, bbox_inches="tight")
+fig.savefig(PHASE9_DIR / "xgb_screening_distributions.png", dpi=300, bbox_inches="tight")
 plt.close()
-print(f"\n📊 Saved: screening_distributions.png")
+print(f"\n📊 Saved: xgb_screening_distributions.png")
 
 
 # ================================================================
@@ -387,7 +400,7 @@ print(f"  High-confidence candidates:   see top_100_candidates.csv")
 print(f"\n  Artifacts:")
 print(f"    1. {OUTPUT_SCREENING}")
 print(f"    2. {csv_top100}")
-print(f"    3. screening_distributions.png")
+print(f"    3. xgb_screening_distributions.png")
 print(f"    4. {SCREENING_REPORT}")
 print(f"\n  Ready for Phase 10 (V3 Multitask) →")
 print("=" * 60)

@@ -116,16 +116,45 @@ print(f"  Brier: {brier_before:.6f} → {brier_after:.6f}  "
 print(f"  ECE:   {ece_before:.6f} → {ece_after:.6f}  "
       f"({'✅ improved' if ece_after < ece_before else '⚠️ worse'})")
 
+plt.rcParams.update({
+    "font.family": "sans-serif",
+    "font.sans-serif": ["Arial", "DejaVu Sans", "Liberation Sans", "sans-serif"],
+    "font.size": 10
+})
+
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-axes[0].plot([0,1],[0,1],"k--",alpha=0.5); axes[0].plot(pp_r, pt_r, "o-", color="#E74C3C")
-axes[0].set_title("Before"); axes[0].grid(True, alpha=0.3)
-axes[1].plot([0,1],[0,1],"k--",alpha=0.5); axes[1].plot(pp_c, pt_c, "o-", color="#27AE60")
-axes[1].set_title("After"); axes[1].grid(True, alpha=0.3)
-fig.suptitle(f"{winner} — Reliability Diagrams", fontsize=14, fontweight="bold")
+
+axes[0].plot([0, 1], [0, 1], "k--", alpha=0.5)
+axes[0].plot(pp_r, pt_r, "o-", color="#E74C3C", label="Raw")
+axes[0].set_title("Before Calibration", fontsize=12, fontweight="bold", color="black")
+axes[0].set_xlabel("Predicted", fontsize=10, fontweight="bold", color="black")
+axes[0].set_ylabel("Actual", fontsize=10, fontweight="bold", color="black")
+axes[0].legend(prop={'weight':'bold'})
+axes[0].grid(True, linestyle="--", alpha=0.3)
+axes[0].set_xlim(0, 1); axes[0].set_ylim(0, 1)
+
+axes[1].plot([0, 1], [0, 1], "k--", alpha=0.5)
+axes[1].plot(pp_c, pt_c, "o-", color="#27AE60", label="Calibrated")
+axes[1].set_title("After Calibration", fontsize=12, fontweight="bold", color="black")
+axes[1].set_xlabel("Predicted", fontsize=10, fontweight="bold", color="black")
+axes[1].set_ylabel("Actual", fontsize=10, fontweight="bold", color="black")
+axes[1].legend(prop={'weight':'bold'})
+axes[1].grid(True, linestyle="--", alpha=0.3)
+axes[1].set_xlim(0, 1); axes[1].set_ylim(0, 1)
+
+for ax in axes:
+    for tick in ax.get_yticklabels():
+        tick.set_fontweight("bold")
+        tick.set_color("black")
+    for tick in ax.get_xticklabels():
+        tick.set_fontweight("bold")
+        tick.set_color("black")
+
+# fig.suptitle(f"{winner} — Reliability Diagrams", fontsize=14, fontweight="bold", color="black")
 fig.tight_layout()
 
-rel_plot_path = ARTIFACT_DIR / "reliability_plot.png"
-fig.savefig(rel_plot_path, dpi=150, bbox_inches="tight")
+rel_plot_path = ARTIFACT_DIR / "rf_reliability_plot_comparison.png"
+fig.savefig(rel_plot_path, dpi=300, bbox_inches="tight")
 plt.close()
 print(f"  📊 Saved: {rel_plot_path}")
 
@@ -179,6 +208,47 @@ ood_n = (ood - ood.min()) / (ood.max() - ood.min()) if ood.max() > ood.min() els
 
 print(f"  OOD range: [{ood.min():.4f}, {ood.max():.4f}]")
 
+# ================================================================
+# Cell 5.5 — Distribution Plots
+# ================================================================
+
+fig, axes = plt.subplots(1, 3, figsize=(20, 5))
+
+axes[0].hist(calibrated_probs[y == 1], bins=30, alpha=0.6, color="#27AE60", label="Active (y=1)", density=True)
+axes[0].hist(calibrated_probs[y == 0], bins=30, alpha=0.6, color="#E74C3C", label="Inactive (y=0)", density=True)
+axes[0].set_xlabel("Calibrated p(insecticidal)", fontsize=10, fontweight="bold", color="black")
+axes[0].set_ylabel("Density", fontsize=10, fontweight="bold", color="black")
+axes[0].set_title("Calibrated Probability Distribution", fontsize=12, fontweight="bold", color="black")
+axes[0].legend(prop={'weight':'bold'})
+
+axes[1].hist(ood_n[y == 1], bins=30, alpha=0.6, color="#27AE60", label="Active", density=True)
+axes[1].hist(ood_n[y == 0], bins=30, alpha=0.6, color="#E74C3C", label="Inactive", density=True)
+axes[1].set_xlabel("OOD Score (normalized)", fontsize=10, fontweight="bold", color="black")
+axes[1].set_ylabel("Density", fontsize=10, fontweight="bold", color="black")
+axes[1].set_title("OOD Score Distribution", fontsize=12, fontweight="bold", color="black")
+axes[1].legend(prop={'weight':'bold'})
+
+axes[2].hist(iw, bins=30, alpha=0.7, color="#4A90D9")
+axes[2].set_xlabel("Prediction Interval Width", fontsize=10, fontweight="bold", color="black")
+axes[2].set_ylabel("Count", fontsize=10, fontweight="bold", color="black")
+axes[2].set_title(f"Conformal Interval Widths (\u03b1={ALPHA})", fontsize=12, fontweight="bold", color="black")
+
+for ax in axes:
+    for tick in ax.get_yticklabels():
+        tick.set_fontweight("bold")
+        tick.set_color("black")
+    for tick in ax.get_xticklabels():
+        tick.set_fontweight("bold")
+        tick.set_color("black")
+    ax.grid(True, linestyle="--", alpha=0.3)
+
+# fig.suptitle(f"{winner} \u2014 Calibration & Uncertainty Diagnostics", fontsize=14, fontweight="bold", color="black")
+fig.tight_layout()
+
+diag_plot_path = ARTIFACT_DIR / "rf_calibration_diagnostics.png"
+fig.savefig(diag_plot_path, dpi=300, bbox_inches="tight")
+plt.close()
+print(f"  📊 Saved: {diag_plot_path}")
 
 # ================================================================
 # Cell 6 — Assemble Final Predictions

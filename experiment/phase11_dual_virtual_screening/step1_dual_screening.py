@@ -218,80 +218,124 @@ export_top("Bug Spray (Toxic)", ["p_insecticidal", "p_repellent"], [False, True]
 
 
 # ================================================================
-# Cell 7 — Stunning Premium Visualizations
+# Cell 7 — Visualizations
 # ================================================================
-print("\n── Rendering Premium Visualizations ──")
+print("\n── Rendering Visualizations ──")
 
-# A. The Dual-Quadrant Map
-fig, ax = plt.subplots(figsize=(11, 8), facecolor="#F8F9F9")
-ax.set_facecolor("#FCFDFD")
+# A. The Dual-Quadrant Map (Styled Consistently)
+plt.rcParams.update({
+    "font.family": "sans-serif",
+    "font.sans-serif": ["Arial", "DejaVu Sans", "Liberation Sans", "sans-serif"],
+    "font.size": 10
+})
 
-# Plot Background Points
+fig, ax = plt.subplots(figsize=(7, 7)) 
+fig.patch.set_facecolor('white')
+ax.set_facecolor('white')
+
+# Plot Background Points (Inactive - Grey)
 inactive = df_results[df_results["Category"] == "Inactive"]
 ax.scatter(inactive["p_insecticidal"], inactive["p_repellent"], 
-           alpha=0.1, s=3, c="#BDC3C7", label="Inactive")
+           alpha=0.4, s=6, c="#95A5A6", label="Inactive")
 
-# Plot Toxic Repellents
+# Plot Toxic Repellents (Blue)
 tox_rep = df_results[df_results["Category"] == "Toxic Repellent"]
 ax.scatter(tox_rep["p_insecticidal"], tox_rep["p_repellent"], 
-           alpha=0.4, s=8, c="#F39C12", label="Toxic Repellent")
+           alpha=0.6, s=15, c="#4A90D9", label="Toxic Repellent")
 
-# Plot Bug Sprays
+# Plot Bug Sprays (Red)
 bug_spray = df_results[df_results["Category"] == "Bug Spray (Toxic)"]
 ax.scatter(bug_spray["p_insecticidal"], bug_spray["p_repellent"], 
-           alpha=0.4, s=8, c="#E74C3C", label="Bug Spray (Toxic)")
+           alpha=0.6, s=15, c="#E74C3C", label="Bug Spray (Toxic)")
 
-# Plot Holy Grails
+# Plot Holy Grails (Green)
 grails = df_results[df_results["Category"] == "Holy Grail (Safe Repellent)"]
 ax.scatter(grails["p_insecticidal"], grails["p_repellent"], 
-           alpha=0.8, s=25, c="#27AE60", edgecolor="white", linewidth=0.5, label="Holy Grail (Safe Repellent)")
+           alpha=0.9, s=40, c="#27AE60", edgecolor="black", linewidth=0.8, label="Holy Grail (Safe Repellent)")
 
 # Quadrant Lines
-ax.axvline(0.2, color='#34495E', linestyle='--', alpha=0.3)
-ax.axhline(0.5, color='#34495E', linestyle='--', alpha=0.3)
+ax.axvline(0.2, color='black', linestyle='--', alpha=0.3)
+ax.axhline(0.5, color='black', linestyle='--', alpha=0.3)
 
 # Aesthetics
 ax.set_xlim(-0.02, 1.02)
 ax.set_ylim(-0.02, 1.02)
-ax.set_xlabel("Insecticidal Probability", fontsize=12, fontweight="bold", color="#2C3E50")
-ax.set_ylabel("Repellent Probability", fontsize=12, fontweight="bold", color="#2C3E50")
-ax.set_title("Dual Virtual Screening: Efficacy vs. Toxicity Map", fontsize=16, fontweight="bold", color="#2C3E50", pad=15)
-ax.grid(True, linestyle=':', alpha=0.6)
-ax.legend(loc="upper right", frameon=True, shadow=True)
+
+# Bold for consistency
+ax.set_xlabel("Insecticidal Probability (Random Forest)", fontsize=10, fontweight="bold", color="black")
+ax.set_ylabel("Repellent Probability (XGBoost)", fontsize=10, fontweight="bold", color="black")
+
+# Titles are commented out for markdown consistency
+# ax.set_title("Dual Virtual Screening: Efficacy vs. Toxicity Map", fontsize=14, fontweight="bold", color="black", pad=15)
+
+# Ticks styling
+for label in ax.get_xticklabels() + ax.get_yticklabels():
+    label.set_fontweight("bold")
+    label.set_color("black")
+
+# Grid
+ax.grid(True, linestyle="--", alpha=0.3)
+
+# Legend (Cleanly placed in a box above the plot)
+legend = ax.legend(
+    fontsize=9, 
+    frameon=True,
+    facecolor="white",
+    edgecolor="#BDC3C7",
+    loc="upper center", 
+    bbox_to_anchor=(0.5, 1.15), 
+    ncol=2
+)
+for text in legend.get_texts():
+    text.set_fontweight("bold")
 
 # Highlight box for Holy Grails
-rect = patches.Rectangle((-0.02, 0.5), 0.22, 0.52, linewidth=1.5, edgecolor='#27AE60', facecolor='#27AE60', alpha=0.1)
+rect = patches.Rectangle((-0.02, 0.5), 0.22, 0.52, linewidth=1.5, edgecolor='#27AE60', facecolor='#27AE60', alpha=0.08)
 ax.add_patch(rect)
 
+for spine in ax.spines.values():
+    spine.set_color('black')
+    spine.set_linewidth(1.0)
+
 fig.tight_layout()
-quadrant_path = ARTIFACT_DIR / "dual_screening_quadrant_map.png"
-fig.savefig(quadrant_path, dpi=300)
+quadrant_path = ARTIFACT_DIR / "xgb_rf_dual_screening_quadrant_map.png"
+fig.savefig(quadrant_path, dpi=300, bbox_inches="tight")
 plt.close(fig)
 print(f"📊 Saved Map to: {quadrant_path.name}")
 
 
-# B. Category Bar Chart
-cat_colors = {"Inactive": "#BDC3C7", "Toxic Repellent": "#F39C12", "Bug Spray (Toxic)": "#E74C3C", "Holy Grail (Safe Repellent)": "#27AE60"}
-plt.figure(figsize=(10, 6), facecolor="#F8F9F9")
-ax = plt.gca()
-ax.set_facecolor("#FCFDFD")
+# B. Category Bar Chart (Styled Consistently)
+cat_colors = {"Inactive": "#95A5A6", "Toxic Repellent": "#4A90D9", "Bug Spray (Toxic)": "#E74C3C", "Holy Grail (Safe Repellent)": "#27AE60"}
+fig, ax = plt.subplots(figsize=(7, 5))
+fig.patch.set_facecolor('white')
+ax.set_facecolor('white')
 
-bars = ax.bar(counts.index, counts.values, color=[cat_colors.get(x, "#333333") for x in counts.index], edgecolor="white", linewidth=1.5)
+bars = ax.bar(counts.index, counts.values, color=[cat_colors.get(x, "#333333") for x in counts.index], edgecolor="black", linewidth=1.2, width=0.6)
 
-ax.set_title("Library Categorization Breakdown", fontsize=14, fontweight="bold", color="#2C3E50", pad=15)
-ax.set_ylabel("Number of Molecules (Log Scale)", fontsize=11, fontweight="bold", color="#2C3E50")
+# Labels bold for consistency
+ax.set_ylabel("Number of Molecules (Log Scale)", fontsize=10, fontweight="bold", color="black")
 ax.set_yscale("log")
-ax.grid(axis='y', linestyle=':', alpha=0.6)
+ax.grid(axis='y', linestyle='--', alpha=0.3)
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
+ax.spines['left'].set_color('black')
+ax.spines['bottom'].set_color('black')
+
+# Ticks
+for label in ax.get_xticklabels() + ax.get_yticklabels():
+    label.set_fontweight("bold")
+    label.set_color("black")
+
+# Rotate x-axis labels to fit better
+plt.xticks(rotation=20, ha="right")
 
 for bar in bars:
     yval = bar.get_height()
-    ax.text(bar.get_x() + bar.get_width()/2, yval * 1.2, f"{int(yval):,}", ha='center', va='bottom', fontsize=10, fontweight="bold", color="#34495E")
+    ax.text(bar.get_x() + bar.get_width()/2, yval * 1.15, f"{int(yval):,}", ha='center', va='bottom', fontsize=10, fontweight="bold", color="black")
 
 plt.tight_layout()
-bar_path = ARTIFACT_DIR / "dual_screening_categories_bar.png"
-plt.savefig(bar_path, dpi=300)
+bar_path = ARTIFACT_DIR / "xgb_rf_dual_screening_categories_bar.png"
+plt.savefig(bar_path, dpi=300, bbox_inches="tight")
 plt.close()
 print(f"📊 Saved Bar Chart to: {bar_path.name}")
 

@@ -116,14 +116,16 @@ Naked AI outputs range sporadically and rarely reflect literal probability. Fold
 
 *(See Figure 1: The Reliability Diagram maps calibrated outputs closely clinging to the ideal probability axis).*
 
-![Isotonic Calibration Diagnostics](./experiment/phase5_calibration_uncertainty/reliability_plot_comparison.png)
+![Isotonic Calibration Diagnostics](./experiment/phase5_calibration_uncertainty/xgb_reliability_plot_comparison.png)
+**Figure 1: Reliability Diagrams (XGBoost)**
 
 ### Uncertainty Metrics (Conformal Prediction & OOD)
 Instead of forcing the model to guess blindly on extreme outliers, safety mechanisms were installed mapping a strict maximum guessing error:
 *   **Conformal Prediction Coverage:** Targeted an exact 90% confidence envelope ($\alpha = 0.10$). The algorithm hit its non-conformity boundary flawlessly, achieving **90.0% Empirical Coverage**.
 *   **OOD Distance Score:** Integrated a Euclidean k-Nearest Neighbors (`K=5`) tracker to calculate distance-to-training-data in the 2,102 feature space. OOD normalization mapping dynamically scales alien structures into an explicit `[0.0, 1.0]` warning tracker.
 
-![Calibration Distributions](./experiment/phase5_calibration_uncertainty/calibration_diagnostics.png)
+![Calibration Distributions](./experiment/phase5_calibration_uncertainty/xgb_calibration_diagnostics.png)
+**Figure 2: Calibration & Uncertainty Diagnostics (XGBoost)**
 
 ### Final Output Metrics
 | Metric | Post-Calibration Result |
@@ -153,11 +155,17 @@ Analysis of the top 30 determining features confirmed extreme reliance on biolog
 
 *(See Figure 3 & 4: The visualization suite reveals exact SHAP boundaries across all labeled molecules.)*
 
-![SHAP Summary Beeswarm](./experiment/phase6_interpretability/shap_summary_beeswarm.png)
+![SHAP Summary Beeswarm (XGB)](./experiment/phase6_interpretability/xgb_shap_summary_beeswarm.png)
+**Figure 3: SHAP Summary Beeswarm — Top 25 Features (XGBoost)**
 
-![SHAP Mean Absolute Importance](./experiment/phase6_interpretability/shap_mean_abs_bar.png)
+![SHAP Factor Dependence (XGB)](./experiment/phase6_interpretability/xgb_shap_dependence_plots.png)
+**Figure 4: SHAP Dependence Plots — Top 2D Descriptors (XGBoost)**
 
-![SHAP Factor Dependence](./experiment/phase6_interpretability/shap_dependence_plots.png)
+![SHAP Feature Importance Bar (XGB)](./experiment/phase6_interpretability/xgb_shap_feature_importance_bar_top25.png)
+**Figure 5: Mean |SHAP| — Top 25 Features (XGBoost)**
+
+![Native Feature Importance (XGB)](./experiment/phase6_interpretability/xgb_native_feature_importance_top30.png)
+**Figure 6: Native Feature Importance (Gain) — Top 30 Features (XGBoost)**
 
 ### Artifact Summary
 No data-leakage structures were uncovered. Structural size, complex branching, and solubility constants (LogP / TPSA) legitimately drove the gradient booster's decision-making process.
@@ -224,7 +232,8 @@ Cross-validation over the isolated `298` target molecules yielded the following 
 **Decision:** ⏸️ **STICK WITH V1 (Cheminformatics-Only)**.
 The addition of Quantum metrics actually introduced minor statistical noise, resulting in a PR-AUC degradation (`-0.0010`) and noticeably worsening the Brier error curve (`+0.0042`). Thus, the massive computational overhead of GFN2-xTB is unwarranted. The V1 pipeline remains dominant.
 
-![V2 Feature Ablation Study](./experiment/phase8_v2_ablation/ablation_comparison.png)
+![V2 Feature Ablation Study](./experiment/phase8_v2_ablation/xgb_ablation_comparison.png)
+**Figure 7: Ablation Study — Feature Set Comparison (XGBoost)**
 
 **Artifacts Generated:** 
 * [`experiment/phase8_v2_ablation/ablation_results.json`](./experiment/phase8_v2_ablation/ablation_results.json)
@@ -246,7 +255,8 @@ The LifeChemicals library proved to be extraordinarily rich in potential repelle
 *   **`2,805`** molecules possessed high-confidence biology (`> 70%` probability).
 *   **Anomalies:** Discovered `LIC_00186` as the most ambiguous candidate, returning an ensemble variance of `0.270` amidst high OOD volatility.
 
-![Screening Prediction Distributions](./experiment/phase9_virtual_screening/screening_distributions.png)
+![Screening Prediction Distributions](./experiment/phase9_virtual_screening/xgb_screening_distributions.png)
+**Figure 8: Screening Distributions — LifeChemicals Library (XGBoost)**
 
 **Artifacts Generated:** 
 * [`Datasets/data/screening_results.parquet`](./Datasets/data/screening_results.parquet) *(Master Screening Matrix)*
@@ -289,9 +299,26 @@ Tested classical algorithms against identical scaffold boundaries (Random baseli
 The winning ensemble was subjected to mathematical bounds before deployment:
 *   **Fold-Aware Isotonic Calibration:** Smashed the native Expected Calibration Error (ECE) dynamically from `0.1050` down to **`0.0437`**.
 *   **Conformal Bounds Tracker:** Precisely localized a 90% confidence target with exactly `90.0%` empirical coverage generated.
-*   **TreeExplainer Plausibility Verification:** Chemical viability was certified. Active topological drivers were traced specifically to `mfp_102` matching structural bio-warfare signatures, alongside high dependence on atomic mass profiles and partial charge differentials (`VSA_EState2`, `SMR_VSA7`, `MolLogP`).
 
-![SHAP Summary Insecticide](./Datasets/data/phase10_artifacts/shap/shap_summary_beeswarm.png)
+![Reliability Diagram (RF)](./Datasets/data/phase10_artifacts/rf_reliability_plot_comparison.png)
+**Figure 9: Reliability Diagrams (Random Forest)**
+
+![Calibration Distributions (RF)](./Datasets/data/phase10_artifacts/rf_calibration_diagnostics.png)
+**Figure 10: Calibration & Uncertainty Diagnostics (Random Forest)**
+
+*   **TreeExplainer Plausibility Verification (Random Forest):** Chemical viability was certified. Active topological drivers were traced specifically to `mfp_102` matching structural bio-warfare signatures, alongside high dependence on atomic mass profiles and partial charge differentials (`VSA_EState2`, `SMR_VSA7`, `MolLogP`).
+
+![SHAP Summary Beeswarm (RF)](./Datasets/data/phase10_artifacts/shap/rf_shap_summary_beeswarm.png)
+**Figure 11: SHAP Summary Beeswarm — Top 25 Features (Random Forest)**
+
+![SHAP Factor Dependence (RF)](./Datasets/data/phase10_artifacts/shap/rf_shap_dependence_plots.png)
+**Figure 12: SHAP Dependence Plots — Top 2D Descriptors (Random Forest)**
+
+![SHAP Feature Importance Bar (RF)](./Datasets/data/phase10_artifacts/shap/rf_shap_feature_importance_bar_top25.png)
+**Figure 13: Mean |SHAP| — Top 25 Features (Random Forest)**
+
+![Native Feature Importance (RF)](./Datasets/data/phase10_artifacts/shap/rf_native_feature_importance_top30.png)
+**Figure 14: Native Feature Importance (Gini) — Top 30 Features (Random Forest)**
 
 **Artifacts Generated:** 
 * [`Datasets/data/insecticide_labels.parquet`](./Datasets/data/insecticide_labels.parquet) *(Master V3 Data)*
@@ -326,13 +353,15 @@ The Dual Virtual Screening pipeline safely located exactly **3** molecules insid
 
 *(See Figures: The Dual Virtual Screening Quadrant Map actively isolating the High-Efficacy/Low-Toxicity bounds)*
 
-![Efficacy vs Toxicity Map](./experiment/phase11_dual_virtual_screening/artifacts/dual_screening_quadrant_map.png)
+![Efficacy vs Toxicity Map](./experiment/phase11_dual_virtual_screening/artifacts/xgb_rf_dual_screening_quadrant_map.png)
+**Figure 15: Dual Virtual Screening — Efficacy vs. Toxicity Map (XGBoost & Random Forest)**
 
-![Category Distribution Bar](./experiment/phase11_dual_virtual_screening/artifacts/dual_screening_categories_bar.png)
+![Category Distribution Bar](./experiment/phase11_dual_virtual_screening/artifacts/xgb_rf_dual_screening_categories_bar.png)
+**Figure 16: Library Categorization Breakdown — Safe vs. Toxic Candidates**
 
 **Final Delivery Artifacts:** 
 * [`experiment/phase11_dual_virtual_screening/artifacts/full_library_predictions.parquet`](./experiment/phase11_dual_virtual_screening/artifacts/full_library_predictions.parquet) *(Master V3 Screen Matrix)*
-* [`experiment/phase11_dual_virtual_screening/artifacts/top_holy_grails.csv`](./experiment/phase11_dual_virtual_screening/artifacts/top_holy_grails.csv) *(The 3 Primary Wet-Lab Targets)*
+* [`experiment/phase11_dual_virtual_screening/artifacts/top_holy_grails.csv`](./experiment/phase11_dual_virtual_screening/artifacts/top_holy_grails.csv)
 * [`experiment/phase11_dual_virtual_screening/artifacts/top_toxic_repellents.csv`](./experiment/phase11_dual_virtual_screening/artifacts/top_toxic_repellents.csv)
 * [`experiment/phase11_dual_virtual_screening/artifacts/top_bug_sprays.csv`](./experiment/phase11_dual_virtual_screening/artifacts/top_bug_sprays.csv)
 

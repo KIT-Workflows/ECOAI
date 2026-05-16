@@ -363,28 +363,115 @@ else:
 # Cell 8 — Comparison Visualization
 # ================================================================
 
-fig, axes = plt.subplots(1, 4, figsize=(20, 5))
+plt.rcParams.update({
+    "font.family": "sans-serif",
+    "font.sans-serif": ["Arial", "DejaVu Sans", "Liberation Sans", "sans-serif"],
+    "font.size": 10
+})
+
+fig, ax = plt.subplots(figsize=(6.5, 4))
 
 metrics = ["roc_auc", "pr_auc", "mcc", "brier"]
-titles  = ["ROC-AUC ↑", "PR-AUC ↑", "MCC ↑", "Brier Score ↓"]
+titles  = ["ROC-AUC ↑", "PR-AUC ↑", "MCC ↑", "Brier ↓"]
 colors  = ["#4A90D9", "#E67E22", "#27AE60"]
 
-for ax, metric, title in zip(axes, metrics, titles):
-    values = [ablation_results[fs]["overall"][metric] for fs in feature_sets]
-    bars = ax.bar(list(feature_sets.keys()), values, color=colors, alpha=0.8)
-    ax.set_title(title, fontsize=12, fontweight="bold")
-    ax.set_ylabel(metric)
-    for bar, val in zip(bars, values):
-        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.01,
-                f"{val:.3f}", ha="center", fontsize=9)
-    ax.tick_params(axis="x", rotation=30)
+# Short labels
+short_labels = [
+    fs.replace("cheminformatics_only", "Cheminformatics")
+      .replace("quantum_only", "Quantum")
+      .replace("fused", "Fused")
+    for fs in feature_sets.keys()
+]
 
-fig.suptitle("V2 Ablation Study — Feature Set Comparison",
-             fontsize=14, fontweight="bold")
+# Keep groups close together
+group_spacing = 0.65
+x = np.arange(len(metrics)) * group_spacing
+
+# ↓ Slightly reduced bar width + tiny gap between bars
+width = 0.16
+inner_gap = 0.01
+
+# Collect values
+all_values = {
+    fs: [ablation_results[fs]["overall"][m] for m in metrics]
+    for fs in feature_sets
+}
+
+# Plot grouped bars
+for i, (fs, color) in enumerate(zip(feature_sets, colors)):
+    values = all_values[fs]
+    offset = (i - 1) * (width + inner_gap)
+
+    bars = ax.bar(
+        x + offset,
+        values,
+        width=width,
+        label=short_labels[i],
+        color=color,
+        alpha=0.8
+    )
+
+    # Annotations
+    for bar, val in zip(bars, values):
+        ax.text(
+            bar.get_x() + bar.get_width()/2,
+            val + 0.01,
+            f"{val:.3f}",
+            ha="center",
+            va="bottom",
+            fontsize=10,
+            fontweight="bold",
+            color="black",
+            rotation=0
+        )
+
+# Axes formatting
+ax.set_xticks(x)
+ax.set_xticklabels(titles, fontsize=10, fontweight="bold", color="black")
+ax.set_ylabel("Score", fontsize=10, fontweight="bold", color="black")
+
+# Y-axis ticks bold and black
+for label in ax.get_yticklabels():
+    label.set_fontweight("bold")
+    label.set_color("black")
+
+# Headroom
+max_val = max([max(v) for v in all_values.values()])
+ax.set_ylim(0, max_val + 0.14)
+
+# Spines and Grid
+ax.grid(axis="y", linestyle="--", alpha=0.3)
+ax.spines["top"].set_visible(False)
+ax.spines["right"].set_visible(False)
+ax.spines["left"].set_visible(True)
+ax.spines["bottom"].set_visible(True)
+ax.spines["left"].set_color("black")
+ax.spines["bottom"].set_color("black")
+ax.tick_params(axis='y', which='both', length=4, width=1, color='black', left=True)
+
+# Legend
+legend = ax.legend(
+    frameon=False,
+    loc="upper center",
+    ncol=3,
+    bbox_to_anchor=(0.5, 1.10)
+)
+
+for text in legend.get_texts():
+    text.set_fontweight("bold")
+    text.set_color("black")
+
 fig.tight_layout()
-fig.savefig(PHASE8_DIR / "ablation_comparison.png", dpi=150, bbox_inches="tight")
+
+# Save
+fig.savefig(
+    PHASE8_DIR / "xgb_ablation_comparison.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
 plt.close()
-print(f"\n📊 Saved: ablation_comparison.png")
+print(f"\n📊 Saved: xgb_ablation_comparison.png")
 
 
 # ================================================================
