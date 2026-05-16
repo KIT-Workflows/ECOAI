@@ -12,3 +12,6 @@ __pycache__/
 .vscode/
 
 ecoenv/
+
+temp/
+supp_material/verify_supplementary.py
