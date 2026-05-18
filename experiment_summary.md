@@ -366,4 +366,25 @@ The Dual Virtual Screening pipeline safely located exactly **3** molecules insid
 * [`experiment/phase11_dual_virtual_screening/artifacts/top_bug_sprays.csv`](./experiment/phase11_dual_virtual_screening/artifacts/top_bug_sprays.csv)
 
 ---
+
+## Supplementary Material & Data Appendix
+
+Additional documentation, tabular datasets, SHAP feature importance profiles, and property space distribution plots are compiled in the [`supp_material/`](./supp_material/) directory.
+
+### Document and Figures
+*   **Supplementary Document:** [`supp_material/supplementary_material.md`](./supp_material/supplementary_material.md) — Compiled text containing narrative details, data tables, and figures.
+*   **High-Resolution Plots:** Located in the [`supp_material/plots/`](./supp_material/plots/) folder:
+    *   **Figure S1:** [Repellency SHAP Lollipop Plot (XGBoost)](./supp_material/plots/xgb_shap_averages.png)
+    *   **Figure S2:** [Insecticidal SHAP Lollipop Plot (Random Forest)](./supp_material/plots/rf_shap_averages.png)
+    *   **Figure S3:** [Physicochemical Property Space Distributions (MW, LogP, TPSA, Kappa2)](./supp_material/plots/xgb_rf_chemical_space.png)
+
+### Raw Tabular Data (CSV)
+Located in the [`supp_material/tables/`](./supp_material/tables/) folder:
+*   **Table S1 & S2:** Top 30 SHAP features and class-conditional averages for the repellency and insecticidal models.
+*   **Table S3 & S4:** Compound identifiers, SMILES, MW, and repellent probabilities for repellent-active ($n=373$) and decoy ($n=359$) compounds.
+*   **Table S5:** Labeled ChEMBL insecticidal dataset ($n=891$) with bioactivity metadata.
+*   **Table S6 & S6a:** Screening predictions for 2,880 library compounds, including the 3 prioritized candidate "Holy Grails".
+*   **Table S7 & S8:** Descriptive summary statistics (Means ± SD) for the RDKit 2D descriptors in the repellency and insecticidal datasets.
+
+---
 **ECOAI PIPELINE STATUS:** ALL 11 PHASES COMPLETE. PROJECT IS STABLE & PRODUCTION READY.

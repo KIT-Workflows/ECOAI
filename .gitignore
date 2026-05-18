@@ -18,4 +18,5 @@ ecoenv/
  
 temp/
 supp_material/verify_supplementary.py
-plots/
+All_plots/
+OLD_MD.md

@@ -68,17 +68,18 @@ print("[2/8] Generating Table S1: SHAP — Repellency (XGBoost)...")
 shap_rep = pd.read_csv(PHASE6_DIR / "shap_feature_importance.csv")
 top30_rep = shap_rep.head(30).copy()
 
-# Add class-conditional means
-feat_labeled = features_2d[features_2d["compound_id"].isin(labeled["compound_id"])].copy()
-feat_labeled = feat_labeled.merge(
-    labeled[["compound_id", "repellent_active"]], on="compound_id"
-)
+# Calculate class-conditional means
+df_combined = pd.read_parquet(DATA_DIR / "features_combined.parquet")
+df_rep_labeled = df_combined[
+    (df_combined["qc_status"] == "pass") & 
+    (df_combined["repellent_active"].notna())
+].copy()
 
 rep_means, nonrep_means = [], []
 for feat in top30_rep["feature"]:
-    if feat in feat_labeled.columns:
-        rep_means.append(feat_labeled[feat_labeled["repellent_active"] == 1.0][feat].mean())
-        nonrep_means.append(feat_labeled[feat_labeled["repellent_active"] == 0.0][feat].mean())
+    if feat in df_rep_labeled.columns:
+        rep_means.append(df_rep_labeled[df_rep_labeled["repellent_active"] == 1.0][feat].mean())
+        nonrep_means.append(df_rep_labeled[df_rep_labeled["repellent_active"] == 0.0][feat].mean())
     else:
         rep_means.append(np.nan)
         nonrep_means.append(np.nan)
@@ -100,11 +101,37 @@ print(f"  -> {len(top30_rep)} features written.")
 # ═══════════════════════════════════════════════════════════════════════════
 print("[3/8] Generating Table S2: SHAP — Insecticidal (RandomForest)...")
 
+import json
 shap_ins = pd.read_csv(PHASE10_SHAP_DIR / "shap_feature_importance.csv")
 top30_ins = shap_ins.head(30).copy()
+
+# Calculate class-conditional means
+npz_ins = np.load(DATA_DIR / "phase10_artifacts" / "insecticide_features.npz")
+X_ins = npz_ins["X"]
+df_ins_meta = pd.read_parquet(DATA_DIR / "phase10_artifacts" / "insecticide_meta.parquet")
+
+with open(DATA_DIR / "phase10_artifacts" / "feature_columns.json", "r") as f:
+    feat_meta_ins = json.load(f)
+feat_cols_ins = feat_meta_ins["all_cols"]
+
+df_ins_feat = pd.DataFrame(X_ins, columns=feat_cols_ins)
+df_ins_feat["insecticidal_active"] = df_ins_meta["insecticidal_active"].values
+
+ins_active_means, ins_inactive_means = [], []
+for feat in top30_ins["feature"]:
+    if feat in df_ins_feat.columns:
+        ins_active_means.append(df_ins_feat[df_ins_feat["insecticidal_active"] == 1.0][feat].mean())
+        ins_inactive_means.append(df_ins_feat[df_ins_feat["insecticidal_active"] == 0.0][feat].mean())
+    else:
+        ins_active_means.append(np.nan)
+        ins_inactive_means.append(np.nan)
+
 top30_ins["type"] = top30_ins["feature"].apply(
     lambda x: "Morgan FP Bit" if x.startswith("mfp_") else "RDKit 2D"
 )
+top30_ins["active_mean"] = ins_active_means
+top30_ins["inactive_mean"] = ins_inactive_means
+top30_ins["delta"] = top30_ins["active_mean"] - top30_ins["inactive_mean"]
 top30_ins.insert(0, "rank", range(1, 31))
 
 top30_ins.to_csv(TABLES_DIR / "Table_S2_SHAP_insecticidal_top30.csv", index=False)
@@ -190,6 +217,12 @@ print("[8/8] Generating Table S7: Summary statistics...")
 rep_df = labeled[labeled["repellent_active"] == 1.0]
 dec_df = labeled[labeled["repellent_active"] == 0.0]
 
+# Define continuous features metadata for summary table
+feat_labeled = features_2d[features_2d["compound_id"].isin(labeled["compound_id"])].copy()
+feat_labeled = feat_labeled.merge(
+    labeled[["compound_id", "repellent_active"]], on="compound_id"
+)
+
 # Build summary rows
 rows = []
 
@@ -217,8 +250,46 @@ for feat in top30_rep[top30_rep["type"] == "RDKit 2D"]["feature"]:
         )
 
 stats_df = pd.DataFrame(rows)
-stats_df.to_csv(TABLES_DIR / "Table_S7_summary_statistics.csv", index=False)
+stats_df.to_csv(TABLES_DIR / "Table_S7_repellency_summary_statistics.csv", index=False)
 print(f"  -> {len(stats_df)} property rows written.")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 8a. TABLE S8 — Labeled Insecticidal Dataset Summary Statistics
+# ═══════════════════════════════════════════════════════════════════════════
+print("[8a/8] Generating Table S8: Insecticidal Summary statistics...")
+
+ins_act_df = df_ins_feat[df_ins_feat["insecticidal_active"] == 1.0]
+ins_inact_df = df_ins_feat[df_ins_feat["insecticidal_active"] == 0.0]
+
+rows_ins = []
+def add_stat_ins(name, act_vals, inact_vals, all_vals):
+    rows_ins.append({
+        "Property": name,
+        "Active_Mean": act_vals.mean(),
+        "Active_SD": act_vals.std(),
+        "Inactive_Mean": inact_vals.mean(),
+        "Inactive_SD": inact_vals.std(),
+        "Overall_Mean": all_vals.mean(),
+        "Overall_SD": all_vals.std(),
+    })
+
+# Add first row: Molecular Weight
+add_stat_ins("Molecular Weight (Da)", ins_act_df["MolWt"], ins_inact_df["MolWt"], df_ins_feat["MolWt"])
+
+# Top descriptor stats from Table S2 RDKit 2D
+for feat in top30_ins[top30_ins["type"] == "RDKit 2D"]["feature"]:
+    if feat in df_ins_feat.columns:
+        add_stat_ins(
+            feat,
+            ins_act_df[feat],
+            ins_inact_df[feat],
+            df_ins_feat[feat]
+        )
+
+stats_ins_df = pd.DataFrame(rows_ins)
+stats_ins_df.to_csv(TABLES_DIR / "Table_S8_insecticide_summary_statistics.csv", index=False)
+print(f"  -> {len(stats_ins_df)} insecticide property rows written.")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -242,6 +313,19 @@ lines.append("Mean absolute SHAP values from TreeExplainer applied to the winnin
              "repellency classifier. Of the top 30 features, **27 are RDKit 2D physicochemical "
              "descriptors** and **3 are Morgan fingerprint (ECFP4) structural bits**.")
 lines.append("")
+lines.append("### Figure S1: SHAP-Weighted Diverging Lollipop Plot — Repellency Model")
+lines.append("")
+lines.append("![Repellency SHAP averages](plots/xgb_shap_averages.png)")
+lines.append("")
+lines.append("**Figure Caption**: Top 30 features ranked by mean absolute SHAP importance. "
+             "Marker area represents absolute SHAP importance (exact value in parentheses). "
+             "Marker color represents descriptor class: RDKit 2D physical descriptors (🔵) vs. Morgan fingerprint bits (🟡). "
+             "Horizontal position represents the Standardized Mean Difference (\\Delta Z-score) computed globally over the labeled dataset. "
+             "Green stems extending rightward denote positive enrichment in repellent-active compounds (\\Delta > 0), "
+             "while red stems extending leftward denote negative enrichment (\\Delta < 0).")
+lines.append("")
+lines.append("### Table S1 Data Averages")
+lines.append("")
 lines.append("| Rank | Feature | Type | Mean \\|SHAP\\| | Rep. Mean | Non-Rep. Mean | Δ |")
 lines.append("|------|---------|------|-------------|-----------|---------------|---|")
 for _, r in top30_rep.iterrows():
@@ -257,10 +341,26 @@ lines.append("")
 lines.append("Mean absolute SHAP values from TreeExplainer applied to the winning RandomForest "
              "insecticidal classifier trained on 891 ChEMBL-derived compounds.")
 lines.append("")
-lines.append("| Rank | Feature | Type | Mean \\|SHAP\\| |")
-lines.append("|------|---------|------|-------------|")
+lines.append("### Figure S2: SHAP-Weighted Diverging Lollipop Plot — Insecticidal Model")
+lines.append("")
+lines.append("![Insecticidal SHAP averages](plots/rf_shap_averages.png)")
+lines.append("")
+lines.append("**Figure Caption**: Top 30 features ranked by mean absolute SHAP importance. "
+             "Marker area represents absolute SHAP importance (exact value in parentheses). "
+             "Marker color represents descriptor class: RDKit 2D physical descriptors (🔵) vs. Morgan fingerprint bits (🟡). "
+             "Horizontal position represents the Standardized Mean Difference (\\Delta Z-score) computed globally over the insecticidal dataset. "
+             "Green stems extending rightward denote positive enrichment in active insecticidal compounds (\\Delta > 0), "
+             "while red stems extending leftward denote negative enrichment (\\Delta < 0).")
+lines.append("")
+lines.append("### Table S2 Data Averages")
+lines.append("")
+lines.append("| Rank | Feature | Type | Mean \\|SHAP\\| | Active Mean | Inactive Mean | Δ |")
+lines.append("|------|---------|------|-------------|-------------|---------------|---|")
 for _, r in top30_ins.iterrows():
-    lines.append(f"| {r['rank']} | {r['feature']} | {r['type']} | {r['mean_abs_shap']:.4f} |")
+    am = f"{r['active_mean']:.4f}" if pd.notna(r['active_mean']) else "—"
+    im = f"{r['inactive_mean']:.4f}" if pd.notna(r['inactive_mean']) else "—"
+    d = f"{r['delta']:+.4f}" if pd.notna(r['delta']) else "—"
+    lines.append(f"| {r['rank']} | {r['feature']} | {r['type']} | {r['mean_abs_shap']:.4f} | {am} | {im} | {d} |")
 lines.append("")
 
 # ── S3/S4: Compound lists (reference to CSV) ──
@@ -279,6 +379,12 @@ lines.append(f"| S5 | `Table_S5_insecticidal_compounds.csv` | {len(ins_out)} | "
 lines.append(f"| S6 | `Table_S6_dual_screening_results.csv` | {len(dual_out)} | "
              "Dual virtual screening predictions (repellency + toxicity) |")
 lines.append("")
+lines.append("### Figure S3: Physicochemical Property Space Distributions — Size, Lipophilicity, Polarity, and Shape")
+lines.append("")
+lines.append("![Physicochemical Property Space Distributions](plots/xgb_rf_chemical_space.png)")
+lines.append("")
+lines.append("**Figure Caption**: Distribution of key drug-like physicochemical properties across the repellency (n = 732) and insecticidal (n = 891) datasets. Split violin plots compare the distributions of Molecular Weight (size), MolLogP (lipophilicity), Topological Polar Surface Area (polarity), and Kappa2 (flexibility/shape) between active (🔵, 🟢) and inactive/decoy (🟡, 🔴) compounds. Black horizontal lines denote sample means (exact numeric values are listed in Table S7 for repellency, and in Table S8 for insecticidal descriptors).")
+lines.append("")
 
 # ── S7: Summary Stats ──
 lines.append("## Table S7. Summary Statistics of the Labeled Repellency Dataset")
@@ -288,6 +394,17 @@ lines.append("|----------|---------------------------|--------------------------
 for _, r in stats_df.iterrows():
     lines.append(f"| {r['Property']} | {r['Repellent_Mean']:.4f} ± {r['Repellent_SD']:.4f} "
                  f"| {r['NonRepellent_Mean']:.4f} ± {r['NonRepellent_SD']:.4f} "
+                 f"| {r['Overall_Mean']:.4f} ± {r['Overall_SD']:.4f} |")
+lines.append("")
+
+# ── S8: Insecticidal Summary Stats ──
+lines.append("## Table S8. Summary Statistics of the Labeled Insecticidal Dataset")
+lines.append("")
+lines.append(f"| Property | Insecticidal Active (n={len(ins_act_df)}) | Insecticidal Inactive (n={len(ins_inact_df)}) | Overall (n={len(df_ins_feat)}) |")
+lines.append("|----------|---------------------------|-------------------------------|--------------------------|")
+for _, r in stats_ins_df.iterrows():
+    lines.append(f"| {r['Property']} | {r['Active_Mean']:.4f} ± {r['Active_SD']:.4f} "
+                 f"| {r['Inactive_Mean']:.4f} ± {r['Inactive_SD']:.4f} "
                  f"| {r['Overall_Mean']:.4f} ± {r['Overall_SD']:.4f} |")
 lines.append("")
 

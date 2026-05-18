@@ -11,6 +11,10 @@ supp_material/
 ├── README.md                              ← This file
 ├── generate_supplementary.py              ← Master script (reads pipeline data, generates all outputs)
 ├── supplementary_material.md              ← Formatted supplementary document (Markdown)
+├── plots/                                 ← High-resolution figures folder
+│   ├── xgb_shap_averages.png              ← Figure S1: Repellency SHAP Lollipop Plot
+│   ├── rf_shap_averages.png               ← Figure S2: Insecticidal SHAP Lollipop Plot
+│   └── xgb_rf_chemical_space.png          ← Figure S3: Physicochemical Space Violins
 └── tables/
     ├── Table_S1_SHAP_repellency_top30.csv     ← SHAP importance, repellency XGBoost
     ├── Table_S2_SHAP_insecticidal_top30.csv   ← SHAP importance, insecticidal RandomForest
@@ -19,7 +23,8 @@ supp_material/
     ├── Table_S5_insecticidal_compounds.csv    ← 891 ChEMBL insecticidal compounds
     ├── Table_S6_dual_screening_results.csv    ← 2,880 dual-screened library compounds
     ├── Table_S6a_holy_grail_compounds.csv     ← 3 Holy Grail safe-repellent compounds
-    └── Table_S7_summary_statistics.csv        ← Descriptor statistics (repellent vs non-repellent)
+    ├── Table_S7_repellency_summary_statistics.csv  ← Descriptor statistics (repellent vs decoy)
+    └── Table_S8_insecticide_summary_statistics.csv ← Descriptor statistics (active vs inactive insecticidal)
 ```
 
 ---
@@ -50,7 +55,8 @@ Table S1 additionally includes class-conditional means (repellent vs non-repelle
 
 | Table | Content |
 |-------|---------|
-| **S7** | Mean ± SD for molecular weight and top 27 RDKit 2D descriptors, split by repellent vs non-repellent class |
+| **S7** | Mean ± SD for molecular weight and top 27 RDKit 2D descriptors, split by repellent vs decoy class |
+| **S8** | Mean ± SD for molecular weight and top RDKit 2D descriptors, split by active vs inactive insecticidal class |
 
 ---
 
