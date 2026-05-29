@@ -9,7 +9,7 @@ This document serves as an accumulating summary of all phases executed within th
 **Objective:** Standardize raw chemical data from multiple SDF sources into a cohesive, machine-learning-ready format using robust RDKit transformations (salt stripping, neutralization, canonical generation, and InChIKey deduplication).
 
 ### Key Processing details
-*   **Raw Ingestion:** Parsed 3,643 total molecules across three initial SDF datasets (Repellent, Decoys, and LifeChemicals).
+*   **Raw Ingestion:** Parsed 3,643 total molecules across three initial SDF datasets (Repellent, Non-repellents, and Insecticides).
 *   **Standardization & QC Checks:** 
     *   3 non-repellent decoy structures were flagged as malformed due to undefined elements and correctly excluded.
     *   28 cross-source/internal duplicates were identified via canonical InChIKey mapping and resolved using a strict priority hierarchy (Repellent > Decoy > Insecticide).
