@@ -37,7 +37,7 @@
 - Run interpretability on the final selected model and confirm important features are chemically plausible rather than assay/source artifacts.
 
 ## Assumptions and Defaults
-- The LifeChemicals insecticide SDF is treated as an **unlabeled candidate library** until real insecticide activity labels are added.
+- The insecticide dataset obtained from LifeChemical is treated as an **unlabeled candidate library** until real insecticide activity labels are added.
 - The first supervised endpoint is `Aedes aegypti` repellency because it is the dominant labeled target and gives the cleanest initial task.
 - “Effectiveness” in the first release means calibrated probability of repellency, not potency. Potency modeling is deferred until numeric assay labels exist.
 - The decoy SDF contains some malformed or placeholder structures; those will be excluded during curation rather than force-fit into training.
