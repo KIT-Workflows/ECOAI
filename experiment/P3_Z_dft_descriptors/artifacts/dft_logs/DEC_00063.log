@@ -1,0 +1,5 @@
+[2026-07-08 18:54:29] ========================================================================
+[2026-07-08 18:54:29] BEGIN compound_id=DEC_00063 molecule_index=430/732 method=DFT-b3lyp/sto-3g-D3
+[2026-07-08 18:54:29] settings functional=b3lyp basis=sto-3g D3=True geom_max_steps=3 scf_max_cycles=50
+[2026-07-08 18:54:29]   [ERROR] [DEC_00063] skipped: conformer generation failed
+[2026-07-08 18:54:29] END compound_id=DEC_00063

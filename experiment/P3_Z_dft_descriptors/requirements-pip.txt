@@ -1,0 +1,5 @@
+# Pip-only packages (installed by environment.yml; listed here for reference).
+pyscf==2.13.1
+dftd3==1.4.0
+h5py==3.13.0
+arbalign

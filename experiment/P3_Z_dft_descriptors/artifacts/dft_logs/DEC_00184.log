@@ -1,0 +1,69 @@
+[2026-07-09 02:54:09] ========================================================================
+[2026-07-09 02:54:09] BEGIN compound_id=DEC_00184 molecule_index=547/732 method=DFT-b3lyp/sto-3g-D3
+[2026-07-09 02:54:09] settings functional=b3lyp basis=sto-3g D3=True geom_max_steps=3 scf_max_cycles=50
+[2026-07-09 02:54:09]   [xTB] [DEC_00184] start: atoms=28 charge=0 multiplicity=1 opt=tight solvent=gas
+[2026-07-09 02:54:12]   [OK] [DEC_00184] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1000 A
+[2026-07-09 02:54:12]   [DFT] build PySCF molecule: atoms=28 charge=0 spin=0
+[2026-07-09 02:54:12]   [DFT] [DEC_00184] start
+[2026-07-09 02:54:12]   [OPT] [DEC_00184] start: atoms=28, basis=sto-3g, D3=True, maxiter=3
+
+WARN: Mole.unit (Angstrom) is changed to Bohr
+
+converged SCF energy = -423.787882685546
+--------------- DFTD3 gradients ---------------
+         x                y                z
+0 C    -0.0047548890    -0.0043868805     0.0080600284
+1 C    -0.0103756109    -0.0008331261    -0.0093694666
+2 C    -0.0003553951    -0.0070486274    -0.0088180154
+3 C    -0.0072723390     0.0078090613    -0.0040678881
+4 C    -0.0020784784    -0.0014670016    -0.0523494813
+5 O     0.0037755875     0.0026199059     0.0937893170
+6 C     0.0095860465     0.0002907080    -0.0101844340
+7 C     0.0053849015     0.0048278479     0.0073986917
+8 C     0.0069444139    -0.0080316008    -0.0041949039
+9 C    -0.0003493727     0.0065952495    -0.0092031856
+10 H    -0.0089016564    -0.0021458138    -0.0035548469
+11 H     0.0032630939    -0.0088050577     0.0032485510
+12 H    -0.0012594157     0.0061406353     0.0082985143
+13 H     0.0044221911    -0.0086396330     0.0015667987
+14 H     0.0062882676     0.0039376887    -0.0073010881
+15 H    -0.0084211906    -0.0023787762    -0.0035524935
+16 H    -0.0095262503    -0.0003810825    -0.0028130306
+17 H    -0.0002061330     0.0070115956     0.0069473684
+18 H     0.0049326063     0.0044861330    -0.0079396908
+19 H     0.0019362448    -0.0056795007     0.0084996415
+20 H     0.0085843043     0.0019234157    -0.0043738053
+21 H    -0.0030110972     0.0089786777     0.0030053926
+22 H     0.0007795788    -0.0066175108     0.0072851579
+23 H    -0.0055362479    -0.0049115137    -0.0072606278
+24 H     0.0092692904     0.0002044668    -0.0035795433
+25 H    -0.0042996192     0.0087249750     0.0014332186
+26 H     0.0081097511     0.0021578339    -0.0043371660
+27 H    -0.0068399480    -0.0043050790    -0.0065542552
+----------------------------------------------
+[2026-07-09 02:55:33]   [OPT] [DEC_00184] eval=001 E=-423.7878826855 Ha max|grad|=9.379e-02 Ha/Bohr SCF=True time=80.4s
+
+WARN: Mole.unit (Angstrom) is changed to Bohr
+
+SCF not converged.
+SCF energy = -423.592836414349
+[2026-07-09 02:58:05] Traceback (most recent call last):
+[2026-07-09 02:58:05]   File "/home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/p3z_dft_descriptors.py", line 1421, in compute_dft_descriptors
+[2026-07-09 02:58:05]     mol_for_final, opt_info = optimize_geometry_scipy(initial_mol, compound_id=compound_id)
+[2026-07-09 02:58:05]                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2026-07-09 02:58:05]   File "/home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/p3z_dft_descriptors.py", line 1369, in optimize_geometry_scipy
+[2026-07-09 02:58:05]     result = minimize(
+[2026-07-09 02:58:05]              ^^^^^^^^^
+[2026-07-09 02:58:05]   File "/home/ws/xd2484/miniforge3/envs/p3z_dft/lib/python3.12/site-packages/scipy/optimize/_minimize.py", line 784, in minimize
+[2026-07-09 02:58:05]     res = _minimize_lbfgsb(fun, x0, args, jac, bounds,
+[2026-07-09 02:58:05]           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2026-07-09 02:58:05]   File "/home/ws/xd2484/miniforge3/envs/p3z_dft/lib/python3.12/site-packages/scipy/optimize/_lbfgsb_py.py", line 420, in _minimize_lbfgsb
+[2026-07-09 02:58:05]     f, g = func_and_grad(x)
+[2026-07-09 02:58:05]            ^^^^^^^^^^^^^^^^
+[2026-07-09 02:58:05] RuntimeError: SCF did not converge during geometry optimization
+[2026-07-09 02:58:05]   [WARN] [DEC_00184] Optimization failed; using final single-point fallback
+[2026-07-09 02:58:05]   [DFT] [DEC_00184] final single-point start
+converged SCF energy = -423.787882685547
+[2026-07-09 02:58:56]   [DFT] [DEC_00184] final SCF done: E=-423.7878826855 Ha converged=True time=51.3s
+[2026-07-09 02:58:56]   [DFT] [DEC_00184] descriptors: HOMO=-3.5285 eV LUMO=2.7340 eV gap=6.2625 eV opt_status=opt_failed: SCF did not converge during geometry optimization
+[2026-07-09 02:58:56] END compound_id=DEC_00184

@@ -1,0 +1,78 @@
+[2026-07-08 05:17:28] ========================================================================
+[2026-07-08 05:17:28] BEGIN compound_id=REP_00268 molecule_index=268/732 method=DFT-b3lyp/sto-3g-D3
+[2026-07-08 05:17:28] settings functional=b3lyp basis=sto-3g D3=True geom_max_steps=3 scf_max_cycles=50
+[2026-07-08 05:17:28]   [xTB] [REP_00268] start: atoms=4 charge=0 multiplicity=1 opt=tight solvent=gas
+[2026-07-08 05:17:29]   [OK] [REP_00268] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0899 A
+[2026-07-08 05:17:29]   [DFT] build PySCF molecule: atoms=4 charge=0 spin=0
+[2026-07-08 05:17:30]   [DFT] [REP_00268] start
+[2026-07-08 05:17:30]   [OPT] [REP_00268] start: atoms=4, basis=sto-3g, D3=True, maxiter=3
+
+WARN: Mole.unit (Angstrom) is changed to Bohr
+
+converged SCF energy = -985.502679056232
+--------------- DFTD3 gradients ---------------
+         x                y                z
+0 Cl     0.0709759157    -0.0004881183     0.0007299421
+1 C    -0.0660293571     0.0004565106    -0.0006825964
+2 C     0.0660278072    -0.0004564970     0.0006825810
+3 Cl    -0.0709743659     0.0004881048    -0.0007299267
+----------------------------------------------
+[2026-07-08 05:17:33]   [OPT] [REP_00268] eval=001 E=-985.5026790562 Ha max|grad|=7.098e-02 Ha/Bohr SCF=True time=3.3s
+
+WARN: Mole.unit (Angstrom) is changed to Bohr
+
+converged SCF energy = -983.579267491178
+--------------- DFTD3 gradients ---------------
+         x                y                z
+0 Cl    -0.1082541344     0.0007450677    -0.0011141311
+1 C     6.0862760085    -0.0419857161     0.0627809912
+2 C    -6.0862762619     0.0419857070    -0.0627809961
+3 Cl     0.1082543879    -0.0007450585     0.0011141359
+----------------------------------------------
+[2026-07-08 05:17:36]   [OPT] [REP_00268] eval=002 E=-983.5792674912 Ha max|grad|=6.086e+00 Ha/Bohr SCF=True time=3.3s
+
+WARN: Mole.unit (Angstrom) is changed to Bohr
+
+converged SCF energy = -985.505836408036
+--------------- DFTD3 gradients ---------------
+         x                y                z
+0 Cl     0.0295512369    -0.0002028728     0.0003034065
+1 C     0.1005582208    -0.0006933072     0.0010366965
+2 C    -0.1005588364     0.0006933107    -0.0010367030
+3 Cl    -0.0295506213     0.0002028693    -0.0003034001
+----------------------------------------------
+[2026-07-08 05:17:40]   [OPT] [REP_00268] eval=003 E=-985.5058364080 Ha max|grad|=1.006e-01 Ha/Bohr SCF=True time=3.5s
+
+WARN: Mole.unit (Angstrom) is changed to Bohr
+
+converged SCF energy = -985.508870816297
+--------------- DFTD3 gradients ---------------
+         x                y                z
+0 Cl     0.0349836209    -0.0002402563     0.0003593068
+1 C     0.0349042881    -0.0002400682     0.0003589811
+2 C    -0.0349048148     0.0002400716    -0.0003589866
+3 Cl    -0.0349830943     0.0002402529    -0.0003593014
+----------------------------------------------
+[2026-07-08 05:17:43]   [OPT] [REP_00268] eval=004 E=-985.5088708163 Ha max|grad|=3.498e-02 Ha/Bohr SCF=True time=3.2s
+
+WARN: Mole.unit (Angstrom) is changed to Bohr
+
+converged SCF energy = -985.511550182914
+--------------- DFTD3 gradients ---------------
+         x                y                z
+0 Cl     0.0278003595    -0.0001908370     0.0002854088
+1 C    -0.0053101229     0.0000374990    -0.0000560564
+2 C     0.0053099301    -0.0000374984     0.0000560543
+3 Cl    -0.0278001668     0.0001908364    -0.0002854067
+----------------------------------------------
+[2026-07-08 05:17:52]   [OPT] [REP_00268] eval=005 E=-985.5115501829 Ha max|grad|=2.780e-02 Ha/Bohr SCF=True time=9.4s
+
+WARN: Mole.unit (Angstrom) is changed to Bohr
+
+[2026-07-08 05:17:52]   [OPT] [REP_00268] done: success=False nit=3 neval=5 max|grad|=2.780e-02 message=STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+[2026-07-08 05:17:52]   [WARN] [REP_00268] Optimization did not fully converge; using last geometry
+[2026-07-08 05:17:52]   [DFT] [REP_00268] final single-point start
+converged SCF energy = -985.511550182915
+[2026-07-08 05:17:57]   [DFT] [REP_00268] final SCF done: E=-985.5115501829 Ha converged=True time=4.8s
+[2026-07-08 05:17:57]   [DFT] [REP_00268] descriptors: HOMO=-6.2198 eV LUMO=1.8771 eV gap=8.0969 eV opt_status=opt_not_converged: STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+[2026-07-08 05:17:57] END compound_id=REP_00268

@@ -1,0 +1,1877 @@
+Host: gpu10.int-nano.int.kit.edu
+Date: 2026-07-06T17:09:42+0200
+Conda env: p3z_dft
+Python: /home/ws/xd2484/miniforge3/envs/p3z_dft/bin/python
+Python 3.12.13
+xTB: /home/ws/xd2484/miniforge3/envs/p3z_dft/bin/xtb
+      -----------------------------------------------------------      
+     |                   =====================                   |     
+     |                           x T B                           |     
+P3Z_MAX_MOLECULES=0
+Input: /home/ws/xd2484/xeco/Datasets/data/curated_molecules_with_splits.parquet
+Output dir: /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts
+---
+Exported CONDA_DEFAULT_PATH: /home/ws/xd2484/miniforge3/etc/profile.d/conda.sh
+Set P3Z_INPUT_PARQUET to: Datasets/data/curated_molecules_with_splits.parquet
+Set P3Z_CLASSICAL_FEATURES to: Datasets/data/features_combined.parquet
+
+[LOCAL] Running locally.
+[LOCAL] Project root: /home/ws/xd2484/xeco
+[PATH] Script/output root: /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors
+[PATH] Input parquet:      /home/ws/xd2484/xeco/Datasets/data/curated_molecules_with_splits.parquet
+[PATH] Classical features: /home/ws/xd2484/xeco/Datasets/data/features_combined.parquet
+[PATH] Artifacts:          /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts
+[PATH] DFT logs:           /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/dft_logs
+[PATH] xTB calculations:   /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/calculations
+[PATH] Plots:              /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/plots
+[LOCAL] Workers: 1 | PySCF mem/worker: 1500 MB
+[FULL] MAX_DFT_MOLECULES=0; full labeled dataset will be processed.
+[DEBUG] DFT diagnostics: False | notebook PySCF verbose: 0
+[DEBUG] DFT log files: True | PySCF file verbose: 3
+[DEBUG] xTB preoptimization: True | opt=tight | cycles=500 | solvent=gas
+[DEBUG] Auto-install xTB in Colab if missing: True
+[DEBUG] xTB fallback to MMFF after failure: False
+[DEBUG] Rerun failed checkpoint rows: False
+
+============================================================
+  P3Z — DFT+D3 GEOMETRY OPTIMIZATION + DESCRIPTORS (PySCF)
+============================================================
+  Functional: B3LYP
+  Basis Set:  sto-3g
+  SCF Cycles: 50
+  Geom Steps: 3
+
+[OK] PySCF 2.13.1 detected.
+[OK] Geometry optimizer available: SciPy L-BFGS-B + PySCF nuclear gradients.
+[OK] dftd3 1.4.0 detected — D3 energy and gradients enabled.
+[OK] xTB detected: /home/ws/xd2484/miniforge3/envs/p3z_dft/bin/xtb | version: 6.7.1
+[OK] GFN2-xTB pre-optimization will run before every DFT geometry optimization.
+
+[OK] Loaded 3612 QC-pass molecules total.
+[OK] Computing DFT descriptors for 732 labeled molecules.
+     Positives: 373
+     Negatives: 359
+
+============================================================
+  STEP 1: 3D CONFORMER GENERATION
+============================================================
+
+     No cache found. Generating conformers from scratch...
+
+[OK] Conformers saved to disk: _conformers_cache.pkl
+
+[OK] Conformer generation complete in 0:00:56
+     Selected conformers: 732/732
+     Success: 731 | Failed: 1
+
+============================================================
+  SMOKE TEST: PySCF + DFT-D3 single-point and gradient
+============================================================
+[OK] Smoke test passed: E = -75.31313153 Hartree, max|grad| = 1.069e-01
+
+============================================================
+  VALIDATION TESTS: GFN2-xTB pre-optimization integration
+============================================================
+
+[TEST xTB-1] Executable and version detection...
+  xTB executable: /home/ws/xd2484/miniforge3/envs/p3z_dft/bin/xtb
+  xTB version:    6.7.1
+
+[TEST xTB-2] Neutral singlet receives charge=0 and uhf=0...
+  atoms=3 charge=0 multiplicity=1 uhf=0
+
+[TEST xTB-3] Open-shell test receives correct uhf...
+  methyl radical charge=0 multiplicity=2 uhf=1
+
+[TEST xTB-4] Dry-run command/input generation...
+  dry-run XYZ and command validated
+
+[TEST xTB-5] Real GFN2-xTB run on water and cache reuse...
+  converged energy=-5.070544344125 Eh; cache reused=True
+
+[TEST xTB-6] xTB coordinates are passed to the PySCF input builder...
+  PySCF builder receives validated xTB coordinates
+
+[TEST xTB-7] Simulated xTB failure is recorded without raising...
+  invalid multiplicity failure recorded in xtb_status.json
+
+[OK] xTB integration validation passed; fast smoke-test DFT settings are active and xTB is gas-phase GFN2 without external D3/D4.
+============================================================
+
+============================================================
+  STEP 2: GFN2-xTB PRE-OPTIMIZATION + DFT+D3 GEOMETRY OPTIMIZATION
+============================================================
+  [LOG] Run log: /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/dft_logs/dft_run_full.log
+  [LOG] Per-molecule logs: /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/dft_logs
+  [OK] [REP_00001] GFN2-xTB converged cached; RMSD(MMFF,xTB)=1.1951 A
+  [WARN] [REP_00001] Optimization did not fully converge; using last geometry
+  [OK] [REP_00002] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7941 A
+  [WARN] [REP_00002] Optimization did not fully converge; using last geometry
+  [OK] [REP_00003] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2913 A
+  [WARN] [REP_00003] Optimization did not fully converge; using last geometry
+  [OK] [REP_00004] GFN2-xTB converged; RMSD(MMFF,xTB)=1.7066 A
+  [WARN] [REP_00004] Optimization did not fully converge; using last geometry
+  [OK] [REP_00005] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7858 A
+  [WARN] [REP_00005] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 5 new molecules
+  [OK] [REP_00006] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6414 A
+  [WARN] [REP_00006] Optimization did not fully converge; using last geometry
+  [OK] [REP_00007] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5970 A
+  [WARN] [REP_00007] Optimization did not fully converge; using last geometry
+  [OK] [REP_00008] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6146 A
+  [WARN] [REP_00008] Optimization did not fully converge; using last geometry
+  [OK] [REP_00009] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2046 A
+  [WARN] [REP_00009] Optimization did not fully converge; using last geometry
+  [OK] [REP_00010] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1742 A
+  [WARN] [REP_00010] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 10 new molecules
+  [OK] [REP_00011] GFN2-xTB converged; RMSD(MMFF,xTB)=1.0996 A
+  [WARN] [REP_00011] Optimization did not fully converge; using last geometry
+  [OK] [REP_00012] GFN2-xTB converged; RMSD(MMFF,xTB)=1.8583 A
+  [WARN] [REP_00012] Optimization did not fully converge; using last geometry
+  [OK] [REP_00013] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0731 A
+  [WARN] [REP_00013] Optimization did not fully converge; using last geometry
+  [OK] [REP_00014] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3896 A
+  [WARN] [REP_00014] Optimization did not fully converge; using last geometry
+  [OK] [REP_00015] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8557 A
+  [WARN] [REP_00015] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 15 new molecules
+  [OK] [REP_00016] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2186 A
+  [WARN] [REP_00016] Optimization did not fully converge; using last geometry
+  [OK] [REP_00017] GFN2-xTB converged; RMSD(MMFF,xTB)=1.6139 A
+  [WARN] [REP_00017] Optimization did not fully converge; using last geometry
+  [OK] [REP_00018] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0622 A
+  [WARN] [REP_00018] Optimization did not fully converge; using last geometry
+  [OK] [REP_00019] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0931 A
+  [WARN] [REP_00019] Optimization did not fully converge; using last geometry
+  [OK] [REP_00020] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5530 A
+  [WARN] [REP_00020] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 20 new molecules
+  [OK] [REP_00021] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1065 A
+  [WARN] [REP_00021] Optimization did not fully converge; using last geometry
+  [OK] [REP_00022] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8585 A
+  [WARN] [REP_00022] Optimization did not fully converge; using last geometry
+  [OK] [REP_00023] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7689 A
+  [WARN] [REP_00023] Optimization did not fully converge; using last geometry
+  [OK] [REP_00024] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7079 A
+  [WARN] [REP_00024] Optimization did not fully converge; using last geometry
+  [OK] [REP_00025] GFN2-xTB converged; RMSD(MMFF,xTB)=1.1987 A
+  [WARN] [REP_00025] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 25 new molecules
+  [OK] [REP_00026] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8013 A
+  [WARN] [REP_00026] Optimization did not fully converge; using last geometry
+  [OK] [REP_00027] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8030 A
+  [WARN] [REP_00027] Optimization did not fully converge; using last geometry
+  [OK] [REP_00028] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4382 A
+  [WARN] [REP_00028] Optimization did not fully converge; using last geometry
+  [OK] [REP_00029] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3899 A
+  [WARN] [REP_00029] Optimization did not fully converge; using last geometry
+  [OK] [REP_00030] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3407 A
+  [WARN] [REP_00030] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 30 new molecules
+  [OK] [REP_00031] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8347 A
+  [WARN] [REP_00031] Optimization did not fully converge; using last geometry
+  [OK] [REP_00032] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1853 A
+  [WARN] [REP_00032] Optimization did not fully converge; using last geometry
+  [OK] [REP_00033] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5755 A
+  [WARN] [REP_00033] Optimization did not fully converge; using last geometry
+  [OK] [REP_00034] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5130 A
+  [WARN] [REP_00034] Optimization did not fully converge; using last geometry
+  [OK] [REP_00035] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3696 A
+  [WARN] [REP_00035] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 35 new molecules
+  [OK] [REP_00036] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1616 A
+  [WARN] [REP_00036] Optimization did not fully converge; using last geometry
+  [OK] [REP_00037] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2829 A
+  [WARN] [REP_00037] Optimization did not fully converge; using last geometry
+  [OK] [REP_00038] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1056 A
+  [WARN] [REP_00038] Optimization did not fully converge; using last geometry
+  [OK] [REP_00039] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7531 A
+  [WARN] [REP_00039] Optimization did not fully converge; using last geometry
+  [OK] [REP_00040] GFN2-xTB converged; RMSD(MMFF,xTB)=1.1235 A
+  [WARN] [REP_00040] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 40 new molecules
+  [OK] [REP_00041] GFN2-xTB converged; RMSD(MMFF,xTB)=1.3638 A
+  [WARN] [REP_00041] Optimization did not fully converge; using last geometry
+  [OK] [REP_00042] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5375 A
+  [WARN] [REP_00042] Optimization did not fully converge; using last geometry
+  [OK] [REP_00043] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4980 A
+  [WARN] [REP_00043] Optimization did not fully converge; using last geometry
+  [OK] [REP_00044] GFN2-xTB converged; RMSD(MMFF,xTB)=0.9743 A
+  [WARN] [REP_00044] Optimization did not fully converge; using last geometry
+  [OK] [REP_00045] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8658 A
+  [WARN] [REP_00045] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 45 new molecules
+  [OK] [REP_00046] GFN2-xTB converged; RMSD(MMFF,xTB)=1.0863 A
+  [WARN] [REP_00046] Optimization did not fully converge; using last geometry
+  [OK] [REP_00047] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8428 A
+  [WARN] [REP_00047] Optimization did not fully converge; using last geometry
+  [OK] [REP_00048] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2251 A
+  [WARN] [REP_00048] Optimization did not fully converge; using last geometry
+  [OK] [REP_00049] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2311 A
+  [WARN] [REP_00049] Optimization did not fully converge; using last geometry
+  [OK] [REP_00050] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0610 A
+  [WARN] [REP_00050] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 50 new molecules
+  [OK] [REP_00051] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0962 A
+  [WARN] [REP_00051] Optimization did not fully converge; using last geometry
+  [OK] [REP_00052] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1196 A
+  [WARN] [REP_00052] Optimization did not fully converge; using last geometry
+  [OK] [REP_00053] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1950 A
+  [WARN] [REP_00053] Optimization did not fully converge; using last geometry
+  [OK] [REP_00054] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1341 A
+  [WARN] [REP_00054] Optimization did not fully converge; using last geometry
+  [OK] [REP_00055] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7793 A
+  [WARN] [REP_00055] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 55 new molecules
+  [OK] [REP_00056] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5235 A
+  [WARN] [REP_00056] Optimization did not fully converge; using last geometry
+  [OK] [REP_00057] GFN2-xTB converged; RMSD(MMFF,xTB)=1.2058 A
+  [WARN] [REP_00057] Optimization did not fully converge; using last geometry
+  [OK] [REP_00058] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2628 A
+  [WARN] [REP_00058] Optimization did not fully converge; using last geometry
+  [OK] [REP_00059] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4053 A
+  [WARN] [REP_00059] Optimization did not fully converge; using last geometry
+  [OK] [REP_00060] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5027 A
+  [WARN] [REP_00060] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 60 new molecules
+  [OK] [REP_00061] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5689 A
+  [WARN] [REP_00061] Optimization did not fully converge; using last geometry
+  [OK] [REP_00062] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4860 A
+  [WARN] [REP_00062] Optimization did not fully converge; using last geometry
+  [OK] [REP_00063] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2541 A
+  [WARN] [REP_00063] Optimization did not fully converge; using last geometry
+  [OK] [REP_00064] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3199 A
+  [WARN] [REP_00064] Optimization did not fully converge; using last geometry
+  [OK] [REP_00065] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5109 A
+  [WARN] [REP_00065] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 65 new molecules
+  [OK] [REP_00066] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5481 A
+  [WARN] [REP_00066] Optimization did not fully converge; using last geometry
+  [OK] [REP_00067] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0596 A
+  [WARN] [REP_00067] Optimization did not fully converge; using last geometry
+  [OK] [REP_00068] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1386 A
+  [WARN] [REP_00068] Optimization did not fully converge; using last geometry
+  [OK] [REP_00069] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0947 A
+  [WARN] [REP_00069] Optimization did not fully converge; using last geometry
+  [OK] [REP_00070] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5458 A
+  [WARN] [REP_00070] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 70 new molecules
+  [OK] [REP_00071] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0986 A
+  [WARN] [REP_00071] Optimization did not fully converge; using last geometry
+  [OK] [REP_00072] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5854 A
+  [WARN] [REP_00072] Optimization did not fully converge; using last geometry
+  [OK] [REP_00073] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1100 A
+  [WARN] [REP_00073] Optimization did not fully converge; using last geometry
+  [OK] [REP_00074] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4030 A
+  [WARN] [REP_00074] Optimization did not fully converge; using last geometry
+  [OK] [REP_00075] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1778 A
+  [WARN] [REP_00075] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 75 new molecules
+  [OK] [REP_00076] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0981 A
+  [WARN] [REP_00076] Optimization did not fully converge; using last geometry
+  [OK] [REP_00077] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0580 A
+  [WARN] [REP_00077] Optimization did not fully converge; using last geometry
+  [OK] [REP_00078] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3243 A
+  [WARN] [REP_00078] Optimization did not fully converge; using last geometry
+  [OK] [REP_00079] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3033 A
+  [WARN] [REP_00079] Optimization did not fully converge; using last geometry
+  [OK] [REP_00080] GFN2-xTB converged; RMSD(MMFF,xTB)=1.2359 A
+  [WARN] [REP_00080] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 80 new molecules
+  [OK] [REP_00081] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7342 A
+  [WARN] [REP_00081] Optimization did not fully converge; using last geometry
+  [OK] [REP_00082] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1406 A
+  [WARN] [REP_00082] Optimization did not fully converge; using last geometry
+  [OK] [REP_00083] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5799 A
+  [WARN] [REP_00083] Optimization did not fully converge; using last geometry
+  [OK] [REP_00084] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4668 A
+  [WARN] [REP_00084] Optimization did not fully converge; using last geometry
+  [OK] [REP_00085] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2684 A
+  [WARN] [REP_00085] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 85 new molecules
+  [OK] [REP_00086] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0878 A
+  [WARN] [REP_00086] Optimization did not fully converge; using last geometry
+  [OK] [REP_00087] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6973 A
+  [WARN] [REP_00087] Optimization did not fully converge; using last geometry
+  [OK] [REP_00088] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0886 A
+  [WARN] [REP_00088] Optimization did not fully converge; using last geometry
+  [OK] [REP_00089] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8892 A
+  [WARN] [REP_00089] Optimization did not fully converge; using last geometry
+  [OK] [REP_00090] GFN2-xTB converged; RMSD(MMFF,xTB)=0.9033 A
+  [WARN] [REP_00090] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 90 new molecules
+  [OK] [REP_00091] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0998 A
+  [WARN] [REP_00091] Optimization did not fully converge; using last geometry
+  [OK] [REP_00092] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1741 A
+  [WARN] [REP_00092] Optimization did not fully converge; using last geometry
+  [OK] [REP_00093] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1472 A
+  [WARN] [REP_00093] Optimization did not fully converge; using last geometry
+  [OK] [REP_00094] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5452 A
+  [WARN] [REP_00094] Optimization did not fully converge; using last geometry
+  [OK] [REP_00095] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3763 A
+  [WARN] [REP_00095] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 95 new molecules
+  [OK] [REP_00096] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0355 A
+  [WARN] [REP_00096] Optimization did not fully converge; using last geometry
+  [OK] [REP_00097] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2846 A
+  [WARN] [REP_00097] Optimization did not fully converge; using last geometry
+  [OK] [REP_00098] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6792 A
+  [WARN] [REP_00098] Optimization did not fully converge; using last geometry
+  [OK] [REP_00099] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6415 A
+  [WARN] [REP_00099] Optimization did not fully converge; using last geometry
+  [OK] [REP_00100] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3848 A
+  [WARN] [REP_00100] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 100 new molecules
+  [OK] [REP_00101] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0953 A
+  [WARN] [REP_00101] Optimization did not fully converge; using last geometry
+  [OK] [REP_00102] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1104 A
+  [WARN] [REP_00102] Optimization did not fully converge; using last geometry
+  [OK] [REP_00103] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0990 A
+  [WARN] [REP_00103] Optimization did not fully converge; using last geometry
+  [OK] [REP_00104] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4806 A
+  [WARN] [REP_00104] Optimization did not fully converge; using last geometry
+  [OK] [REP_00105] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0652 A
+  [WARN] [REP_00105] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 105 new molecules
+  [OK] [REP_00106] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7132 A
+  [WARN] [REP_00106] Optimization did not fully converge; using last geometry
+  [OK] [REP_00107] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0661 A
+  [WARN] [REP_00107] Optimization did not fully converge; using last geometry
+  [OK] [REP_00108] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0746 A
+  [WARN] [REP_00108] Optimization did not fully converge; using last geometry
+  [OK] [REP_00109] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0710 A
+  [WARN] [REP_00109] Optimization did not fully converge; using last geometry
+  [OK] [REP_00110] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2035 A
+  [WARN] [REP_00110] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 110 new molecules
+  [OK] [REP_00111] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1831 A
+  [WARN] [REP_00111] Optimization did not fully converge; using last geometry
+  [OK] [REP_00112] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1801 A
+  [WARN] [REP_00112] Optimization did not fully converge; using last geometry
+  [OK] [REP_00113] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0462 A
+  [WARN] [REP_00113] Optimization did not fully converge; using last geometry
+  [OK] [REP_00114] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1747 A
+  [WARN] [REP_00114] Optimization did not fully converge; using last geometry
+  [OK] [REP_00115] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2282 A
+  [WARN] [REP_00115] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 115 new molecules
+  [OK] [REP_00116] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3175 A
+  [WARN] [REP_00116] Optimization did not fully converge; using last geometry
+  [OK] [REP_00117] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1444 A
+  [WARN] [REP_00117] Optimization did not fully converge; using last geometry
+  [OK] [REP_00118] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1075 A
+  [WARN] [REP_00118] Optimization did not fully converge; using last geometry
+  [OK] [REP_00119] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0433 A
+  [WARN] [REP_00119] Optimization did not fully converge; using last geometry
+  [OK] [REP_00120] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3347 A
+  [WARN] [REP_00120] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 120 new molecules
+  [OK] [REP_00121] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5542 A
+  [WARN] [REP_00121] Optimization did not fully converge; using last geometry
+  [OK] [REP_00122] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0844 A
+  [WARN] [REP_00122] Optimization did not fully converge; using last geometry
+  [OK] [REP_00123] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4387 A
+  [WARN] [REP_00123] Optimization did not fully converge; using last geometry
+  [OK] [REP_00124] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0752 A
+  [WARN] [REP_00124] Optimization did not fully converge; using last geometry
+  [OK] [REP_00125] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1065 A
+  [WARN] [REP_00125] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 125 new molecules
+  [OK] [REP_00126] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6933 A
+  [WARN] [REP_00126] Optimization did not fully converge; using last geometry
+  [OK] [REP_00127] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1015 A
+  [WARN] [REP_00127] Optimization did not fully converge; using last geometry
+  [OK] [REP_00128] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0976 A
+  [WARN] [REP_00128] Optimization did not fully converge; using last geometry
+  [OK] [REP_00129] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6016 A
+  [WARN] [REP_00129] Optimization did not fully converge; using last geometry
+  [OK] [REP_00130] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2286 A
+  [WARN] [REP_00130] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 130 new molecules
+  [OK] [REP_00131] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0922 A
+  [WARN] [REP_00131] Optimization did not fully converge; using last geometry
+  [OK] [REP_00132] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2733 A
+  [WARN] [REP_00132] Optimization did not fully converge; using last geometry
+  [OK] [REP_00133] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7212 A
+  [WARN] [REP_00133] Optimization did not fully converge; using last geometry
+  [OK] [REP_00134] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1098 A
+  [WARN] [REP_00134] Optimization did not fully converge; using last geometry
+  [OK] [REP_00135] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1031 A
+  [WARN] [REP_00135] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 135 new molecules
+  [OK] [REP_00136] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1646 A
+  [WARN] [REP_00136] Optimization did not fully converge; using last geometry
+  [OK] [REP_00137] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4116 A
+  [WARN] [REP_00137] Optimization did not fully converge; using last geometry
+  [OK] [REP_00138] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1740 A
+  [WARN] [REP_00138] Optimization did not fully converge; using last geometry
+  [OK] [REP_00139] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1381 A
+  [WARN] [REP_00139] Optimization did not fully converge; using last geometry
+  [OK] [REP_00140] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3813 A
+  [WARN] [REP_00140] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 140 new molecules
+  [OK] [REP_00141] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1055 A
+  [WARN] [REP_00141] Optimization did not fully converge; using last geometry
+  [OK] [REP_00142] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4672 A
+  [WARN] [REP_00142] Optimization did not fully converge; using last geometry
+  [OK] [REP_00143] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5395 A
+  [WARN] [REP_00143] Optimization did not fully converge; using last geometry
+  [OK] [REP_00144] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6353 A
+  [WARN] [REP_00144] Optimization did not fully converge; using last geometry
+  [OK] [REP_00145] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0410 A
+  [WARN] [REP_00145] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 145 new molecules
+  [OK] [REP_00146] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8144 A
+  [WARN] [REP_00146] Optimization did not fully converge; using last geometry
+  [OK] [REP_00147] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2305 A
+  [WARN] [REP_00147] Optimization did not fully converge; using last geometry
+  [OK] [REP_00148] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2468 A
+  [WARN] [REP_00148] Optimization did not fully converge; using last geometry
+  [OK] [REP_00149] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2621 A
+  [WARN] [REP_00149] Optimization did not fully converge; using last geometry
+  [OK] [REP_00150] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0351 A
+  [WARN] [REP_00150] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 150 new molecules
+  [OK] [REP_00151] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3537 A
+  [WARN] [REP_00151] Optimization did not fully converge; using last geometry
+  [OK] [REP_00152] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2042 A
+  [WARN] [REP_00152] Optimization did not fully converge; using last geometry
+  [OK] [REP_00153] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2943 A
+  [WARN] [REP_00153] Optimization did not fully converge; using last geometry
+  [OK] [REP_00154] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7100 A
+  [WARN] [REP_00154] Optimization did not fully converge; using last geometry
+  [OK] [REP_00155] GFN2-xTB converged; RMSD(MMFF,xTB)=1.2687 A
+  [WARN] [REP_00155] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 155 new molecules
+  [OK] [REP_00156] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0425 A
+  [WARN] [REP_00156] Optimization did not fully converge; using last geometry
+  [OK] [REP_00157] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6070 A
+  [WARN] [REP_00157] Optimization did not fully converge; using last geometry
+  [OK] [REP_00158] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3046 A
+  [WARN] [REP_00158] Optimization did not fully converge; using last geometry
+  [OK] [REP_00159] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6176 A
+  [WARN] [REP_00159] Optimization did not fully converge; using last geometry
+  [OK] [REP_00160] GFN2-xTB converged; RMSD(MMFF,xTB)=0.9084 A
+  [WARN] [REP_00160] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 160 new molecules
+  [OK] [REP_00161] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5055 A
+  [WARN] [REP_00161] Optimization did not fully converge; using last geometry
+  [OK] [REP_00162] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1129 A
+  [WARN] [REP_00162] Optimization did not fully converge; using last geometry
+  [OK] [REP_00163] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4861 A
+  [WARN] [REP_00163] Optimization did not fully converge; using last geometry
+  [OK] [REP_00164] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1123 A
+  [WARN] [REP_00164] Optimization did not fully converge; using last geometry
+  [OK] [REP_00165] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0624 A
+  [WARN] [REP_00165] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 165 new molecules
+  [OK] [REP_00166] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0313 A
+  [WARN] [REP_00166] Optimization did not fully converge; using last geometry
+  [OK] [REP_00167] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5521 A
+  [WARN] [REP_00167] Optimization did not fully converge; using last geometry
+  [OK] [REP_00168] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1777 A
+  [WARN] [REP_00168] Optimization did not fully converge; using last geometry
+  [OK] [REP_00169] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0733 A
+  [WARN] [REP_00169] Optimization did not fully converge; using last geometry
+  [OK] [REP_00170] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1066 A
+  [WARN] [REP_00170] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 170 new molecules
+  [OK] [REP_00171] GFN2-xTB converged; RMSD(MMFF,xTB)=1.2049 A
+  [WARN] [REP_00171] Optimization did not fully converge; using last geometry
+  [OK] [REP_00172] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0714 A
+  [WARN] [REP_00172] Optimization did not fully converge; using last geometry
+  [OK] [REP_00173] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1112 A
+  [WARN] [REP_00173] Optimization did not fully converge; using last geometry
+  [OK] [REP_00174] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8666 A
+  [WARN] [REP_00174] Optimization did not fully converge; using last geometry
+  [OK] [REP_00175] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4425 A
+  [WARN] [REP_00175] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 175 new molecules
+  [OK] [REP_00176] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6194 A
+  [WARN] [REP_00176] Optimization did not fully converge; using last geometry
+  [OK] [REP_00177] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1017 A
+  [WARN] [REP_00177] Optimization did not fully converge; using last geometry
+  [OK] [REP_00178] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1324 A
+  [WARN] [REP_00178] Optimization did not fully converge; using last geometry
+  [OK] [REP_00179] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3463 A
+  [WARN] [REP_00179] Optimization did not fully converge; using last geometry
+  [OK] [REP_00180] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0935 A
+  [WARN] [REP_00180] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 180 new molecules
+  [OK] [REP_00181] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1144 A
+  [WARN] [REP_00181] Optimization did not fully converge; using last geometry
+  [OK] [REP_00182] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1875 A
+  [WARN] [REP_00182] Optimization did not fully converge; using last geometry
+  [OK] [REP_00183] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0598 A
+  [WARN] [REP_00183] Optimization did not fully converge; using last geometry
+  [OK] [REP_00184] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3356 A
+  [WARN] [REP_00184] Optimization did not fully converge; using last geometry
+  [OK] [REP_00185] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3078 A
+  [WARN] [REP_00185] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 185 new molecules
+  [OK] [REP_00186] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0919 A
+  [WARN] [REP_00186] Optimization did not fully converge; using last geometry
+  [OK] [REP_00187] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1803 A
+  [WARN] [REP_00187] Optimization did not fully converge; using last geometry
+  [OK] [REP_00188] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3371 A
+  [WARN] [REP_00188] Optimization did not fully converge; using last geometry
+  [OK] [REP_00189] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0509 A
+  [WARN] [REP_00189] Optimization did not fully converge; using last geometry
+  [OK] [REP_00190] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0873 A
+  [WARN] [REP_00190] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 190 new molecules
+  [OK] [REP_00191] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0869 A
+  [WARN] [REP_00191] Optimization did not fully converge; using last geometry
+  [OK] [REP_00192] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1192 A
+  [WARN] [REP_00192] Optimization did not fully converge; using last geometry
+  [OK] [REP_00193] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4173 A
+  [WARN] [REP_00193] Optimization did not fully converge; using last geometry
+  [OK] [REP_00194] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1382 A
+  [WARN] [REP_00194] Optimization did not fully converge; using last geometry
+  [OK] [REP_00195] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0677 A
+  [WARN] [REP_00195] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 195 new molecules
+  [OK] [REP_00196] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2342 A
+  [WARN] [REP_00196] Optimization did not fully converge; using last geometry
+  [OK] [REP_00197] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3191 A
+  [WARN] [REP_00197] Optimization did not fully converge; using last geometry
+  [OK] [REP_00198] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0717 A
+  [WARN] [REP_00198] Optimization did not fully converge; using last geometry
+  [OK] [REP_00199] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4879 A
+  [WARN] [REP_00199] Optimization did not fully converge; using last geometry
+  [OK] [REP_00200] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1853 A
+  [WARN] [REP_00200] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 200 new molecules
+  [OK] [REP_00201] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3557 A
+  [WARN] [REP_00201] Optimization did not fully converge; using last geometry
+  [OK] [REP_00202] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2919 A
+  [WARN] [REP_00202] Optimization did not fully converge; using last geometry
+  [OK] [REP_00203] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1264 A
+  [WARN] [REP_00203] Optimization did not fully converge; using last geometry
+  [OK] [REP_00204] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1293 A
+  [WARN] [REP_00204] Optimization did not fully converge; using last geometry
+  [OK] [REP_00205] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1609 A
+  [WARN] [REP_00205] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 205 new molecules
+  [OK] [REP_00206] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1685 A
+  [WARN] [REP_00206] Optimization did not fully converge; using last geometry
+  [OK] [REP_00207] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3856 A
+  [WARN] [REP_00207] Optimization did not fully converge; using last geometry
+  [OK] [REP_00208] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0729 A
+  [WARN] [REP_00208] Optimization did not fully converge; using last geometry
+  [OK] [REP_00209] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0987 A
+  [WARN] [REP_00209] Optimization did not fully converge; using last geometry
+  [OK] [REP_00210] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0818 A
+  [WARN] [REP_00210] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 210 new molecules
+  [OK] [REP_00211] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3987 A
+  [WARN] [REP_00211] Optimization did not fully converge; using last geometry
+  [OK] [REP_00212] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3312 A
+  [WARN] [REP_00212] Optimization did not fully converge; using last geometry
+  [OK] [REP_00213] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1195 A
+  [WARN] [REP_00213] Optimization did not fully converge; using last geometry
+  [OK] [REP_00214] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3358 A
+  [WARN] [REP_00214] Optimization did not fully converge; using last geometry
+  [OK] [REP_00215] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1101 A
+  [WARN] [REP_00215] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 215 new molecules
+  [OK] [REP_00216] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4617 A
+  [WARN] [REP_00216] Optimization did not fully converge; using last geometry
+  [OK] [REP_00217] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0760 A
+  [WARN] [REP_00217] Optimization did not fully converge; using last geometry
+  [OK] [REP_00218] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1102 A
+  [WARN] [REP_00218] Optimization did not fully converge; using last geometry
+  [OK] [REP_00219] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0631 A
+  [WARN] [REP_00219] Optimization did not fully converge; using last geometry
+  [OK] [REP_00220] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1068 A
+  [WARN] [REP_00220] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 220 new molecules
+  [OK] [REP_00221] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0537 A
+  [WARN] [REP_00221] Optimization did not fully converge; using last geometry
+  [OK] [REP_00222] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0913 A
+  [WARN] [REP_00222] Optimization did not fully converge; using last geometry
+  [OK] [REP_00223] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0935 A
+  [WARN] [REP_00223] Optimization did not fully converge; using last geometry
+  [OK] [REP_00224] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1007 A
+  [WARN] [REP_00224] Optimization did not fully converge; using last geometry
+  [OK] [REP_00225] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0447 A
+  [WARN] [REP_00225] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 225 new molecules
+  [OK] [REP_00226] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4090 A
+  [WARN] [REP_00226] Optimization did not fully converge; using last geometry
+  [OK] [REP_00227] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1367 A
+  [WARN] [REP_00227] Optimization did not fully converge; using last geometry
+  [OK] [REP_00228] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0251 A
+  [WARN] [REP_00228] Optimization did not fully converge; using last geometry
+  [OK] [REP_00229] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0259 A
+  [WARN] [REP_00229] Optimization did not fully converge; using last geometry
+  [OK] [REP_00230] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0746 A
+  [WARN] [REP_00230] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 230 new molecules
+  [OK] [REP_00231] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4909 A
+  [WARN] [REP_00231] Optimization did not fully converge; using last geometry
+  [OK] [REP_00232] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1116 A
+  [WARN] [REP_00232] Optimization did not fully converge; using last geometry
+  [OK] [REP_00233] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1974 A
+  [WARN] [REP_00233] Optimization did not fully converge; using last geometry
+  [OK] [REP_00234] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3304 A
+  [WARN] [REP_00234] Optimization did not fully converge; using last geometry
+  [OK] [REP_00235] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1916 A
+  [WARN] [REP_00235] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 235 new molecules
+  [OK] [REP_00236] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2567 A
+  [WARN] [REP_00236] Optimization did not fully converge; using last geometry
+  [OK] [REP_00237] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0296 A
+  [WARN] [REP_00237] Optimization did not fully converge; using last geometry
+  [OK] [REP_00238] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2068 A
+  [WARN] [REP_00238] Optimization did not fully converge; using last geometry
+  [OK] [REP_00239] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2704 A
+  [WARN] [REP_00239] Optimization did not fully converge; using last geometry
+  [OK] [REP_00240] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0624 A
+  [WARN] [REP_00240] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 240 new molecules
+  [OK] [REP_00241] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0260 A
+  [WARN] [REP_00241] Optimization did not fully converge; using last geometry
+  [OK] [REP_00242] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3601 A
+  [WARN] [REP_00242] Optimization did not fully converge; using last geometry
+  [OK] [REP_00243] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2431 A
+  [WARN] [REP_00243] Optimization did not fully converge; using last geometry
+  [OK] [REP_00244] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2957 A
+  [WARN] [REP_00244] Optimization did not fully converge; using last geometry
+  [OK] [REP_00245] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2577 A
+  [WARN] [REP_00245] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 245 new molecules
+  [OK] [REP_00246] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3868 A
+  [WARN] [REP_00246] Optimization did not fully converge; using last geometry
+  [OK] [REP_00247] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3384 A
+  [WARN] [REP_00247] Optimization did not fully converge; using last geometry
+  [OK] [REP_00248] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3783 A
+  [WARN] [REP_00248] Optimization did not fully converge; using last geometry
+  [OK] [REP_00249] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1875 A
+  [WARN] [REP_00249] Optimization did not fully converge; using last geometry
+  [OK] [REP_00250] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0430 A
+  [WARN] [REP_00250] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 250 new molecules
+  [OK] [REP_00251] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3024 A
+  [WARN] [REP_00251] Optimization did not fully converge; using last geometry
+  [OK] [REP_00252] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0321 A
+  [WARN] [REP_00252] Optimization did not fully converge; using last geometry
+  [OK] [REP_00253] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1164 A
+  [WARN] [REP_00253] Optimization did not fully converge; using last geometry
+  [OK] [REP_00254] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3795 A
+  [WARN] [REP_00254] Optimization did not fully converge; using last geometry
+  [OK] [REP_00255] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0332 A
+  [WARN] [REP_00255] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 255 new molecules
+  [OK] [REP_00256] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1291 A
+  [WARN] [REP_00256] Optimization did not fully converge; using last geometry
+  [OK] [REP_00257] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0885 A
+  [WARN] [REP_00257] Optimization did not fully converge; using last geometry
+  [OK] [REP_00258] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2755 A
+  [WARN] [REP_00258] Optimization did not fully converge; using last geometry
+  [OK] [REP_00259] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0225 A
+  [WARN] [REP_00259] Optimization did not fully converge; using last geometry
+  [OK] [REP_00260] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1151 A
+  [WARN] [REP_00260] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 260 new molecules
+  [OK] [REP_00261] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0924 A
+  [WARN] [REP_00261] Optimization did not fully converge; using last geometry
+  [OK] [REP_00262] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1203 A
+  [WARN] [REP_00262] Optimization did not fully converge; using last geometry
+  [OK] [REP_00263] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3925 A
+  [WARN] [REP_00263] Optimization did not fully converge; using last geometry
+  [OK] [REP_00264] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3178 A
+  [WARN] [REP_00264] Optimization did not fully converge; using last geometry
+  [OK] [REP_00265] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0229 A
+  [WARN] [REP_00265] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 265 new molecules
+  [OK] [REP_00266] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1031 A
+  [WARN] [REP_00266] Optimization did not fully converge; using last geometry
+  [OK] [REP_00267] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0263 A
+  [WARN] [REP_00267] Optimization did not fully converge; using last geometry
+  [OK] [REP_00268] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0899 A
+  [WARN] [REP_00268] Optimization did not fully converge; using last geometry
+  [OK] [REP_00269] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0118 A
+  [WARN] [REP_00269] Optimization did not fully converge; using last geometry
+  [OK] [REP_00270] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3567 A
+  [WARN] [REP_00270] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 270 new molecules
+  [OK] [REP_00271] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0240 A
+  [WARN] [REP_00271] Optimization did not fully converge; using last geometry
+  [OK] [REP_00272] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0406 A
+  [WARN] [REP_00272] Optimization did not fully converge; using last geometry
+  [OK] [REP_00273] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6611 A
+  [WARN] [REP_00273] Optimization did not fully converge; using last geometry
+  [OK] [REP_00274] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0759 A
+  [WARN] [REP_00274] Optimization did not fully converge; using last geometry
+  [OK] [REP_00275] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0760 A
+  [WARN] [REP_00275] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 275 new molecules
+  [OK] [REP_00276] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0644 A
+  [WARN] [REP_00276] Optimization did not fully converge; using last geometry
+  [OK] [REP_00277] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0952 A
+  [WARN] [REP_00277] Optimization did not fully converge; using last geometry
+  [OK] [REP_00278] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1013 A
+  [WARN] [REP_00278] Optimization did not fully converge; using last geometry
+  [OK] [REP_00279] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1133 A
+  [WARN] [REP_00279] Optimization did not fully converge; using last geometry
+  [OK] [REP_00280] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0745 A
+  [WARN] [REP_00280] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 280 new molecules
+  [OK] [REP_00281] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0827 A
+  [WARN] [REP_00281] Optimization did not fully converge; using last geometry
+  [OK] [REP_00282] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2334 A
+  [WARN] [REP_00282] Optimization did not fully converge; using last geometry
+  [OK] [REP_00283] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5876 A
+  [WARN] [REP_00283] Optimization did not fully converge; using last geometry
+  [OK] [REP_00284] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1252 A
+  [WARN] [REP_00284] Optimization did not fully converge; using last geometry
+  [OK] [REP_00285] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0757 A
+  [WARN] [REP_00285] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 285 new molecules
+  [OK] [REP_00286] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0635 A
+  [WARN] [REP_00286] Optimization did not fully converge; using last geometry
+  [OK] [REP_00287] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0613 A
+  [WARN] [REP_00287] Optimization did not fully converge; using last geometry
+  [OK] [REP_00288] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0905 A
+  [WARN] [REP_00288] Optimization did not fully converge; using last geometry
+  [OK] [REP_00289] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2777 A
+  [WARN] [REP_00289] Optimization did not fully converge; using last geometry
+  [OK] [REP_00290] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5534 A
+  [WARN] [REP_00290] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 290 new molecules
+  [OK] [REP_00291] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0563 A
+  [WARN] [REP_00291] Optimization did not fully converge; using last geometry
+  [OK] [REP_00292] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0288 A
+  [WARN] [REP_00292] Optimization did not fully converge; using last geometry
+  [OK] [REP_00293] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1581 A
+  [WARN] [REP_00293] Optimization did not fully converge; using last geometry
+  [OK] [REP_00294] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0332 A
+  [WARN] [REP_00294] Optimization did not fully converge; using last geometry
+  [OK] [REP_00295] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2766 A
+  [WARN] [REP_00295] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 295 new molecules
+  [OK] [REP_00296] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0300 A
+  [WARN] [REP_00296] Optimization did not fully converge; using last geometry
+  [OK] [REP_00297] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0385 A
+  [WARN] [REP_00297] Optimization did not fully converge; using last geometry
+  [OK] [REP_00298] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0456 A
+  [WARN] [REP_00298] Optimization did not fully converge; using last geometry
+  [OK] [REP_00299] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0381 A
+  [WARN] [REP_00299] Optimization did not fully converge; using last geometry
+  [OK] [REP_00300] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0373 A
+  [WARN] [REP_00300] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 300 new molecules
+  [OK] [REP_00301] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2615 A
+  [WARN] [REP_00301] Optimization did not fully converge; using last geometry
+  [OK] [REP_00302] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0531 A
+  [WARN] [REP_00302] Optimization did not fully converge; using last geometry
+  [OK] [REP_00303] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0496 A
+  [WARN] [REP_00303] Optimization did not fully converge; using last geometry
+  [OK] [REP_00304] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0814 A
+  [WARN] [REP_00304] Optimization did not fully converge; using last geometry
+  [OK] [REP_00305] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0639 A
+  [WARN] [REP_00305] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 305 new molecules
+  [OK] [REP_00306] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0639 A
+  [WARN] [REP_00306] Optimization did not fully converge; using last geometry
+  [OK] [REP_00307] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1257 A
+  [WARN] [REP_00307] Optimization did not fully converge; using last geometry
+  [OK] [REP_00308] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0944 A
+  [WARN] [REP_00308] Optimization did not fully converge; using last geometry
+  [OK] [REP_00309] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3244 A
+  [WARN] [REP_00309] Optimization did not fully converge; using last geometry
+  [OK] [REP_00310] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4192 A
+  [WARN] [REP_00310] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 310 new molecules
+  [OK] [REP_00311] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1814 A
+  [WARN] [REP_00311] Optimization did not fully converge; using last geometry
+  [OK] [REP_00312] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1905 A
+  [WARN] [REP_00312] Optimization did not fully converge; using last geometry
+  [OK] [REP_00313] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0420 A
+  [WARN] [REP_00313] Optimization did not fully converge; using last geometry
+  [OK] [REP_00314] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3033 A
+  [WARN] [REP_00314] Optimization did not fully converge; using last geometry
+  [OK] [REP_00315] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0681 A
+  [WARN] [REP_00315] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 315 new molecules
+  [OK] [REP_00316] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0168 A
+  [WARN] [REP_00316] Optimization did not fully converge; using last geometry
+  [OK] [REP_00317] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0738 A
+  [WARN] [REP_00317] Optimization did not fully converge; using last geometry
+  [OK] [REP_00318] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2497 A
+  [WARN] [REP_00318] Optimization did not fully converge; using last geometry
+  [OK] [REP_00319] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0157 A
+  [WARN] [REP_00319] Optimization did not fully converge; using last geometry
+  [OK] [REP_00320] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3086 A
+  [WARN] [REP_00320] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 320 new molecules
+  [OK] [REP_00321] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1137 A
+  [WARN] [REP_00321] Optimization did not fully converge; using last geometry
+  [OK] [REP_00322] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0230 A
+  [WARN] [REP_00322] Optimization did not fully converge; using last geometry
+  [OK] [REP_00323] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0501 A
+  [WARN] [REP_00323] Optimization did not fully converge; using last geometry
+  [OK] [REP_00324] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1601 A
+  [WARN] [REP_00324] Optimization did not fully converge; using last geometry
+  [OK] [REP_00325] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0156 A
+  [WARN] [REP_00325] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 325 new molecules
+  [OK] [REP_00326] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1531 A
+  [WARN] [REP_00326] Optimization did not fully converge; using last geometry
+  [OK] [REP_00327] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0679 A
+  [WARN] [REP_00327] Optimization did not fully converge; using last geometry
+  [OK] [REP_00328] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0147 A
+  [WARN] [REP_00328] Optimization did not fully converge; using last geometry
+  [OK] [REP_00329] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1227 A
+  [WARN] [REP_00329] Optimization did not fully converge; using last geometry
+  [OK] [REP_00330] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1272 A
+  [WARN] [REP_00330] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 330 new molecules
+  [OK] [REP_00331] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1655 A
+  [WARN] [REP_00331] Optimization did not fully converge; using last geometry
+  [OK] [REP_00332] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1728 A
+  [WARN] [REP_00332] Optimization did not fully converge; using last geometry
+  [OK] [REP_00333] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0639 A
+  [WARN] [REP_00333] Optimization did not fully converge; using last geometry
+  [OK] [REP_00334] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1734 A
+  [WARN] [REP_00334] Optimization did not fully converge; using last geometry
+  [OK] [REP_00335] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2570 A
+  [WARN] [REP_00335] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 335 new molecules
+  [OK] [REP_00336] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0444 A
+  [WARN] [REP_00336] Optimization did not fully converge; using last geometry
+  [OK] [REP_00337] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1768 A
+  [WARN] [REP_00337] Optimization did not fully converge; using last geometry
+  [OK] [REP_00338] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1020 A
+  [WARN] [REP_00338] Optimization did not fully converge; using last geometry
+  [OK] [REP_00339] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0400 A
+  [WARN] [REP_00339] Optimization failed; using final single-point fallback
+  [OK] [REP_00340] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0286 A
+  [WARN] [REP_00340] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 340 new molecules
+  [OK] [REP_00341] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0671 A
+  [WARN] [REP_00341] Optimization did not fully converge; using last geometry
+  [OK] [REP_00342] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0787 A
+  [WARN] [REP_00342] Optimization did not fully converge; using last geometry
+  [OK] [REP_00343] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0612 A
+  [WARN] [REP_00343] Optimization did not fully converge; using last geometry
+  [OK] [REP_00344] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0211 A
+  [WARN] [REP_00344] Optimization did not fully converge; using last geometry
+  [OK] [REP_00345] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0567 A
+  [WARN] [REP_00345] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 345 new molecules
+  [OK] [REP_00346] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0567 A
+  [WARN] [REP_00346] Optimization did not fully converge; using last geometry
+  [OK] [REP_00347] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1474 A
+  [WARN] [REP_00347] Optimization did not fully converge; using last geometry
+  [OK] [REP_00348] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1646 A
+  [WARN] [REP_00348] Optimization did not fully converge; using last geometry
+  [OK] [REP_00349] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1598 A
+  [WARN] [REP_00349] Optimization did not fully converge; using last geometry
+  [OK] [REP_00350] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0768 A
+  [WARN] [REP_00350] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 350 new molecules
+  [OK] [REP_00351] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1196 A
+  [WARN] [REP_00351] Optimization did not fully converge; using last geometry
+  [OK] [REP_00352] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1114 A
+  [WARN] [REP_00352] Optimization did not fully converge; using last geometry
+  [OK] [REP_00353] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0917 A
+  [WARN] [REP_00353] Optimization did not fully converge; using last geometry
+  [OK] [REP_00354] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1875 A
+  [WARN] [REP_00354] Optimization did not fully converge; using last geometry
+  [OK] [REP_00355] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2174 A
+  [WARN] [REP_00355] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 355 new molecules
+  [OK] [REP_00356] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1667 A
+  [WARN] [REP_00356] Optimization did not fully converge; using last geometry
+  [OK] [REP_00357] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0699 A
+  [WARN] [REP_00357] Optimization did not fully converge; using last geometry
+  [OK] [REP_00358] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1675 A
+  [WARN] [REP_00358] Optimization did not fully converge; using last geometry
+  [OK] [REP_00359] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2373 A
+  [WARN] [REP_00359] Optimization did not fully converge; using last geometry
+  [OK] [REP_00360] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0946 A
+  [WARN] [REP_00360] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 360 new molecules
+  [OK] [REP_00361] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0837 A
+  [WARN] [REP_00361] Optimization did not fully converge; using last geometry
+  [OK] [REP_00362] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3403 A
+  [WARN] [REP_00362] Optimization did not fully converge; using last geometry
+  [OK] [REP_00363] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3473 A
+  [WARN] [REP_00363] Optimization did not fully converge; using last geometry
+  [OK] [REP_00364] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0154 A
+  [WARN] [REP_00364] Optimization did not fully converge; using last geometry
+  [OK] [REP_00365] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1820 A
+  [WARN] [REP_00365] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 365 new molecules
+  [OK] [REP_00366] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1658 A
+  [WARN] [REP_00366] Optimization did not fully converge; using last geometry
+  [OK] [REP_00367] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0975 A
+  [WARN] [REP_00367] Optimization did not fully converge; using last geometry
+  [OK] [REP_00370] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3411 A
+  [WARN] [REP_00370] Optimization did not fully converge; using last geometry
+  [OK] [REP_00372] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1111 A
+  [WARN] [REP_00372] Optimization did not fully converge; using last geometry
+  [OK] [REP_00373] GFN2-xTB converged; RMSD(MMFF,xTB)=1.0836 A
+  [WARN] [REP_00373] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 370 new molecules
+  [OK] [REP_00374] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0810 A
+  [WARN] [REP_00374] Optimization did not fully converge; using last geometry
+  [OK] [REP_00375] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1941 A
+  [WARN] [REP_00375] Optimization did not fully converge; using last geometry
+  [OK] [REP_00376] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0346 A
+  [WARN] [REP_00376] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00005] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0219 A
+  [WARN] [DEC_00005] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00006] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0608 A
+  [WARN] [DEC_00006] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 375 new molecules
+  [OK] [DEC_00007] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0336 A
+  [WARN] [DEC_00007] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00008] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0200 A
+  [WARN] [DEC_00008] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00009] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0590 A
+  [WARN] [DEC_00009] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00010] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0336 A
+  [WARN] [DEC_00010] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00011] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0239 A
+  [WARN] [DEC_00011] Optimization failed; using final single-point fallback
+  [OK] Checkpoint saved after 380 new molecules
+  [OK] [DEC_00012] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0899 A
+  [WARN] [DEC_00012] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00013] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0249 A
+  [WARN] [DEC_00013] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00014] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0137 A
+  [OK] [DEC_00014] Geometry optimization converged
+  [OK] [DEC_00015] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0648 A
+  [WARN] [DEC_00015] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00016] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0488 A
+  [WARN] [DEC_00016] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 385 new molecules
+  [OK] [DEC_00017] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0756 A
+  [WARN] [DEC_00017] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00018] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0316 A
+  [WARN] [DEC_00018] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00019] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0511 A
+  [WARN] [DEC_00019] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00020] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0673 A
+  [WARN] [DEC_00020] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00021] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1191 A
+  [WARN] [DEC_00021] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 390 new molecules
+  [OK] [DEC_00022] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4548 A
+  [WARN] [DEC_00022] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00023] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0837 A
+  [WARN] [DEC_00023] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00024] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0693 A
+  [WARN] [DEC_00024] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00025] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0176 A
+  [WARN] [DEC_00025] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00027] GFN2-xTB converged; RMSD(MMFF,xTB)=1.0557 A
+  [WARN] [DEC_00027] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 395 new molecules
+  [OK] [DEC_00028] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0587 A
+  [WARN] [DEC_00028] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00029] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2453 A
+  [WARN] [DEC_00029] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00030] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3197 A
+  [WARN] [DEC_00030] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00031] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1143 A
+  [WARN] [DEC_00031] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00032] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0454 A
+  [WARN] [DEC_00032] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 400 new molecules
+  [OK] [DEC_00033] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0300 A
+  [WARN] [DEC_00033] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00034] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0201 A
+  [WARN] [DEC_00034] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00035] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2633 A
+  [WARN] [DEC_00035] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00036] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0734 A
+  [WARN] [DEC_00036] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00037] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0905 A
+  [WARN] [DEC_00037] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 405 new molecules
+  [OK] [DEC_00038] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2994 A
+  [WARN] [DEC_00038] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00039] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0804 A
+  [WARN] [DEC_00039] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00040] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1129 A
+  [WARN] [DEC_00040] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00041] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1811 A
+  [WARN] [DEC_00041] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00042] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1720 A
+  [WARN] [DEC_00042] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 410 new molecules
+  [OK] [DEC_00043] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0770 A
+  [WARN] [DEC_00043] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00044] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0892 A
+  [WARN] [DEC_00044] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00045] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2103 A
+  [WARN] [DEC_00045] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00046] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0530 A
+  [WARN] [DEC_00046] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00047] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0619 A
+  [WARN] [DEC_00047] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 415 new molecules
+  [OK] [DEC_00048] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0809 A
+  [WARN] [DEC_00048] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00049] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3544 A
+  [WARN] [DEC_00049] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00050] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0289 A
+  [WARN] [DEC_00050] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00051] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0222 A
+  [WARN] [DEC_00051] Optimization failed; using final single-point fallback
+  [OK] [DEC_00052] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0783 A
+  [WARN] [DEC_00052] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 420 new molecules
+  [OK] [DEC_00053] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3185 A
+  [WARN] [DEC_00053] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00054] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2943 A
+  [WARN] [DEC_00054] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00055] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0884 A
+  [WARN] [DEC_00055] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00056] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1085 A
+  [WARN] [DEC_00056] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00057] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2863 A
+  [WARN] [DEC_00057] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 425 new molecules
+  [OK] [DEC_00059] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0518 A
+  [WARN] [DEC_00059] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00060] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1098 A
+  [WARN] [DEC_00060] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00061] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0446 A
+  [WARN] [DEC_00061] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00062] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0361 A
+  [WARN] [DEC_00062] Optimization did not fully converge; using last geometry
+  [ERROR] [DEC_00063] skipped: conformer generation failed
+  [OK] Checkpoint saved after 430 new molecules
+  [OK] [DEC_00064] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2030 A
+  [WARN] [DEC_00064] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00065] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0738 A
+  [WARN] [DEC_00065] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00066] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0595 A
+  [WARN] [DEC_00066] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00067] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0652 A
+  [WARN] [DEC_00067] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00068] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0471 A
+  [WARN] [DEC_00068] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 435 new molecules
+  [OK] [DEC_00069] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0472 A
+  [WARN] [DEC_00069] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00070] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0548 A
+  [WARN] [DEC_00070] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00071] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0211 A
+  [WARN] [DEC_00071] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00072] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0288 A
+  [WARN] [DEC_00072] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00073] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3316 A
+  [WARN] [DEC_00073] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 440 new molecules
+  [OK] [DEC_00074] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0517 A
+  [WARN] [DEC_00074] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00075] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0825 A
+  [WARN] [DEC_00075] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00076] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0294 A
+  [WARN] [DEC_00076] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00077] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1321 A
+  [WARN] [DEC_00077] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00078] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0762 A
+  [WARN] [DEC_00078] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 445 new molecules
+  [OK] [DEC_00079] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2355 A
+  [WARN] [DEC_00079] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00080] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0998 A
+  [WARN] [DEC_00080] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00081] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1357 A
+  [WARN] [DEC_00081] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00082] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0711 A
+  [WARN] [DEC_00082] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00083] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0416 A
+  [WARN] [DEC_00083] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 450 new molecules
+  [OK] [DEC_00084] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0125 A
+  [WARN] [DEC_00084] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00085] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0180 A
+  [WARN] [DEC_00085] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00086] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0535 A
+  [WARN] [DEC_00086] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00087] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1878 A
+  [WARN] [DEC_00087] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00088] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7159 A
+  [WARN] [DEC_00088] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 455 new molecules
+  [OK] [DEC_00089] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2499 A
+  [WARN] [DEC_00089] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00090] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2921 A
+  [WARN] [DEC_00090] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00091] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0379 A
+  [WARN] [DEC_00091] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00092] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0768 A
+  [WARN] [DEC_00092] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00093] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3275 A
+  [WARN] [DEC_00093] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 460 new molecules
+  [OK] [DEC_00094] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3989 A
+  [WARN] [DEC_00094] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00095] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0594 A
+  [WARN] [DEC_00095] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00096] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0788 A
+  [WARN] [DEC_00096] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00097] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8778 A
+  [WARN] [DEC_00097] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00098] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0937 A
+  [WARN] [DEC_00098] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 465 new molecules
+  [OK] [DEC_00099] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0189 A
+  [WARN] [DEC_00099] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00100] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0184 A
+  [WARN] [DEC_00100] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00101] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0525 A
+  [WARN] [DEC_00101] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00102] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1044 A
+  [WARN] [DEC_00102] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00103] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0368 A
+  [WARN] [DEC_00103] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 470 new molecules
+  [OK] [DEC_00104] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0172 A
+  [WARN] [DEC_00104] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00105] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0995 A
+  [WARN] [DEC_00105] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00106] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0504 A
+  [WARN] [DEC_00106] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00107] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0987 A
+  [WARN] [DEC_00107] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00108] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0762 A
+  [WARN] [DEC_00108] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 475 new molecules
+  [OK] [DEC_00109] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0923 A
+  [WARN] [DEC_00109] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00110] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2427 A
+  [WARN] [DEC_00110] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00111] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7947 A
+  [WARN] [DEC_00111] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00112] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0240 A
+  [WARN] [DEC_00112] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00113] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3120 A
+  [WARN] [DEC_00113] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 480 new molecules
+  [OK] [DEC_00114] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2025 A
+  [WARN] [DEC_00114] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00115] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2267 A
+  [WARN] [DEC_00115] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00116] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0881 A
+  [WARN] [DEC_00116] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00117] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0742 A
+  [WARN] [DEC_00117] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00118] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0755 A
+  [WARN] [DEC_00118] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 485 new molecules
+  [OK] [DEC_00119] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5766 A
+  [WARN] [DEC_00119] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00120] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0318 A
+  [WARN] [DEC_00120] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00121] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0256 A
+  [WARN] [DEC_00121] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00122] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0270 A
+  [WARN] [DEC_00122] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00123] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0296 A
+  [WARN] [DEC_00123] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 490 new molecules
+  [OK] [DEC_00124] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1303 A
+  [WARN] [DEC_00124] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00125] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0262 A
+  [WARN] [DEC_00125] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00126] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0626 A
+  [WARN] [DEC_00126] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00127] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0852 A
+  [WARN] [DEC_00127] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00128] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2081 A
+  [WARN] [DEC_00128] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 495 new molecules
+  [OK] [DEC_00129] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0234 A
+  [WARN] [DEC_00129] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00130] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0868 A
+  [WARN] [DEC_00130] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00131] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0207 A
+  [WARN] [DEC_00131] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00132] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0499 A
+  [WARN] [DEC_00132] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00133] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0616 A
+  [WARN] [DEC_00133] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 500 new molecules
+  [OK] [DEC_00134] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3705 A
+  [WARN] [DEC_00134] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00135] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0623 A
+  [WARN] [DEC_00135] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00137] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2373 A
+  [WARN] [DEC_00137] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00138] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0327 A
+  [WARN] [DEC_00138] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00139] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0738 A
+  [WARN] [DEC_00139] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 505 new molecules
+  [OK] [DEC_00140] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0923 A
+  [WARN] [DEC_00140] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00141] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0333 A
+  [WARN] [DEC_00141] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00142] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1634 A
+  [WARN] [DEC_00142] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00143] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1991 A
+  [WARN] [DEC_00143] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00144] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0580 A
+  [WARN] [DEC_00144] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 510 new molecules
+  [OK] [DEC_00145] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0330 A
+  [WARN] [DEC_00145] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00146] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0382 A
+  [WARN] [DEC_00146] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00147] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0721 A
+  [WARN] [DEC_00147] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00148] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0836 A
+  [WARN] [DEC_00148] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00149] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1366 A
+  [WARN] [DEC_00149] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 515 new molecules
+  [OK] [DEC_00150] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0375 A
+  [WARN] [DEC_00150] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00151] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2926 A
+  [WARN] [DEC_00151] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00152] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1315 A
+  [WARN] [DEC_00152] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00153] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0908 A
+  [WARN] [DEC_00153] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00154] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0222 A
+  [WARN] [DEC_00154] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 520 new molecules
+  [OK] [DEC_00155] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0279 A
+  [WARN] [DEC_00155] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00156] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0606 A
+  [WARN] [DEC_00156] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00158] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0320 A
+  [WARN] [DEC_00158] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00159] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0207 A
+  [WARN] [DEC_00159] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00160] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7583 A
+  [WARN] [DEC_00160] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 525 new molecules
+  [OK] [DEC_00161] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0581 A
+  [WARN] [DEC_00161] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00163] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2277 A
+  [WARN] [DEC_00163] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00164] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7251 A
+  [WARN] [DEC_00164] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00165] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2346 A
+  [WARN] [DEC_00165] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00166] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1135 A
+  [WARN] [DEC_00166] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 530 new molecules
+  [OK] [DEC_00167] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2369 A
+  [WARN] [DEC_00167] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00168] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2579 A
+  [WARN] [DEC_00168] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00169] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7669 A
+  [WARN] [DEC_00169] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00170] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0684 A
+  [WARN] [DEC_00170] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00171] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8795 A
+  [WARN] [DEC_00171] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 535 new molecules
+  [OK] [DEC_00172] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3656 A
+  [WARN] [DEC_00172] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00173] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0309 A
+  [WARN] [DEC_00173] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00174] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0620 A
+  [WARN] [DEC_00174] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00175] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2147 A
+  [WARN] [DEC_00175] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00176] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2735 A
+  [WARN] [DEC_00176] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 540 new molecules
+  [OK] [DEC_00177] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0471 A
+  [WARN] [DEC_00177] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00178] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1377 A
+  [WARN] [DEC_00178] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00179] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0197 A
+  [WARN] [DEC_00179] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00180] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0500 A
+  [WARN] [DEC_00180] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00181] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0798 A
+  [WARN] [DEC_00181] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 545 new molecules
+  [OK] [DEC_00182] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2639 A
+  [WARN] [DEC_00182] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00184] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1000 A
+  [WARN] [DEC_00184] Optimization failed; using final single-point fallback
+  [OK] [DEC_00185] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1154 A
+  [WARN] [DEC_00185] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00186] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2901 A
+  [WARN] [DEC_00186] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00187] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0576 A
+  [WARN] [DEC_00187] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 550 new molecules
+  [OK] [DEC_00188] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1862 A
+  [WARN] [DEC_00188] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00189] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0744 A
+  [WARN] [DEC_00189] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00190] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1141 A
+  [WARN] [DEC_00190] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00191] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8479 A
+  [WARN] [DEC_00191] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00192] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7547 A
+  [WARN] [DEC_00192] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 555 new molecules
+  [OK] [DEC_00193] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1525 A
+  [WARN] [DEC_00193] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00194] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0834 A
+  [WARN] [DEC_00194] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00195] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8860 A
+  [WARN] [DEC_00195] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00196] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0805 A
+  [WARN] [DEC_00196] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00197] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3135 A
+  [WARN] [DEC_00197] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 560 new molecules
+  [OK] [DEC_00198] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0700 A
+  [WARN] [DEC_00198] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00199] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4448 A
+  [WARN] [DEC_00199] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00200] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1971 A
+  [WARN] [DEC_00200] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00201] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0397 A
+  [WARN] [DEC_00201] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00202] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0476 A
+  [WARN] [DEC_00202] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 565 new molecules
+  [OK] [DEC_00203] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0247 A
+  [WARN] [DEC_00203] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00204] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0362 A
+  [WARN] [DEC_00204] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00205] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1696 A
+  [WARN] [DEC_00205] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00207] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0797 A
+  [WARN] [DEC_00207] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00208] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0420 A
+  [WARN] [DEC_00208] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 570 new molecules
+  [OK] [DEC_00209] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3961 A
+  [WARN] [DEC_00209] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00210] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0310 A
+  [WARN] [DEC_00210] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00211] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0376 A
+  [WARN] [DEC_00211] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00212] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4129 A
+  [WARN] [DEC_00212] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00213] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1022 A
+  [WARN] [DEC_00213] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 575 new molecules
+  [OK] [DEC_00214] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3331 A
+  [WARN] [DEC_00214] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00215] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2159 A
+  [WARN] [DEC_00215] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00216] GFN2-xTB converged; RMSD(MMFF,xTB)=0.9091 A
+  [WARN] [DEC_00216] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00217] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0402 A
+  [WARN] [DEC_00217] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00218] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0292 A
+  [WARN] [DEC_00218] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 580 new molecules
+  [OK] [DEC_00219] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7369 A
+  [WARN] [DEC_00219] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00220] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4983 A
+  [WARN] [DEC_00220] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00221] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0511 A
+  [WARN] [DEC_00221] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00222] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4377 A
+  [WARN] [DEC_00222] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00223] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0416 A
+  [WARN] [DEC_00223] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 585 new molecules
+  [OK] [DEC_00224] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2150 A
+  [WARN] [DEC_00224] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00225] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1172 A
+  [WARN] [DEC_00225] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00226] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4548 A
+  [WARN] [DEC_00226] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00227] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0779 A
+  [WARN] [DEC_00227] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00228] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0326 A
+  [WARN] [DEC_00228] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 590 new molecules
+  [OK] [DEC_00229] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0270 A
+  [WARN] [DEC_00229] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00230] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0455 A
+  [WARN] [DEC_00230] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00231] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0860 A
+  [WARN] [DEC_00231] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00232] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0502 A
+  [WARN] [DEC_00232] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00233] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0910 A
+  [WARN] [DEC_00233] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 595 new molecules
+  [OK] [DEC_00234] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1248 A
+  [WARN] [DEC_00234] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00235] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0712 A
+  [WARN] [DEC_00235] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00236] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0685 A
+  [WARN] [DEC_00236] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00237] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3461 A
+  [WARN] [DEC_00237] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00238] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0303 A
+  [WARN] [DEC_00238] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 600 new molecules
+  [OK] [DEC_00239] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7164 A
+  [WARN] [DEC_00239] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00240] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8415 A
+  [WARN] [DEC_00240] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00241] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1115 A
+  [WARN] [DEC_00241] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00242] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8420 A
+  [WARN] [DEC_00242] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00243] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1792 A
+  [WARN] [DEC_00243] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 605 new molecules
+  [OK] [DEC_00244] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0689 A
+  [WARN] [DEC_00244] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00245] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0560 A
+  [WARN] [DEC_00245] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00246] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7994 A
+  [WARN] [DEC_00246] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00247] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0492 A
+  [WARN] [DEC_00247] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00248] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1156 A
+  [WARN] [DEC_00248] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 610 new molecules
+  [OK] [DEC_00249] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2252 A
+  [WARN] [DEC_00249] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00250] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1717 A
+  [WARN] [DEC_00250] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00251] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5973 A
+  [WARN] [DEC_00251] Optimization failed; using final single-point fallback
+  [OK] [DEC_00252] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0645 A
+  [WARN] [DEC_00252] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00253] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0901 A
+  [WARN] [DEC_00253] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 615 new molecules
+  [OK] [DEC_00254] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0463 A
+  [WARN] [DEC_00254] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00255] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0609 A
+  [WARN] [DEC_00255] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00256] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0341 A
+  [WARN] [DEC_00256] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00257] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0315 A
+  [WARN] [DEC_00257] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00258] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1677 A
+  [WARN] [DEC_00258] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 620 new molecules
+  [OK] [DEC_00259] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0628 A
+  [WARN] [DEC_00259] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00260] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1829 A
+  [WARN] [DEC_00260] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00261] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0219 A
+  [WARN] [DEC_00261] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00262] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1637 A
+  [WARN] [DEC_00262] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00263] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0673 A
+  [WARN] [DEC_00263] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 625 new molecules
+  [OK] [DEC_00264] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3307 A
+  [WARN] [DEC_00264] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00266] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2034 A
+  [WARN] [DEC_00266] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00267] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2618 A
+  [WARN] [DEC_00267] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00268] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0216 A
+  [WARN] [DEC_00268] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00269] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1116 A
+  [WARN] [DEC_00269] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 630 new molecules
+  [OK] [DEC_00270] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2365 A
+  [WARN] [DEC_00270] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00271] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2763 A
+  [WARN] [DEC_00271] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00272] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0568 A
+  [WARN] [DEC_00272] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00273] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0568 A
+  [WARN] [DEC_00273] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00275] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0627 A
+  [WARN] [DEC_00275] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 635 new molecules
+  [OK] [DEC_00276] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2752 A
+  [WARN] [DEC_00276] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00277] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0452 A
+  [WARN] [DEC_00277] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00278] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1465 A
+  [WARN] [DEC_00278] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00279] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1145 A
+  [WARN] [DEC_00279] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00280] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2371 A
+  [WARN] [DEC_00280] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 640 new molecules
+  [OK] [DEC_00281] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1370 A
+  [WARN] [DEC_00281] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00282] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3649 A
+  [WARN] [DEC_00282] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00283] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2284 A
+  [WARN] [DEC_00283] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00284] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1391 A
+  [WARN] [DEC_00284] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00285] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0919 A
+  [WARN] [DEC_00285] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 645 new molecules
+  [OK] [DEC_00286] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4087 A
+  [WARN] [DEC_00286] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00287] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1022 A
+  [WARN] [DEC_00287] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00289] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1657 A
+  [WARN] [DEC_00289] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00290] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1069 A
+  [WARN] [DEC_00290] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00291] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7569 A
+  [WARN] [DEC_00291] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 650 new molecules
+  [OK] [DEC_00292] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0243 A
+  [WARN] [DEC_00292] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00293] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0603 A
+  [WARN] [DEC_00293] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00294] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0375 A
+  [WARN] [DEC_00294] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00295] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1907 A
+  [WARN] [DEC_00295] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00296] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4683 A
+  [WARN] [DEC_00296] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 655 new molecules
+  [OK] [DEC_00297] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3457 A
+  [WARN] [DEC_00297] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00298] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0443 A
+  [WARN] [DEC_00298] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00299] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0563 A
+  [WARN] [DEC_00299] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00300] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5920 A
+  [WARN] [DEC_00300] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00301] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6125 A
+  [WARN] [DEC_00301] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 660 new molecules
+  [OK] [DEC_00302] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0337 A
+  [WARN] [DEC_00302] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00303] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0756 A
+  [WARN] [DEC_00303] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00304] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5528 A
+  [WARN] [DEC_00304] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00305] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3960 A
+  [WARN] [DEC_00305] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00306] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1741 A
+  [WARN] [DEC_00306] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 665 new molecules
+  [OK] [DEC_00307] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2459 A
+  [WARN] [DEC_00307] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00308] GFN2-xTB converged; RMSD(MMFF,xTB)=0.9911 A
+  [WARN] [DEC_00308] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00309] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0213 A
+  [WARN] [DEC_00309] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00310] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2543 A
+  [WARN] [DEC_00310] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00311] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1208 A
+  [WARN] [DEC_00311] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 670 new molecules
+  [OK] [DEC_00312] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1035 A
+  [WARN] [DEC_00312] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00313] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0337 A
+  [WARN] [DEC_00313] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00314] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0604 A
+  [WARN] [DEC_00314] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00315] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0608 A
+  [WARN] [DEC_00315] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00316] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3541 A
+  [WARN] [DEC_00316] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 675 new molecules
+  [OK] [DEC_00317] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0581 A
+  [WARN] [DEC_00317] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00318] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0355 A
+  [WARN] [DEC_00318] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00319] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1489 A
+  [WARN] [DEC_00319] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00320] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0659 A
+  [WARN] [DEC_00320] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00321] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0748 A
+  [WARN] [DEC_00321] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 680 new molecules
+  [OK] [DEC_00322] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1752 A
+  [WARN] [DEC_00322] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00323] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0201 A
+  [WARN] [DEC_00323] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00324] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3613 A
+  [WARN] [DEC_00324] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00325] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1082 A
+  [WARN] [DEC_00325] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00326] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0848 A
+  [WARN] [DEC_00326] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 685 new molecules
+  [OK] [DEC_00327] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2898 A
+  [WARN] [DEC_00327] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00328] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0291 A
+  [WARN] [DEC_00328] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00329] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0179 A
+  [WARN] [DEC_00329] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00331] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2508 A
+  [WARN] [DEC_00331] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00332] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2610 A
+  [WARN] [DEC_00332] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 690 new molecules
+  [OK] [DEC_00333] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2003 A
+  [WARN] [DEC_00333] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00334] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0216 A
+  [WARN] [DEC_00334] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00335] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1415 A
+  [WARN] [DEC_00335] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00336] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3994 A
+  [WARN] [DEC_00336] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00337] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0286 A
+  [WARN] [DEC_00337] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 695 new molecules
+  [OK] [DEC_00338] GFN2-xTB converged; RMSD(MMFF,xTB)=0.7160 A
+  [WARN] [DEC_00338] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00339] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5874 A
+  [WARN] [DEC_00339] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00340] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0599 A
+  [WARN] [DEC_00340] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00341] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0983 A
+  [WARN] [DEC_00341] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00342] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1668 A
+  [WARN] [DEC_00342] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 700 new molecules
+  [OK] [DEC_00343] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2477 A
+  [WARN] [DEC_00343] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00344] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1292 A
+  [WARN] [DEC_00344] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00345] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0830 A
+  [WARN] [DEC_00345] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00347] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2388 A
+  [WARN] [DEC_00347] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00348] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0217 A
+  [WARN] [DEC_00348] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 705 new molecules
+  [OK] [DEC_00349] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0493 A
+  [WARN] [DEC_00349] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00350] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0322 A
+  [WARN] [DEC_00350] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00351] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1559 A
+  [WARN] [DEC_00351] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00352] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0786 A
+  [WARN] [DEC_00352] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00353] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2059 A
+  [WARN] [DEC_00353] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 710 new molecules
+  [OK] [DEC_00354] GFN2-xTB converged; RMSD(MMFF,xTB)=0.3708 A
+  [WARN] [DEC_00354] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00355] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0425 A
+  [WARN] [DEC_00355] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00356] GFN2-xTB converged; RMSD(MMFF,xTB)=1.1163 A
+  [WARN] [DEC_00356] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00357] GFN2-xTB converged; RMSD(MMFF,xTB)=0.2487 A
+  [WARN] [DEC_00357] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00358] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8970 A
+  [WARN] [DEC_00358] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 715 new molecules
+  [OK] [DEC_00359] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8982 A
+  [WARN] [DEC_00359] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00360] GFN2-xTB converged; RMSD(MMFF,xTB)=0.5170 A
+  [WARN] [DEC_00360] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00361] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0357 A
+  [WARN] [DEC_00361] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00362] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1176 A
+  [WARN] [DEC_00362] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00363] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0429 A
+  [WARN] [DEC_00363] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 720 new molecules
+  [OK] [DEC_00364] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0352 A
+  [WARN] [DEC_00364] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00365] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1296 A
+  [WARN] [DEC_00365] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00366] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0709 A
+  [WARN] [DEC_00366] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00367] GFN2-xTB converged; RMSD(MMFF,xTB)=0.8298 A
+  [WARN] [DEC_00367] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00368] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0599 A
+  [WARN] [DEC_00368] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 725 new molecules
+  [OK] [DEC_00369] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0937 A
+  [WARN] [DEC_00369] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00370] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0879 A
+  [WARN] [DEC_00370] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00371] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0217 A
+  [WARN] [DEC_00371] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00372] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0271 A
+  [WARN] [DEC_00372] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00374] GFN2-xTB converged; RMSD(MMFF,xTB)=0.9510 A
+  [WARN] [DEC_00374] Optimization did not fully converge; using last geometry
+  [OK] Checkpoint saved after 730 new molecules
+  [OK] [DEC_00375] GFN2-xTB converged; RMSD(MMFF,xTB)=0.6930 A
+  [WARN] [DEC_00375] Optimization did not fully converge; using last geometry
+  [OK] [DEC_00376] GFN2-xTB converged; RMSD(MMFF,xTB)=0.1091 A
+  [WARN] [DEC_00376] Optimization did not fully converge; using last geometry
+
+[OK] xTB+DFT+D3 stage complete in 3 days, 6:12:43
+     xTB converged:        731/732
+     xTB failed/skipped:   0
+     Converged SCF:        731/732
+     Optimized geometries: 1/732
+     SCF not converged:    0
+     Errors:               1
+     Checkpoint:           /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/_dft_checkpoint.parquet
+     DFT run log:          /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/dft_logs/dft_run_full.log
+     Per-molecule logs:    /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/dft_logs
+     xTB calculation dirs: /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/calculations
+
+============================================================
+  STEP 3: BUILDING DFT DESCRIPTOR TABLE
+============================================================
+  DFT/geometric features available: 27
+    dft_homo_ev                             : 731/732 non-null
+    dft_lumo_ev                             : 731/732 non-null
+    dft_homo_lumo_gap_ev                    : 731/732 non-null
+    dft_total_energy_hartree                : 731/732 non-null
+    dft_dipole_debye                        : 731/732 non-null
+    mmff_energy                             : 731/732 non-null
+    dft_mulliken_charge_mean                : 731/732 non-null
+    dft_mulliken_charge_std                 : 731/732 non-null
+    dft_mulliken_charge_max                 : 731/732 non-null
+    dft_mulliken_charge_min                 : 731/732 non-null
+    dft_mulliken_charge_range               : 731/732 non-null
+    dft_ionization_potential_ev             : 731/732 non-null
+    dft_electron_affinity_ev                : 731/732 non-null
+    dft_chemical_hardness_ev                : 731/732 non-null
+    dft_electronegativity_ev                : 731/732 non-null
+    dft_electrophilicity_ev                 : 731/732 non-null
+    dft_n_electrons                         : 731/732 non-null
+    dft_n_basis_functions                   : 731/732 non-null
+    formal_charge                           : 731/732 non-null
+    spin                                    : 731/732 non-null
+    d_av_A                                  : 731/732 non-null
+    ECN                                     : 731/732 non-null
+    Rg_A                                    : 731/732 non-null
+    HCM                                     : 731/732 non-null
+    HD_A                                    : 731/732 non-null
+    dQ_A                                    : 731/732 non-null
+    alignment_RMSD_A                        : 731/732 non-null
+
+--- Merging with classical features from P3 ---
+  Classical features: 2103
+  DFT features:      27
+  Combined total:    2130
+
+[OK] Saved combined features: dft_features_combined.parquet
+[OK] Saved DFT descriptors: dft_descriptors_all.parquet
+
+============================================================
+  DFT DESCRIPTOR STATISTICS
+============================================================
+                             count      mean       std        min       25%       50%       75%       max  non_null
+dft_homo_ev                  731.0   -3.8299    0.5821    -7.4143   -4.0300   -3.7488   -3.5282   -2.0279       731
+dft_lumo_ev                  731.0    2.9251    1.8308    -0.1816    1.9474    2.4579    3.0667    9.4860       731
+dft_homo_lumo_gap_ev         731.0    6.7550    1.8056     3.7994    5.8411    6.1801    7.0397   16.2960       731
+dft_total_energy_hartree     731.0 -645.9548  542.9956 -7194.6888 -648.5231 -530.9111 -456.1044 -190.6844       731
+dft_dipole_debye             731.0    1.7439    0.9321     0.0000    1.0792    1.6137    2.3766    4.9150       731
+mmff_energy                  731.0   14.9265   27.3388  -130.5290   -2.0103   17.2055   31.6136  122.3193       731
+dft_mulliken_charge_mean     731.0   -0.0000    0.0000    -0.0000   -0.0000   -0.0000    0.0000    0.0000       731
+dft_mulliken_charge_std      731.0    0.1206    0.0181     0.0228    0.1103    0.1192    0.1295    0.2428       731
+dft_mulliken_charge_max      731.0    0.1785    0.0678     0.0228    0.1592    0.1914    0.2117    0.9945       731
+dft_mulliken_charge_min      731.0   -0.2367    0.0350    -0.4243   -0.2501   -0.2347   -0.2229   -0.0228       731
+dft_mulliken_charge_range    731.0    0.4152    0.0907     0.0456    0.3931    0.4300    0.4515    1.4189       731
+dft_ionization_potential_ev  731.0    3.8299    0.5821     2.0279    3.5282    3.7488    4.0300    7.4143       731
+dft_electron_affinity_ev     731.0   -2.9251    1.8308    -9.4860   -3.0667   -2.4579   -1.9474    0.1816       731
+dft_chemical_hardness_ev     731.0    3.3775    0.9028     1.8997    2.9206    3.0900    3.5199    8.1480       731
+dft_electronegativity_ev     731.0    0.4524    1.0150    -2.1472    0.3408    0.6408    1.0307    3.0070       731
+dft_electrophilicity_ev      731.0    0.1787    0.1939     0.0000    0.0425    0.1049    0.2662    1.3210       731
+dft_n_electrons              731.0   93.4802   32.7246    32.0000   78.0000   88.0000  104.0000  254.0000       731
+dft_n_basis_functions        731.0   76.2585   27.1646    23.0000   63.0000   72.0000   84.0000  214.0000       731
+formal_charge                731.0    0.0000    0.0000     0.0000    0.0000    0.0000    0.0000    0.0000       731
+spin                         731.0    0.0000    0.0000     0.0000    0.0000    0.0000    0.0000    0.0000       731
+d_av_A                       731.0    1.1406    0.0353     1.0780    1.1226    1.1346    1.1529    1.4609       731
+ECN                          731.0    1.4237    0.0893     1.0022    1.3607    1.4220    1.4774    1.6891       731
+Rg_A                         731.0    3.2054    0.7071     1.6097    2.8158    3.1148    3.5197    6.5596       731
+HCM                          731.0    0.4305    0.2361     0.0000    0.2633    0.3636    0.5605    1.1683       731
+HD_A                         731.0    3.9319    2.4597     0.0000    2.2648    3.1233    4.9159   14.3687       731
+dQ_A                         731.0    9.1480    2.4705     3.2666    7.6383    8.8977   10.3621   21.1089       731
+alignment_RMSD_A             731.0    1.8984    0.6867     0.0000    1.4564    1.8536    2.3247    5.0957       731
+
+============================================================
+  VALIDATION TESTS: Geometric Descriptors
+============================================================
+
+[TEST A] Diatomic structure (H-H at distance 0.74 Å)...
+  ✓ d_av = 0.740000 Å, ECN = 1.000000
+
+[TEST B] Invariance to translation and rotation...
+  ✓ Translation invariant: d_av, Rg, HCM unchanged
+
+[TEST C] Achiral planar geometry...
+  ✓ HCM = 0.000000 (achiral)
+
+[TEST D] Single atom system...
+  ✓ Single atom handled correctly
+
+[OK] All validation tests passed!
+============================================================
+
+--- Generating distribution plots ---
+[OK] Saved plots: P3Z_dft_distributions.png
+[OK] Computation log saved: dft_computation_log.json
+[OK] Checkpoint file retained at: _dft_checkpoint.parquet
+
+============================================================
+  P3Z COMPLETE — DFT Optimization + Geometric Descriptors
+============================================================
+  Total Molecules:         732
+  Conformer Success:       731/732
+  xTB Pre-Optimization:    GFN2-xTB (tight, gas)
+  xTB Converged:           731/732
+  DFT Method:              B3LYP/sto-3g-D3
+  Geometry Optimization:   SciPy L-BFGS-B Cartesian gradients
+  Total Converged:         731
+  Geometries Optimized:    1
+  DFT Features:            27
+  Geometric Descriptors:   d_av, ECN, Rg, HCM (+ per-atom)
+  ArbAlign for HCM:        No (Fallback: Hungarian+Kabsch)
+  Conformer Time:          0:00:56
+  Optimization Time:       3 days, 6:12:43
+  Total Time:              3 days, 6:13:39
+  Artifacts Directory:     /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts
+
+  Output Files:
+    1. dft_descriptors_all.parquet
+    2. dft_features_combined.parquet
+    3. dft_computation_log.json
+    4. descriptors_summary.csv
+    5. descriptors_per_atom.csv
+    6. P3Z_dft_distributions.png
+============================================================
+
+============================================================
+  BUILDING GEOMETRIC DESCRIPTOR SUMMARY
+============================================================
+
+[OK] Geometric descriptors computed for 731 molecules
+[WARN] 1 molecules had descriptor warnings/errors
+
+[OK] Descriptor summary saved: descriptors_summary.csv
+[OK] Per-atom descriptors saved: descriptors_per_atom.csv
+
+============================================================
+  DESCRIPTOR SUMMARY (first 10 rows)
+============================================================
+  compound_id xtb_converged dft_start_geometry_source   d_av_A      ECN     Rg_A      HCM descriptor_status
+0   REP_00001          True                  GFN2-xTB 1.172685 1.539308 5.269603 0.701664           success
+1   REP_00002          True                  GFN2-xTB 1.167264 1.558772 5.144912 0.688168           success
+2   REP_00003          True                  GFN2-xTB 1.150933 1.493123 4.331474 0.307689           success
+3   REP_00004          True                  GFN2-xTB 1.180507 1.601431 3.674351 0.215298           success
+4   REP_00005          True                  GFN2-xTB 1.188440 1.409804 4.205744 0.774778           success
+5   REP_00006          True                  GFN2-xTB 1.216991 1.578671 2.629244 0.572926           success
+6   REP_00007          True                  GFN2-xTB 1.199295 1.657589 4.483019 0.264917           success
+7   REP_00008          True                  GFN2-xTB 1.143086 1.431859 3.703584 0.313325           success
+8   REP_00009          True                  GFN2-xTB 1.225011 1.580838 2.702835 0.635993           success
+9   REP_00010          True                  GFN2-xTB 1.174970 1.537263 5.714219 0.145062           success
+---
+Done: 2026-07-09T23:23:54+0200

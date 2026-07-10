@@ -1,0 +1,24 @@
+[2026-07-06 14:29:14]   [DFT] build PySCF molecule: atoms=3 charge=0 spin=0
+[2026-07-06 14:29:14]   [LOG] Run log: /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/dft_logs/dft_run_smoke_1.log
+[2026-07-06 14:29:14]   [LOG] Per-molecule logs: /home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/dft_logs
+[2026-07-06 14:29:14]   [DFT] molecule 1/1: REP_00001
+[2026-07-06 14:29:14] ========================================================================
+[2026-07-06 14:29:14] BEGIN compound_id=REP_00001 molecule_index=1/1 method=DFT-b3lyp/sto-3g-D3
+[2026-07-06 14:29:14] settings functional=b3lyp basis=sto-3g D3=True geom_max_steps=3 scf_max_cycles=50
+[2026-07-06 14:29:14]   [xTB] [REP_00001] start: atoms=60 charge=0 multiplicity=1 opt=tight solvent=gas
+[2026-07-06 14:29:53]   [OK] [REP_00001] GFN2-xTB converged; RMSD(MMFF,xTB)=1.1951 A
+[2026-07-06 14:29:53]   [DFT] build PySCF molecule: atoms=60 charge=0 spin=0
+[2026-07-06 14:29:53]   [DFT] [REP_00001] start
+[2026-07-06 14:29:53]   [OPT] [REP_00001] start: atoms=60, basis=sto-3g, D3=True, maxiter=3
+[2026-07-06 14:32:22]   [OPT] [REP_00001] eval=001 E=-1453.4630963472 Ha max|grad|=1.832e-01 Ha/Bohr SCF=True time=149.2s
+[2026-07-06 14:35:38]   [OPT] [REP_00001] eval=002 E=-1453.4145246912 Ha max|grad|=1.517e-01 Ha/Bohr SCF=True time=196.0s
+[2026-07-06 14:38:14]   [OPT] [REP_00001] eval=003 E=-1453.5277430716 Ha max|grad|=6.519e-02 Ha/Bohr SCF=True time=156.2s
+[2026-07-06 14:40:48]   [OPT] [REP_00001] eval=004 E=-1453.5414504375 Ha max|grad|=3.456e-02 Ha/Bohr SCF=True time=154.2s
+[2026-07-06 14:43:23]   [OPT] [REP_00001] eval=005 E=-1453.5513742897 Ha max|grad|=1.163e-02 Ha/Bohr SCF=True time=154.7s
+[2026-07-06 14:43:23]   [OPT] [REP_00001] done: success=False nit=3 neval=5 max|grad|=1.163e-02 message=STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+[2026-07-06 14:43:23]   [WARN] [REP_00001] Optimization did not fully converge; using last geometry
+[2026-07-06 14:43:23]   [DFT] [REP_00001] final single-point start
+[2026-07-06 14:45:17]   [DFT] [REP_00001] final SCF done: E=-1453.5513742897 Ha converged=True time=114.0s
+[2026-07-06 14:45:17]   [DFT] [REP_00001] descriptors: HOMO=-4.1128 eV LUMO=0.1077 eV gap=4.2204 eV opt_status=opt_not_converged: STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+[2026-07-06 14:45:17] END compound_id=REP_00001
+[2026-07-06 14:45:17]   [DFT] [REP_00001] status=converged opt=opt_not_converged: STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT gap=4.220423221417069

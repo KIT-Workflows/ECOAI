@@ -1,0 +1,76 @@
+{
+  "pipeline": "P3Z \u2014 DFT Geometry Optimization + Descriptor Computation",
+  "random_seed": 42,
+  "geometry_optimization": {
+    "optimizer": "SciPy L-BFGS-B Cartesian gradients",
+    "enabled": true
+  },
+  "dft_settings": {
+    "functional": "b3lyp",
+    "basis_set": "sto-3g",
+    "max_scf_cycles": 50,
+    "convergence_tolerance": 1e-06,
+    "grid_level": 3,
+    "dispersion_correction": "D3"
+  },
+  "conformer_generation": {
+    "n_conformers_per_mol": 30,
+    "mmff_max_iters": 500,
+    "success": 731,
+    "failed": 1,
+    "time_seconds": 56
+  },
+  "xtb_preoptimization": {
+    "enabled": true,
+    "method": "GFN2-xTB",
+    "xtb_version": "6.7.1",
+    "optimization_level": "tight",
+    "max_cycles": 500,
+    "solvent": "gas",
+    "converged": 731,
+    "failed_or_skipped": 0,
+    "fallback_to_mmff_after_failure": false,
+    "calculation_root": "/home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/calculations"
+  },
+  "dft_calculations": {
+    "converged": 731,
+    "geometries_optimized": 1,
+    "scf_not_converged": 0,
+    "errors": 1,
+    "time_seconds": 281563
+  },
+  "dft_features": [
+    "dft_homo_ev",
+    "dft_lumo_ev",
+    "dft_homo_lumo_gap_ev",
+    "dft_total_energy_hartree",
+    "dft_dipole_debye",
+    "mmff_energy",
+    "dft_mulliken_charge_mean",
+    "dft_mulliken_charge_std",
+    "dft_mulliken_charge_max",
+    "dft_mulliken_charge_min",
+    "dft_mulliken_charge_range",
+    "dft_ionization_potential_ev",
+    "dft_electron_affinity_ev",
+    "dft_chemical_hardness_ev",
+    "dft_electronegativity_ev",
+    "dft_electrophilicity_ev",
+    "dft_n_electrons",
+    "dft_n_basis_functions",
+    "formal_charge",
+    "spin",
+    "d_av_A",
+    "ECN",
+    "Rg_A",
+    "HCM",
+    "HD_A",
+    "dQ_A",
+    "alignment_RMSD_A"
+  ],
+  "total_molecules": 732,
+  "output_files": {
+    "dft_descriptors": "/home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/dft_descriptors_all.parquet",
+    "combined_features": "/home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/dft_features_combined.parquet"
+  }
+}
