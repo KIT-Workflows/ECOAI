@@ -14,9 +14,14 @@ __pycache__/
 ecoenv/
 # Standardized ignore for all archived plot folders
 **/old_plots/
-**/temp_plot.py
+**/temp_plot.
+old/
  
 temp/
+tmp/
 supp_material/verify_supplementary.py
-All_plots/
-OLD_MD.md
+
+# Ignore legacy lowercase phase directories (P1, P2, P3 are the new active folders)
+experiment/phase1_data_curation/
+experiment/phase2_scaffold_splitting/
+experiment/phase3_feature_engineering/
