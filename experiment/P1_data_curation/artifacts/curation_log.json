@@ -1,0 +1,52 @@
+{
+  "pipeline": "P1 \u2014 Data Curation",
+  "timestamp_utc": "2026-06-15T12:06:57.385644+00:00",
+  "random_seed": 42,
+  "input_files": {
+    "repellent": {
+      "path": "G:\\research\\ECOAI\\Datasets\\ECOAI_repellent_dataset_Indexed_Literature+USDA_report.sdf",
+      "size_bytes": 692466
+    },
+    "non_repellent": {
+      "path": "G:\\research\\ECOAI\\Datasets\\ECOAI_non_repellent_dataset_USDA_report.sdf",
+      "size_bytes": 1603630
+    },
+    "insecticide": {
+      "path": "G:\\research\\ECOAI\\Datasets\\ECOAI_insecticides_dataset_LifeChemicals.sdf",
+      "size_bytes": 9634489
+    },
+    "natural_product": {
+      "path": "G:\\research\\ECOAI\\Datasets\\ECOAI_natural_products_dataset_EssOilDB.sdf",
+      "size_bytes": 2042379
+    }
+  },
+  "output_file": {
+    "path": "G:\\research\\ECOAI\\experiment\\P1_data_curation\\artifacts\\curated_molecules.parquet",
+    "size_bytes": 789092,
+    "sha256": "9dbd400559d2fde88734271955116b5c42215ccd95717414e44e0d0fcb92ef86"
+  },
+  "counts": {
+    "total_raw": 6362,
+    "total_curated": 6105,
+    "by_source": {
+      "insecticide": 3099,
+      "natural_product": 1404,
+      "non_repellent": 1191,
+      "repellent": 411
+    },
+    "by_qc_status": {
+      "pass": 6102,
+      "parse_failed": 2,
+      "too_small": 1
+    },
+    "labeled_pass": {
+      "repellent": 411,
+      "non_repellent": 1191,
+      "dual_active": 30,
+      "unlabeled": 4500
+    },
+    "class_imbalance_ratio": 2.94,
+    "unique_scaffolds": 961,
+    "duplicates_removed": 257
+  }
+}
