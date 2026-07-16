@@ -1,0 +1,11 @@
+{
+  "compound_id": "REP_00001",
+  "method": "B3LYP/sto-3g",
+  "hessian_includes_d3": false,
+  "n_modes": 18,
+  "n_imaginary_modes": 0,
+  "min_frequency_cm1": 97.44325802059697,
+  "max_ir_intensity_km_mol": 57.11777350522247,
+  "ir_intensity_sum_km_mol": 114.40256207296115,
+  "ir_spectrum_path": "/Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/calculations/REP_00001/vibrations/ir_spectrum.npz"
+}

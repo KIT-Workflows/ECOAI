@@ -1,0 +1,10 @@
+{
+  "compound_id": "REP_00001",
+  "status": "success",
+  "policy": "full_deuteration",
+  "n_deuterated_sites": 4,
+  "shift_definition": "neutral_frequency_cm1 - deuterated_frequency_cm1",
+  "shift_mean_cm1": 352.659756208825,
+  "shift_max_cm1": 911.8209604022827,
+  "shift_min_cm1": 4.830513267509332
+}

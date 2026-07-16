@@ -259,6 +259,22 @@ ANION_GRID_LEVEL = _env_int("P3Z_ANION_GRID_LEVEL", 3)
 # Checkpoint: save progress every N molecules
 CHECKPOINT_EVERY = _env_int("P3Z_CHECKPOINT_EVERY", 5)
 
+# Sharded SLURM array runs: split QC-pass molecules across independent workers.
+NUM_SHARDS = _env_int("P3Z_NUM_SHARDS", 1)
+_shard_index_env = os.environ.get("P3Z_SHARD_INDEX")
+if _shard_index_env is None and os.environ.get("SLURM_ARRAY_TASK_ID") is not None:
+    SHARD_INDEX = int(os.environ["SLURM_ARRAY_TASK_ID"])
+else:
+    SHARD_INDEX = _env_int("P3Z_SHARD_INDEX", 0)
+if NUM_SHARDS < 1:
+    raise ValueError("P3Z_NUM_SHARDS must be >= 1")
+if not (0 <= SHARD_INDEX < NUM_SHARDS):
+    raise ValueError(f"P3Z_SHARD_INDEX must be in [0, {NUM_SHARDS})")
+
+SKIP_VALIDATION = _env_flag("P3Z_SKIP_VALIDATION", NUM_SHARDS > 1)
+PREPARE_CONFORMERS_ONLY = _env_flag("P3Z_PREPARE_CONFORMERS_ONLY", False)
+AUTO_RESUBMIT_ON_INCOMPLETE = _env_flag("P3Z_AUTO_RESUBMIT_ON_INCOMPLETE", False)
+
 # DFT diagnostics. Concise optimization logs are enabled by default for small runs only.
 DFT_DIAGNOSTICS = _env_flag(
     "P3Z_DFT_DIAGNOSTICS",
@@ -344,6 +360,11 @@ elif MAX_DFT_MOLECULES > 0:
     CHECKPOINT_FILE = ARTIFACTS_DIR / f"_dft_checkpoint_{run_scope_tag}.parquet"
     DFT_RUN_LOG_FILE = DFT_LOG_DIR / f"dft_run_{run_scope_tag}.log"
     print(f"[TEST] MAX_DFT_MOLECULES={MAX_DFT_MOLECULES}; set P3Z_MAX_MOLECULES=0 for the production-profile dataset.")
+elif NUM_SHARDS > 1:
+    run_scope_tag = f"shard_{SHARD_INDEX:03d}_of_{NUM_SHARDS:03d}"
+    CHECKPOINT_FILE = ARTIFACTS_DIR / f"_dft_checkpoint_{run_scope_tag}.parquet"
+    DFT_RUN_LOG_FILE = DFT_LOG_DIR / f"dft_run_{run_scope_tag}.log"
+    print(f"[SHARD] Shard {SHARD_INDEX + 1}/{NUM_SHARDS} for {SELECTION_MODE} selection.")
 else:
     run_scope_tag = "full"
     CHECKPOINT_FILE = ARTIFACTS_DIR / "_dft_checkpoint.parquet"
@@ -354,6 +375,7 @@ print(f"[DEBUG] DFT log files: {DFT_WRITE_LOGS} | PySCF file verbose: {PYSCF_LOG
 print(f"[DEBUG] xTB preoptimization: {USE_XTB_PREOPT} | opt={XTB_OPT_LEVEL} | cycles={XTB_MAX_CYCLES} | solvent={XTB_SOLVENT or 'gas'}")
 print(f"[DEBUG] Auto-install xTB in Colab if missing: {AUTO_INSTALL_XTB_IN_COLAB}")
 print(f"[DEBUG] xTB fallback to MMFF after failure: {ALLOW_DFT_FROM_ORIGINAL_GEOMETRY_AFTER_XTB_FAILURE}")
+print(f"[DEBUG] Shards: {SHARD_INDEX + 1}/{NUM_SHARDS} | skip_validation={SKIP_VALIDATION}")
 print(f"[DEBUG] Selection mode: {SELECTION_MODE} | pilot mode: {PILOT_MODE} | limit={ACTIVE_SELECTION_LIMIT or 'all'}")
 print(f"[DEBUG] Stages: vibrations={COMPUTE_VIBRATIONS} ir={COMPUTE_IR_SPECTRA} hd={COMPUTE_HD_SHIFTS} vertical_ea={COMPUTE_VERTICAL_EA}")
 print(f"[DEBUG] Run fingerprint: {RUN_SETTINGS_FINGERPRINT[:12]}")

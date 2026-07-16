@@ -1,0 +1,12 @@
+{
+  "compound_id": "DEC_00001",
+  "status": "success",
+  "neutral_charge": 0,
+  "neutral_spin": 0,
+  "anion_charge": -1,
+  "anion_spin": 1,
+  "neutral_energy_hartree": -266.05065264800413,
+  "anion_energy_hartree": -265.69088218553895,
+  "vertical_ea_ev": -9.789857962324954,
+  "definition": "(E_neutral_fixed - E_anion_fixed) * 27.2114"
+}

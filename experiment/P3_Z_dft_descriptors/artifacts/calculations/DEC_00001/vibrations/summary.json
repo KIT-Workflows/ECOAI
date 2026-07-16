@@ -1,0 +1,11 @@
+{
+  "compound_id": "DEC_00001",
+  "method": "B3LYP/sto-3g",
+  "hessian_includes_d3": false,
+  "n_modes": 33,
+  "n_imaginary_modes": 0,
+  "min_frequency_cm1": 136.30017259410957,
+  "max_ir_intensity_km_mol": 327.89093612219017,
+  "ir_intensity_sum_km_mol": 766.563987847026,
+  "ir_spectrum_path": "/Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/calculations/DEC_00001/vibrations/ir_spectrum.npz"
+}

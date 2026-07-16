@@ -26,7 +26,7 @@
   "energy_Eh": -5.070544344124,
   "gradient_norm_Eh_per_bohr": 0.000196268851,
   "optimization_cycles": 4,
-  "wall_time_seconds": 0.04689598083496094,
+  "wall_time_seconds": 0.025058984756469727,
   "input_geometry_hash": "368e395afa62a25975483022048d1d7e2650173fd8c19697c68f167dcdeb5146",
   "input_geometry_path": "/Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/_xtb_validation/VALIDATION_H2O/xtb_preopt/xtb_input.xyz",
   "output_geometry_path": "/Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/_xtb_validation/VALIDATION_H2O/xtb_preopt/xtbopt.xyz",

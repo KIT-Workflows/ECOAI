@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import pickle
+import signal
 import time
 import traceback
 import warnings
@@ -37,7 +38,8 @@ from p3z_dft.rdkit_geom import (
     infer_rdkit_charge_spin_multiplicity,
     rdkit_symbols_and_coordinates,
 )
-from p3z_dft.selection import select_balanced_labeled_subset, select_representative_pilot
+from p3z_dft.selection import select_balanced_labeled_subset, select_representative_pilot, filter_dataframe_shard
+from p3z_dft.shard_progress import shard_progress
 from p3z_dft.vibrations import build_ir_spectrum, full_deuteration_masses
 from p3z_dft.xtb_preopt import (
     XTB_METHOD,
@@ -48,140 +50,40 @@ from p3z_dft.xtb_preopt import (
 from p3z_dft.config import *  # noqa: F403
 
 
-def main() -> None:
-    """Run the full P3-Z workflow."""
-    RDLogger.logger().setLevel(RDLogger.ERROR)
-    warnings.filterwarnings("ignore")
+_checkpoint_flush_state: dict[str, object] = {}
 
-    os.environ.setdefault(
-        "CONDA_DEFAULT_PATH",
-        str(os.path.expanduser("~/miniforge3/etc/profile.d/conda.sh")),
-    )
-    print("Exported CONDA_DEFAULT_PATH:", os.environ["CONDA_DEFAULT_PATH"])
-    print("P3Z_INPUT_PARQUET preset:", os.environ.get("P3Z_INPUT_PARQUET", "<auto>"))
-    print("P3Z_CLASSICAL_FEATURES preset:", os.environ.get("P3Z_CLASSICAL_FEATURES", "<auto>"))
 
-    runtime.initialize_runtime(require_input=True)
+def _flush_checkpoint_now() -> None:
+    records = _checkpoint_flush_state.get("records_by_id")
+    checkpoint_path = _checkpoint_flush_state.get("checkpoint_file")
+    if not isinstance(records, dict) or not isinstance(checkpoint_path, Path):
+        return
+    if not records:
+        return
+    pd.DataFrame(records.values()).to_parquet(checkpoint_path, index=False, engine="pyarrow")
+    print(f"[OK] Checkpoint flushed: {checkpoint_path.name}")
 
-    df = pd.read_parquet(INPUT_PARQUET)
-    df_pass = df[df["qc_status"] == "pass"].copy().reset_index(drop=True)
-    df_labeled_all = df_pass[df_pass["repellent_active"].notna()].copy().reset_index(drop=True)
 
-    if SELECTION_MODE == "labeled_only":
-        df_selected_all = df_labeled_all.copy().reset_index(drop=True)
-    else:
-        df_selected_all = df_pass.copy().reset_index(drop=True)
+def _handle_termination_signal(signum: int, _frame: object) -> None:
+    print(f"[WARN] Received signal {signum}; flushing checkpoint before exit.")
+    _flush_checkpoint_now()
+    raise SystemExit(128 + signum)
 
-    if PILOT_MODE == "representative" and ACTIVE_SELECTION_LIMIT > 0:
-        df_selected, pilot_bucket_counts = select_representative_pilot(df_selected_all, ACTIVE_SELECTION_LIMIT)
-        print(f"\n[PILOT] Using representative pilot subset: {len(df_selected)} of {len(df_selected_all)} molecules.")
-        for bucket_name, bucket_count in pilot_bucket_counts.items():
-            print(f"         {bucket_name:16s}: {bucket_count}")
-    elif MAX_DFT_MOLECULES > 0:
-        if SELECTION_MODE == "labeled_only":
-            df_selected = select_balanced_labeled_subset(df_labeled_all, MAX_DFT_MOLECULES)
-            n_pos_test = int((df_selected["repellent_active"] == 1).sum())
-            n_neg_test = int((df_selected["repellent_active"] == 0).sum())
-            print(f"\n[TEST] Using balanced smoke subset: {n_pos_test} positives + {n_neg_test} negatives from {len(df_labeled_all)} labeled molecules.")
-        else:
-            df_selected = df_selected_all.head(MAX_DFT_MOLECULES).copy().reset_index(drop=True)
-            print(f"\n[TEST] Using first {len(df_selected)} of {len(df_selected_all)} all-QC-pass molecules.")
-    else:
-        df_selected = df_selected_all.copy().reset_index(drop=True)
 
-    df_labeled = df_selected  # Downstream cells still use this name; it now means the selected QC-pass set.
+def _register_checkpoint_flush(records_by_id: dict[str, object], checkpoint_file: Path) -> None:
+    _checkpoint_flush_state["records_by_id"] = records_by_id
+    _checkpoint_flush_state["checkpoint_file"] = checkpoint_file
+    signal.signal(signal.SIGTERM, _handle_termination_signal)
+    signal.signal(signal.SIGINT, _handle_termination_signal)
 
-    n_pos = int((df_selected["repellent_active"] == 1).sum())
-    n_neg = int((df_selected["repellent_active"] == 0).sum())
-    n_unlabeled = int(df_selected["repellent_active"].isna().sum())
-    source_counts = df_selected["source_dataset"].value_counts(dropna=False)
 
-    print(f"\n[OK] Loaded {len(df_pass)} QC-pass molecules total.")
-    print(f"[OK] Computing P3-Z outputs for {len(df_selected)} selected molecules.")
-    print(f"     Selection mode: {SELECTION_MODE}")
-    print(f"     Labeled repellent:    {n_pos}")
-    print(f"     Labeled nonrepellent: {n_neg}")
-    print(f"     Unlabeled:            {n_unlabeled}")
-    for source_name, source_count in source_counts.items():
-        print(f"     Source {str(source_name):14s}: {int(source_count)}")
-
-    # Check for existing checkpoint
-    already_done_ids = set()
-    if CHECKPOINT_FILE.exists():
-        df_checkpoint = pd.read_parquet(CHECKPOINT_FILE)
-        already_done_ids = set(df_checkpoint["compound_id"].tolist())
-        print(f"\n[OK] CHECKPOINT FOUND: {len(already_done_ids)} molecules already computed. Resuming...")
-    print("\n" + "=" * 60)
-    print("  STEP 1: 3D CONFORMER GENERATION")
-    print("=" * 60)
-
-    import pickle
-    if MAX_DFT_MOLECULES > 0:
-        CONFORMER_CACHE = ARTIFACTS_DIR / f"_conformers_cache_smoke_{MAX_DFT_MOLECULES}.pkl"
-    else:
-        CONFORMER_CACHE = ARTIFACTS_DIR / "_conformers_cache.pkl"
-    SELECTED_COMPOUND_IDS = set(df_labeled["compound_id"].astype(str))
-
-    # --- Check for cached conformers on disk ---
-    if CONFORMER_CACHE.exists():
-        print(f"\n[OK] CONFORMER CACHE FOUND: {CONFORMER_CACHE.name}")
-        print("     Loading conformers from disk (skipping generation)...")
-        with open(CONFORMER_CACHE, "rb") as f:
-            conformer_data = pickle.load(f)
-        df_conf = pd.DataFrame(conformer_data)
-        n_conf_success = df_conf["conformer_success"].sum()
-        n_conf_fail = len(df_conf) - n_conf_success
-        conf_elapsed = 0
-        print(f"     Loaded {len(df_conf)} molecules ({n_conf_success} success, {n_conf_fail} failed)")
-    else:
-        print(f"\n     No cache found. Generating conformers from scratch...")
-        conformer_data = []
-        conf_start = time.time()
-
-        for idx, row in tqdm(df_labeled.iterrows(), total=len(df_labeled), desc="  Conformers"):
-            smiles = row["canonical_smiles"]
-            cid = row["compound_id"]
-
-            mol_3d, energy, n_gen = generate_best_conformer(
-                smiles, n_confs=N_CONFORMERS, max_iters=MMFF_MAX_ITERS, seed=RANDOM_SEED
-            )
-
-            conformer_data.append({
-                "compound_id": cid,
-                "mol_3d": mol_3d,
-                "mmff_energy": energy,
-                "n_conformers_generated": n_gen,
-                "conformer_success": mol_3d is not None,
-            })
-
-        conf_elapsed = time.time() - conf_start
-        df_conf = pd.DataFrame(conformer_data)
-        n_conf_success = df_conf["conformer_success"].sum()
-        n_conf_fail = len(df_conf) - n_conf_success
-
-        # Save conformers to disk for future runs
-        with open(CONFORMER_CACHE, "wb") as f:
-            pickle.dump(conformer_data, f)
-        print(f"\n[OK] Conformers saved to disk: {CONFORMER_CACHE.name}")
-
-    # Keep only conformers for the selected test/full molecule set, even if a cache contains more.
-    df_conf = df_conf[df_conf["compound_id"].astype(str).isin(SELECTED_COMPOUND_IDS)].reset_index(drop=True)
-    n_conf_success = int(df_conf["conformer_success"].sum()) if len(df_conf) else 0
-    n_conf_fail = len(df_conf) - n_conf_success
-
-    print(f"\n[OK] Conformer generation complete in {timedelta(seconds=int(conf_elapsed))}")
-    print(f"     Selected conformers: {len(df_conf)}/{len(df_labeled)}")
-    print(f"     Success: {n_conf_success} | Failed: {n_conf_fail}")
-    # ================================================================
-    # S5b — Fast DFT+D3 Smoke Test (Water, STO-3G)
-    # ================================================================
-    # This catches NumPy/SciPy/PySCF/dftd3 incompatibilities before the expensive full loop.
+def _run_startup_validation() -> None:
+    """Fast PySCF/xTB validation before the expensive DFT loop."""
     print("\n" + "=" * 60)
     print("  SMOKE TEST: PySCF + DFT-D3 single-point and gradient")
     print("=" * 60)
 
     _smoke_basis = "sto-3g"
-    _smoke_grid_level = 3
     mol_smoke = runtime.gto.M(
         atom="O 0.000000 0.000000 0.000000; H 0.000000 -0.757000 0.587000; H 0.000000 0.757000 0.587000",
         basis=_smoke_basis,
@@ -337,6 +239,164 @@ def main() -> None:
         f"hd={COMPUTE_HD_SHIFTS} vea={COMPUTE_VERTICAL_EA}"
     )
     print("=" * 60)
+
+
+def main() -> None:
+    """Run the full P3-Z workflow."""
+    RDLogger.logger().setLevel(RDLogger.ERROR)
+    warnings.filterwarnings("ignore")
+
+    os.environ.setdefault(
+        "CONDA_DEFAULT_PATH",
+        str(os.path.expanduser("~/miniforge3/etc/profile.d/conda.sh")),
+    )
+    print("Exported CONDA_DEFAULT_PATH:", os.environ["CONDA_DEFAULT_PATH"])
+    print("P3Z_INPUT_PARQUET preset:", os.environ.get("P3Z_INPUT_PARQUET", "<auto>"))
+    print("P3Z_CLASSICAL_FEATURES preset:", os.environ.get("P3Z_CLASSICAL_FEATURES", "<auto>"))
+
+    runtime.initialize_runtime(require_input=True)
+
+    df = pd.read_parquet(INPUT_PARQUET)
+    df_pass = df[df["qc_status"] == "pass"].copy().reset_index(drop=True)
+    df_labeled_all = df_pass[df_pass["repellent_active"].notna()].copy().reset_index(drop=True)
+
+    if SELECTION_MODE == "labeled_only":
+        df_selected_all = df_labeled_all.copy().reset_index(drop=True)
+    else:
+        df_selected_all = df_pass.copy().reset_index(drop=True)
+
+    if PILOT_MODE == "representative" and ACTIVE_SELECTION_LIMIT > 0:
+        df_selected, pilot_bucket_counts = select_representative_pilot(df_selected_all, ACTIVE_SELECTION_LIMIT)
+        print(f"\n[PILOT] Using representative pilot subset: {len(df_selected)} of {len(df_selected_all)} molecules.")
+        for bucket_name, bucket_count in pilot_bucket_counts.items():
+            print(f"         {bucket_name:16s}: {bucket_count}")
+    elif MAX_DFT_MOLECULES > 0:
+        if SELECTION_MODE == "labeled_only":
+            df_selected = select_balanced_labeled_subset(df_labeled_all, MAX_DFT_MOLECULES)
+            n_pos_test = int((df_selected["repellent_active"] == 1).sum())
+            n_neg_test = int((df_selected["repellent_active"] == 0).sum())
+            print(f"\n[TEST] Using balanced smoke subset: {n_pos_test} positives + {n_neg_test} negatives from {len(df_labeled_all)} labeled molecules.")
+        else:
+            df_selected = df_selected_all.head(MAX_DFT_MOLECULES).copy().reset_index(drop=True)
+            print(f"\n[TEST] Using first {len(df_selected)} of {len(df_selected_all)} all-QC-pass molecules.")
+    else:
+        df_selected = df_selected_all.copy().reset_index(drop=True)
+
+    df_conformer_scope = df_selected.copy()
+
+    if NUM_SHARDS > 1:
+        n_before_shard = len(df_selected)
+        df_selected = filter_dataframe_shard(df_selected, SHARD_INDEX, NUM_SHARDS)
+        print(
+            f"\n[SHARD] Active shard {SHARD_INDEX + 1}/{NUM_SHARDS}: "
+            f"{len(df_selected)} of {n_before_shard} selected molecules."
+        )
+
+    df_labeled = df_selected  # Downstream cells still use this name; it now means the selected QC-pass set.
+
+    n_pos = int((df_selected["repellent_active"] == 1).sum())
+    n_neg = int((df_selected["repellent_active"] == 0).sum())
+    n_unlabeled = int(df_selected["repellent_active"].isna().sum())
+    source_counts = df_selected["source_dataset"].value_counts(dropna=False)
+
+    print(f"\n[OK] Loaded {len(df_pass)} QC-pass molecules total.")
+    print(f"[OK] Computing P3-Z outputs for {len(df_selected)} selected molecules.")
+    print(f"     Selection mode: {SELECTION_MODE}")
+    print(f"     Labeled repellent:    {n_pos}")
+    print(f"     Labeled nonrepellent: {n_neg}")
+    print(f"     Unlabeled:            {n_unlabeled}")
+    for source_name, source_count in source_counts.items():
+        print(f"     Source {str(source_name):14s}: {int(source_count)}")
+
+    # Check for existing checkpoint
+    already_done_ids = set()
+    if CHECKPOINT_FILE.exists():
+        df_checkpoint = pd.read_parquet(CHECKPOINT_FILE)
+        already_done_ids = set(df_checkpoint["compound_id"].tolist())
+        print(f"\n[OK] CHECKPOINT FOUND: {len(already_done_ids)} molecules already computed. Resuming...")
+    print("\n" + "=" * 60)
+    print("  STEP 1: 3D CONFORMER GENERATION")
+    print("=" * 60)
+
+    import pickle
+    if MAX_DFT_MOLECULES > 0:
+        CONFORMER_CACHE = ARTIFACTS_DIR / f"_conformers_cache_smoke_{MAX_DFT_MOLECULES}.pkl"
+    else:
+        CONFORMER_CACHE = ARTIFACTS_DIR / "_conformers_cache.pkl"
+    conformer_scope = df_conformer_scope if (NUM_SHARDS > 1 or PREPARE_CONFORMERS_ONLY) else df_labeled
+    SELECTED_COMPOUND_IDS = set(df_labeled["compound_id"].astype(str))
+    CONFORMER_SCOPE_IDS = set(conformer_scope["compound_id"].astype(str))
+
+    # --- Check for cached conformers on disk ---
+    if CONFORMER_CACHE.exists():
+        print(f"\n[OK] CONFORMER CACHE FOUND: {CONFORMER_CACHE.name}")
+        print("     Loading conformers from disk (skipping generation)...")
+        with open(CONFORMER_CACHE, "rb") as f:
+            conformer_data = pickle.load(f)
+        df_conf = pd.DataFrame(conformer_data)
+        n_conf_success = df_conf["conformer_success"].sum()
+        n_conf_fail = len(df_conf) - n_conf_success
+        conf_elapsed = 0
+        print(f"     Loaded {len(df_conf)} molecules ({n_conf_success} success, {n_conf_fail} failed)")
+    else:
+        print(f"\n     No cache found. Generating conformers from scratch...")
+        conformer_data = []
+        conf_start = time.time()
+
+        for idx, row in tqdm(conformer_scope.iterrows(), total=len(conformer_scope), desc="  Conformers"):
+            smiles = row["canonical_smiles"]
+            cid = row["compound_id"]
+
+            mol_3d, energy, n_gen = generate_best_conformer(
+                smiles, n_confs=N_CONFORMERS, max_iters=MMFF_MAX_ITERS, seed=RANDOM_SEED
+            )
+
+            conformer_data.append({
+                "compound_id": cid,
+                "mol_3d": mol_3d,
+                "mmff_energy": energy,
+                "n_conformers_generated": n_gen,
+                "conformer_success": mol_3d is not None,
+            })
+
+        conf_elapsed = time.time() - conf_start
+        df_conf = pd.DataFrame(conformer_data)
+        n_conf_success = df_conf["conformer_success"].sum()
+        n_conf_fail = len(df_conf) - n_conf_success
+
+        # Save conformers to disk for future runs
+        with open(CONFORMER_CACHE, "wb") as f:
+            pickle.dump(conformer_data, f)
+        print(f"\n[OK] Conformers saved to disk: {CONFORMER_CACHE.name}")
+
+    # Keep shard/workflow conformers for DFT, even if the shared cache contains more molecules.
+    df_conf_full = df_conf.copy()
+    df_conf = df_conf[df_conf["compound_id"].astype(str).isin(SELECTED_COMPOUND_IDS)].reset_index(drop=True)
+    if PREPARE_CONFORMERS_ONLY:
+        cached_ids = set(df_conf_full["compound_id"].astype(str))
+        missing_scope = CONFORMER_SCOPE_IDS - cached_ids
+        if missing_scope:
+            raise RuntimeError(
+                f"Conformer cache incomplete for preparation job: missing {len(missing_scope)} molecules."
+            )
+    n_conf_success = int(df_conf["conformer_success"].sum()) if len(df_conf) else 0
+    n_conf_fail = len(df_conf) - n_conf_success
+
+    print(f"\n[OK] Conformer generation complete in {timedelta(seconds=int(conf_elapsed))}")
+    print(f"     Selected conformers: {len(df_conf)}/{len(df_labeled)}")
+    print(f"     Success: {n_conf_success} | Failed: {n_conf_fail}")
+
+    if PREPARE_CONFORMERS_ONLY:
+        print("\n[OK] Conformer cache ready. Exiting because P3Z_PREPARE_CONFORMERS_ONLY=1.")
+        return
+
+    if SKIP_VALIDATION:
+        print("\n[SKIP] Validation tests skipped (P3Z_SKIP_VALIDATION=1).")
+        if USE_XTB_PREOPT and runtime.XTB_EXECUTABLE is None:
+            raise RuntimeError("xTB executable not found while xTB preoptimization is enabled")
+    else:
+        _run_startup_validation()
+
     print("\n" + "=" * 60)
     print("  STEP 2: GFN2-xTB PRE-OPTIMIZATION + DFT+D3 GEOMETRY OPTIMIZATION")
     print("=" * 60)
@@ -373,6 +433,11 @@ def main() -> None:
             print(f"     Recomputing failed/non-converged checkpoint rows: {n_checkpoint_failed_skipped}")
         if n_checkpoint_incompatible:
             print(f"     Recomputing rows without current settings/artifacts: {n_checkpoint_incompatible}")
+
+    _register_checkpoint_flush(records_by_id, CHECKPOINT_FILE)
+    if NUM_SHARDS > 1:
+        expected, converged, remaining = shard_progress(df_conformer_scope, SHARD_INDEX, NUM_SHARDS, CHECKPOINT_FILE)
+        print(f"[SHARD] Progress before DFT loop: {converged}/{expected} converged ({remaining} remaining)")
 
     dft_start = time.time()
     n_new = 0

@@ -1,6 +1,25 @@
 from __future__ import annotations
 
+import zlib
+
 import pandas as pd
+
+
+def compound_shard_index(compound_id: str, num_shards: int) -> int:
+    """Stable shard assignment for a compound_id (CRC32 mod num_shards)."""
+    if num_shards <= 1:
+        return 0
+    digest = zlib.crc32(str(compound_id).encode("utf-8")) & 0xFFFFFFFF
+    return int(digest % num_shards)
+
+
+def filter_dataframe_shard(df_source: pd.DataFrame, shard_index: int, num_shards: int) -> pd.DataFrame:
+    """Return rows assigned to shard_index out of num_shards."""
+    if num_shards <= 1:
+        return df_source.copy().reset_index(drop=True)
+    compound_ids = df_source["compound_id"].astype(str)
+    mask = compound_ids.map(lambda cid: compound_shard_index(cid, num_shards) == shard_index)
+    return df_source.loc[mask].copy().reset_index(drop=True)
 
 def select_balanced_labeled_subset(df_source, max_molecules):
     df_pos = df_source[df_source["repellent_active"] == 1].copy()

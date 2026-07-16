@@ -1,0 +1,96 @@
+[2026-07-15 14:24:47]   [DFT] build PySCF molecule: atoms=3 charge=0 spin=0
+[2026-07-15 14:24:47]   [LOG] Run log: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs/dft_run_pilot_1.log
+[2026-07-15 14:24:47]   [LOG] Per-molecule logs: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs
+[2026-07-15 14:24:47]   [DFT] molecule 1/1: REP_00001
+[2026-07-15 14:24:47] ========================================================================
+[2026-07-15 14:24:47] BEGIN compound_id=REP_00001 molecule_index=1/1 method=DFT-b3lyp/sto-3g-D3
+[2026-07-15 14:24:47] settings functional=b3lyp basis=sto-3g D3=True geom_max_steps=3 scf_max_cycles=50
+[2026-07-15 14:24:47]   [xTB] [REP_00001] start: atoms=60 charge=0 multiplicity=1 opt=tight solvent=gas
+[2026-07-15 14:24:49]   [OK] [REP_00001] GFN2-xTB converged; RMSD(MMFF,xTB)=0.4953 A
+[2026-07-15 14:24:49]   [DFT] build PySCF molecule: atoms=60 charge=0 spin=0
+[2026-07-15 14:24:49]   [DFT] [REP_00001] start
+[2026-07-15 14:24:49]   [OPT] [REP_00001] start: atoms=60, basis=sto-3g, D3=True, maxiter=3
+[2026-07-15 14:27:35]   [OPT] [REP_00001] eval=001 E=-1453.4631766022 Ha max|grad|=1.781e-01 Ha/Bohr SCF=True time=166.1s
+[2026-07-15 14:30:31]   [OPT] [REP_00001] eval=002 E=-1453.4151561390 Ha max|grad|=1.678e-01 Ha/Bohr SCF=True time=175.8s
+[2026-07-15 14:33:23]   [OPT] [REP_00001] eval=003 E=-1453.5282247676 Ha max|grad|=7.205e-02 Ha/Bohr SCF=True time=172.3s
+[2026-07-15 14:36:17]   [OPT] [REP_00001] eval=004 E=-1453.5417395650 Ha max|grad|=3.797e-02 Ha/Bohr SCF=True time=173.5s
+[2026-07-15 14:43:29]   [DFT] build PySCF molecule: atoms=3 charge=0 spin=0
+[2026-07-15 14:43:29]   [LOG] Run log: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs/dft_run_pilot_1.log
+[2026-07-15 14:43:29]   [LOG] Per-molecule logs: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs
+[2026-07-15 14:43:29]   [DFT] molecule 1/1: REP_00001
+[2026-07-15 14:43:50]   [DFT] build PySCF molecule: atoms=3 charge=0 spin=0
+[2026-07-15 14:43:50]   [LOG] Run log: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs/dft_run_pilot_1.log
+[2026-07-15 14:43:50]   [LOG] Per-molecule logs: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs
+[2026-07-15 14:43:50]   [DFT] molecule 1/1: REP_00001
+[2026-07-15 14:43:50] ========================================================================
+[2026-07-15 14:43:50] BEGIN compound_id=REP_00001 molecule_index=1/1 method=DFT-b3lyp/sto-3g
+[2026-07-15 14:43:50] settings functional=b3lyp basis=sto-3g D3=False geom_max_steps=50 scf_max_cycles=50
+[2026-07-15 14:43:50]   [xTB] [REP_00001] start: atoms=60 charge=0 multiplicity=1 opt=tight solvent=gas
+[2026-07-15 14:43:50]   [OK] [REP_00001] GFN2-xTB converged cached; RMSD(MMFF,xTB)=0.4953 A
+[2026-07-15 14:43:50]   [DFT] build PySCF molecule: atoms=60 charge=0 spin=0
+[2026-07-15 14:43:50]   [DFT] [REP_00001] start
+[2026-07-15 14:43:50]   [DFT] [REP_00001] final single-point start
+[2026-07-15 14:44:46]   [DFT] [REP_00001] final SCF done: E=-1453.3335459405 Ha converged=True time=55.5s
+[2026-07-15 14:44:46]   [DFT] [REP_00001] descriptors: HOMO=-4.1032 eV LUMO=0.3077 eV gap=4.4110 eV opt_status=single_point
+[2026-07-15 14:49:52]   [DFT] build PySCF molecule: atoms=3 charge=0 spin=0
+[2026-07-15 14:49:52]   [LOG] Run log: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs/dft_run_pilot_1.log
+[2026-07-15 14:49:52]   [LOG] Per-molecule logs: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs
+[2026-07-15 14:49:52]   [DFT] molecule 1/1: REP_00001
+[2026-07-15 14:49:52] ========================================================================
+[2026-07-15 14:49:52] BEGIN compound_id=REP_00001 molecule_index=1/1 method=DFT-b3lyp/sto-3g
+[2026-07-15 14:49:52] settings functional=b3lyp basis=sto-3g D3=False geom_max_steps=50 scf_max_cycles=50
+[2026-07-15 14:49:52]   [xTB] [REP_00001] start: atoms=8 charge=0 multiplicity=1 opt=tight solvent=gas
+[2026-07-15 14:49:52]   [OK] [REP_00001] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0118 A
+[2026-07-15 14:49:52]   [DFT] build PySCF molecule: atoms=8 charge=0 spin=0
+[2026-07-15 14:49:52]   [DFT] [REP_00001] start
+[2026-07-15 14:49:52]   [DFT] [REP_00001] final single-point start
+[2026-07-15 14:49:52]   [DFT] [REP_00001] final SCF done: E=-988.0415940299 Ha converged=True time=0.6s
+[2026-07-15 14:49:52]   [DFT] [REP_00001] descriptors: HOMO=-6.5971 eV LUMO=2.7788 eV gap=9.3759 eV opt_status=single_point
+[2026-07-15 14:50:02]   [OK] [REP_00001] Vibrational analysis complete (18 modes)
+[2026-07-15 14:50:02]   [OK] [REP_00001] H->D full-deuteration analysis complete
+[2026-07-15 14:50:03]   [OK] [REP_00001] Vertical electron affinity computed
+[2026-07-15 14:50:03] END compound_id=REP_00001
+[2026-07-15 14:50:03]   [DFT] [REP_00001] status=converged opt=single_point gap=9.375903822851079
+[2026-07-15 14:50:43]   [DFT] build PySCF molecule: atoms=3 charge=0 spin=0
+[2026-07-15 14:50:43]   [LOG] Run log: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs/dft_run_pilot_1.log
+[2026-07-15 14:50:43]   [LOG] Per-molecule logs: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs
+[2026-07-15 14:50:43]   [DFT] molecule 1/1: REP_00001
+[2026-07-15 14:50:43]   [DFT] [REP_00001] using converged checkpoint row
+[2026-07-15 14:52:50]   [DFT] build PySCF molecule: atoms=3 charge=0 spin=0
+[2026-07-15 14:52:50]   [LOG] Run log: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs/dft_run_pilot_1.log
+[2026-07-15 14:52:50]   [LOG] Per-molecule logs: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs
+[2026-07-15 14:52:50]   [DFT] molecule 1/1: REP_00001
+[2026-07-15 14:52:50] ========================================================================
+[2026-07-15 14:52:50] BEGIN compound_id=REP_00001 molecule_index=1/1 method=DFT-b3lyp/sto-3g-D3
+[2026-07-15 14:52:50] settings functional=b3lyp basis=sto-3g D3=True geom_max_steps=50 scf_max_cycles=50
+[2026-07-15 14:52:50]   [xTB] [REP_00001] start: atoms=8 charge=0 multiplicity=1 opt=tight solvent=gas
+[2026-07-15 14:52:50]   [OK] [REP_00001] GFN2-xTB converged; RMSD(MMFF,xTB)=0.0118 A
+[2026-07-15 14:52:50]   [DFT] build PySCF molecule: atoms=8 charge=0 spin=0
+[2026-07-15 14:52:50]   [DFT] [REP_00001] start
+[2026-07-15 14:52:50]   [OPT] [REP_00001] start: atoms=8, basis=sto-3g, D3=True, maxiter=50
+[2026-07-15 14:52:52]   [OPT] [REP_00001] eval=001 E=-988.0530740512 Ha max|grad|=2.656e-02 Ha/Bohr SCF=True time=1.1s
+[2026-07-15 14:52:53]   [OPT] [REP_00001] eval=002 E=-987.9836016154 Ha max|grad|=9.022e-02 Ha/Bohr SCF=True time=1.2s
+[2026-07-15 14:52:54]   [OPT] [REP_00001] eval=003 E=-988.0581257950 Ha max|grad|=1.637e-02 Ha/Bohr SCF=True time=1.1s
+[2026-07-15 14:52:55]   [OPT] [REP_00001] eval=004 E=-988.0586524808 Ha max|grad|=7.753e-03 Ha/Bohr SCF=True time=1.1s
+[2026-07-15 14:52:56]   [OPT] [REP_00001] eval=005 E=-988.0588750669 Ha max|grad|=1.606e-03 Ha/Bohr SCF=True time=1.1s
+[2026-07-15 14:52:57]   [OPT] [REP_00001] eval=006 E=-988.0589022301 Ha max|grad|=1.544e-03 Ha/Bohr SCF=True time=1.1s
+[2026-07-15 14:52:58]   [OPT] [REP_00001] eval=007 E=-988.0589778560 Ha max|grad|=1.301e-03 Ha/Bohr SCF=True time=1.1s
+[2026-07-15 14:52:59]   [OPT] [REP_00001] eval=008 E=-988.0590123323 Ha max|grad|=7.368e-04 Ha/Bohr SCF=True time=1.1s
+[2026-07-15 14:53:00]   [OPT] [REP_00001] eval=009 E=-988.0590225633 Ha max|grad|=5.218e-04 Ha/Bohr SCF=True time=1.1s
+[2026-07-15 14:53:02]   [OPT] [REP_00001] eval=010 E=-988.0590205326 Ha max|grad|=1.409e-03 Ha/Bohr SCF=True time=1.1s
+[2026-07-15 14:53:03]   [OPT] [REP_00001] eval=011 E=-988.0590237066 Ha max|grad|=2.032e-04 Ha/Bohr SCF=True time=1.1s
+[2026-07-15 14:53:03]   [OPT] [REP_00001] done: success=True nit=8 neval=11 max|grad|=2.032e-04 message=CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL
+[2026-07-15 14:53:03]   [OK] [REP_00001] Geometry optimization converged
+[2026-07-15 14:53:03]   [DFT] [REP_00001] final single-point start
+[2026-07-15 14:53:03]   [DFT] [REP_00001] final SCF done: E=-988.0590237066 Ha converged=True time=0.6s
+[2026-07-15 14:53:03]   [DFT] [REP_00001] descriptors: HOMO=-6.5761 eV LUMO=1.9521 eV gap=8.5282 eV opt_status=optimized
+[2026-07-15 14:53:12]   [OK] [REP_00001] Vibrational analysis complete (18 modes)
+[2026-07-15 14:53:12]   [OK] [REP_00001] H->D full-deuteration analysis complete
+[2026-07-15 14:53:14]   [OK] [REP_00001] Vertical electron affinity computed
+[2026-07-15 14:53:14] END compound_id=REP_00001
+[2026-07-15 14:53:14]   [DFT] [REP_00001] status=converged opt=optimized gap=8.528210627893541
+[2026-07-15 14:53:55]   [DFT] build PySCF molecule: atoms=3 charge=0 spin=0
+[2026-07-15 14:53:55]   [LOG] Run log: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs/dft_run_pilot_1.log
+[2026-07-15 14:53:55]   [LOG] Per-molecule logs: /Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_logs
+[2026-07-15 14:53:55]   [DFT] molecule 1/1: REP_00001
+[2026-07-15 14:53:55]   [DFT] [REP_00001] using converged checkpoint row

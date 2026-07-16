@@ -1,6 +1,13 @@
 {
   "pipeline": "P3Z \u2014 DFT Geometry Optimization + Descriptor Computation",
   "random_seed": 42,
+  "selection": {
+    "mode": "all_qc_pass",
+    "pilot_mode": "representative",
+    "pilot_size": 0,
+    "active_limit": 1
+  },
+  "run_settings_fingerprint": "72daf8437b3b936d86751c97d3d58bd8114a4d1b74fc30536174c3bb9779799c",
   "geometry_optimization": {
     "optimizer": "SciPy L-BFGS-B Cartesian gradients",
     "enabled": true
@@ -13,12 +20,18 @@
     "grid_level": 3,
     "dispersion_correction": "D3"
   },
+  "analysis_stages": {
+    "compute_vibrations": true,
+    "compute_ir_spectra": true,
+    "compute_hd_shifts": true,
+    "compute_vertical_ea": true
+  },
   "conformer_generation": {
     "n_conformers_per_mol": 30,
     "mmff_max_iters": 500,
-    "success": 731,
-    "failed": 1,
-    "time_seconds": 56
+    "success": 1,
+    "failed": 0,
+    "time_seconds": 0
   },
   "xtb_preoptimization": {
     "enabled": true,
@@ -27,17 +40,17 @@
     "optimization_level": "tight",
     "max_cycles": 500,
     "solvent": "gas",
-    "converged": 731,
+    "converged": 1,
     "failed_or_skipped": 0,
     "fallback_to_mmff_after_failure": false,
-    "calculation_root": "/home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/calculations"
+    "calculation_root": "/Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/calculations"
   },
   "dft_calculations": {
-    "converged": 731,
+    "converged": 1,
     "geometries_optimized": 1,
     "scf_not_converged": 0,
-    "errors": 1,
-    "time_seconds": 281563
+    "errors": 0,
+    "time_seconds": 0
   },
   "dft_features": [
     "dft_homo_ev",
@@ -53,6 +66,7 @@
     "dft_mulliken_charge_range",
     "dft_ionization_potential_ev",
     "dft_electron_affinity_ev",
+    "dft_vertical_ea_ev",
     "dft_chemical_hardness_ev",
     "dft_electronegativity_ev",
     "dft_electrophilicity_ev",
@@ -66,11 +80,20 @@
     "HCM",
     "HD_A",
     "dQ_A",
-    "alignment_RMSD_A"
+    "alignment_RMSD_A",
+    "dft_n_modes",
+    "dft_n_imaginary_modes",
+    "dft_min_frequency_cm1",
+    "dft_max_ir_intensity",
+    "dft_ir_intensity_sum",
+    "hd_shift_mean_cm1",
+    "hd_shift_max_cm1",
+    "hd_shift_min_cm1"
   ],
-  "total_molecules": 732,
+  "total_molecules": 1,
   "output_files": {
-    "dft_descriptors": "/home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/dft_descriptors_all.parquet",
-    "combined_features": "/home/ws/xd2484/xeco/experiment/P3_Z_dft_descriptors/artifacts/dft_features_combined.parquet"
+    "dft_descriptors": "/Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_descriptors_all.parquet",
+    "combined_features": "/Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/dft_features_combined.parquet",
+    "calculation_root": "/Users/mosoleymani/VS-MC/genius-aws/ecoai/experiment/P3_Z_dft_descriptors/artifacts/calculations"
   }
 }

@@ -1,0 +1,10 @@
+{
+  "compound_id": "DEC_00001",
+  "status": "success",
+  "policy": "full_deuteration",
+  "n_deuterated_sites": 8,
+  "shift_definition": "neutral_frequency_cm1 - deuterated_frequency_cm1",
+  "shift_mean_cm1": 384.92752817685994,
+  "shift_max_cm1": 1010.9107293943966,
+  "shift_min_cm1": 17.47521775107664
+}
