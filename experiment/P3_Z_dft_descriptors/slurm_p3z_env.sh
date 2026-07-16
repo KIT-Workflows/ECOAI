@@ -14,7 +14,7 @@
 
 # --- project paths (login node: int-nano; workspace under /home/ws/xd2484) ---
 export XECO_ROOT="${XECO_ROOT:-/home/ws/xd2484/xeco}"
-export SCRIPT_DIR="${SCRIPT_DIR:-${XECO_ROOT}/experiment/P3_Z_dft_descriptors}"
+export SCRIPT_DIR="${SCRIPT_DIR:-${SLURM_SUBMIT_DIR:-${XECO_ROOT}/experiment/P3_Z_dft_descriptors}}"
 export CONDA_ENV="${P3Z_CONDA_ENV:-p3z_dft}"
 export ARTIFACTS_DIR="${P3Z_ARTIFACTS_DIR:-${SCRIPT_DIR}/artifacts_prod_electronic_v1}"
 

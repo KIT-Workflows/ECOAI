@@ -14,9 +14,10 @@
 
 set -euo pipefail
 
-SCRIPT_DIR_SLURM="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+XECO_ROOT="${XECO_ROOT:-/home/ws/xd2484/xeco}"
+SCRIPT_DIR="${SCRIPT_DIR:-${SLURM_SUBMIT_DIR:-${XECO_ROOT}/experiment/P3_Z_dft_descriptors}}"
 # shellcheck source=slurm_p3z_env.sh
-source "${SCRIPT_DIR_SLURM}/slurm_p3z_env.sh"
+source "${SCRIPT_DIR}/slurm_p3z_env.sh"
 
 NUM_SHARDS="${P3Z_NUM_SHARDS}"
 SHARD_INDEX="${SLURM_ARRAY_TASK_ID:-${P3Z_SHARD_INDEX:-0}}"
@@ -59,6 +60,7 @@ status_exit=$?
 if [[ "${P3Z_AUTO_RESUBMIT_ON_INCOMPLETE}" == "1" && "${status_exit}" -ne 0 ]]; then
   echo "[RESUBMIT] Shard ${SHARD_INDEX} incomplete; queueing continuation (7-day slot)."
   sbatch \
+    --chdir="${SCRIPT_DIR}" \
     --dependency=afterany:"${SLURM_JOB_ID}" \
     --partition="${P3Z_SLURM_PARTITION}" \
     --exclude="${P3Z_SLURM_EXCLUDE}" \

@@ -46,6 +46,7 @@ case "${cmd}" in
 
     echo "[1/2] Submitting conformer preparation..."
     prep_job="$(sbatch \
+      --chdir="${SCRIPT_DIR}" \
       --partition="${P3Z_SLURM_PARTITION}" \
       --exclude="${P3Z_SLURM_EXCLUDE}" \
       --export="${common_export}" \
@@ -54,6 +55,7 @@ case "${cmd}" in
 
     echo "[2/2] Submitting shard array (depends on prep)..."
     array_job="$(sbatch \
+      --chdir="${SCRIPT_DIR}" \
       --dependency=afterok:"${prep_job}" \
       --export="${common_export},P3Z_AUTO_RESUBMIT_ON_INCOMPLETE=1" \
       --array="0-$((P3Z_NUM_SHARDS - 1))" \
@@ -80,6 +82,7 @@ case "${cmd}" in
   finalize)
     echo "Submitting merge + finalize job..."
     sbatch \
+      --chdir="${SCRIPT_DIR}" \
       --partition="${P3Z_SLURM_PARTITION}" \
       --exclude="${P3Z_SLURM_EXCLUDE}" \
       --export="${common_export}" \

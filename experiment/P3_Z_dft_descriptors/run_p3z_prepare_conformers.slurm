@@ -14,9 +14,10 @@
 
 set -euo pipefail
 
-SCRIPT_DIR_SLURM="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+XECO_ROOT="${XECO_ROOT:-/home/ws/xd2484/xeco}"
+SCRIPT_DIR="${SCRIPT_DIR:-${SLURM_SUBMIT_DIR:-${XECO_ROOT}/experiment/P3_Z_dft_descriptors}}"
 # shellcheck source=slurm_p3z_env.sh
-source "${SCRIPT_DIR_SLURM}/slurm_p3z_env.sh"
+source "${SCRIPT_DIR}/slurm_p3z_env.sh"
 
 p3z_activate_conda
 cd "${XECO_ROOT}"
