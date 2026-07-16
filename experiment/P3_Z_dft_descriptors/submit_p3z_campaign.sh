@@ -70,6 +70,7 @@ case "${cmd}" in
     cd "${XECO_ROOT}"
     p3z_export_campaign_env
     export P3Z_NUM_SHARDS="${P3Z_NUM_SHARDS}"
+    export P3Z_QUIET_CONFIG=1
     python "${SCRIPT_DIR}/p3z_campaign_status.py"
     ;;
   queue)
