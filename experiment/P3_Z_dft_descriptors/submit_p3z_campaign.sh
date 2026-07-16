@@ -23,7 +23,7 @@ source "${SCRIPT_DIR}/slurm_p3z_env.sh"
 
 cmd="${1:-start}"
 
-common_export="ALL,P3Z_ARTIFACTS_DIR=${ARTIFACTS_DIR},P3Z_NUM_SHARDS=${P3Z_NUM_SHARDS}"
+common_export="ALL,P3Z_ARTIFACTS_DIR=${ARTIFACTS_DIR},P3Z_NUM_SHARDS=${P3Z_NUM_SHARDS},P3Z_COMPUTE_VIBRATIONS=0,P3Z_COMPUTE_VERTICAL_EA=1"
 
 sbatch_shard_resources=(
   --partition="${P3Z_SLURM_PARTITION}"
@@ -68,10 +68,13 @@ case "${cmd}" in
   status)
     p3z_activate_conda
     cd "${XECO_ROOT}"
-    export P3Z_MAX_MOLECULES=0
-    export P3Z_SELECTION_MODE=all_qc_pass
+    p3z_export_campaign_env
     export P3Z_NUM_SHARDS="${P3Z_NUM_SHARDS}"
     python "${SCRIPT_DIR}/p3z_campaign_status.py"
+    ;;
+  queue)
+    echo "SLURM queue (p3z jobs):"
+    squeue -u "${USER}" | grep -E "JOBID|p3z" || echo "  (no p3z jobs in queue)"
     ;;
   finalize)
     echo "Submitting merge + finalize job..."
@@ -82,7 +85,7 @@ case "${cmd}" in
       "${SCRIPT_DIR}/run_p3z_finalize.slurm"
     ;;
   *)
-    echo "Usage: $0 {start|status|finalize}"
+    echo "Usage: $0 {start|status|queue|finalize}"
     exit 1
     ;;
 esac

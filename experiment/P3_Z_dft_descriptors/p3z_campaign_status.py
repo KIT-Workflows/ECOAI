@@ -1,22 +1,42 @@
 #!/usr/bin/env python
-"""Report shard/campaign progress for P3-Z SLURM runs."""
+"""Report shard/campaign progress for P3-Z SLURM runs (no pipeline import noise)."""
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+from pathlib import Path
 
 import pandas as pd
 
-from p3z_dft import config
 from p3z_dft.shard_progress import campaign_progress, shard_checkpoint_path, shard_progress
 
 
-def _load_selected() -> pd.DataFrame:
-    df = pd.read_parquet(config.INPUT_PARQUET)
+def _resolve_paths() -> tuple[Path, Path, int, str]:
+    xeco_root = Path(os.environ.get("XECO_ROOT", "/home/ws/xd2484/xeco")).expanduser().resolve()
+    script_dir = Path(
+        os.environ.get("P3Z_SCRIPT_DIR", xeco_root / "experiment" / "P3_Z_dft_descriptors")
+    ).expanduser().resolve()
+    artifacts_dir = Path(
+        os.environ.get("P3Z_ARTIFACTS_DIR", script_dir / "artifacts_prod_electronic_v1")
+    ).expanduser().resolve()
+    input_parquet = Path(
+        os.environ.get(
+            "P3Z_INPUT_PARQUET",
+            xeco_root / "experiment" / "P2_scaffold_splitting" / "artifacts" / "curated_molecules_with_splits.parquet",
+        )
+    ).expanduser().resolve()
+    num_shards = int(os.environ.get("P3Z_NUM_SHARDS", "8"))
+    selection_mode = os.environ.get("P3Z_SELECTION_MODE", "all_qc_pass").strip().lower()
+    return artifacts_dir, input_parquet, num_shards, selection_mode
+
+
+def _load_selected(input_parquet: Path, selection_mode: str) -> pd.DataFrame:
+    df = pd.read_parquet(input_parquet)
     df_pass = df[df["qc_status"] == "pass"].copy().reset_index(drop=True)
-    if config.SELECTION_MODE == "labeled_only":
+    if selection_mode == "labeled_only":
         return df_pass[df_pass["repellent_active"].notna()].copy().reset_index(drop=True)
     return df_pass
 
@@ -27,9 +47,8 @@ def main() -> int:
     parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON")
     args = parser.parse_args()
 
-    df_selected = _load_selected()
-    num_shards = config.NUM_SHARDS
-    artifacts_dir = config.ARTIFACTS_DIR
+    artifacts_dir, input_parquet, num_shards, selection_mode = _resolve_paths()
+    df_selected = _load_selected(input_parquet, selection_mode)
 
     if args.shard is not None:
         if not (0 <= args.shard < num_shards):
@@ -44,6 +63,7 @@ def main() -> int:
             "remaining": remaining,
             "complete": remaining == 0,
             "checkpoint": str(checkpoint_path),
+            "checkpoint_exists": checkpoint_path.exists(),
         }
         if args.json:
             print(json.dumps(payload))
@@ -76,26 +96,33 @@ def main() -> int:
                 "remaining": remaining,
                 "complete": remaining == 0,
                 "checkpoint": str(checkpoint_path),
+                "checkpoint_exists": checkpoint_path.exists(),
             }
         )
 
     payload = {
         "num_shards": num_shards,
+        "selection_mode": selection_mode,
         "expected_total": expected_total,
         "converged_total": converged_total,
         "remaining_total": remaining_total,
         "complete": remaining_total == 0,
-        "shards": shard_rows,
         "artifacts_dir": str(artifacts_dir),
+        "conformer_cache_exists": (artifacts_dir / "_conformers_cache.pkl").exists(),
+        "shards": shard_rows,
     }
     if args.json:
         print(json.dumps(payload, indent=2))
     else:
+        cache_note = "yes" if payload["conformer_cache_exists"] else "no"
+        print(f"artifacts: {artifacts_dir}")
+        print(f"conformer cache: {cache_note}")
         print(f"campaign: {converged_total}/{expected_total} converged ({remaining_total} remaining)")
         for row in shard_rows:
+            ckpt = "checkpoint" if row["checkpoint_exists"] else "no ckpt yet"
             print(
                 f"  shard {row['shard_index'] + 1:>2}/{num_shards}: "
-                f"{row['converged']:>4}/{row['expected']:<4}  remaining={row['remaining']}"
+                f"{row['converged']:>4}/{row['expected']:<4}  remaining={row['remaining']}  ({ckpt})"
             )
     return 0 if payload["complete"] else 1
 

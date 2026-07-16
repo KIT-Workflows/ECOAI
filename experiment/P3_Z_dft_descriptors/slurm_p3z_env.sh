@@ -48,3 +48,15 @@ p3z_set_threading() {
     export OPENBLAS_NUM_THREADS="${OMP_NUM_THREADS}"
     export NUMEXPR_NUM_THREADS="${OMP_NUM_THREADS}"
 }
+
+p3z_export_campaign_env() {
+    export P3Z_MAX_MOLECULES=0
+    export P3Z_SELECTION_MODE=all_qc_pass
+    export P3Z_PILOT_MODE=none
+    export P3Z_DFT_BASIS="${P3Z_DFT_BASIS:-6-31g*}"
+    export P3Z_COMPUTE_VIBRATIONS=0
+    export P3Z_COMPUTE_IR_SPECTRA=0
+    export P3Z_COMPUTE_HD_SHIFTS=0
+    export P3Z_COMPUTE_VERTICAL_EA=1
+    export P3Z_SKIP_VALIDATION=1
+}
